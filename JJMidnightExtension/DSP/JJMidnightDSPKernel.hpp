@@ -107,6 +107,7 @@ public:
             case JJMidnightParameterAddress::spaceOn:      mSpaceOn = value; break;
             case JJMidnightParameterAddress::masterMix:    mMasterMix = value; break;
             case JJMidnightParameterAddress::masterOutput: mMasterOutput = value; break;
+            case JJMidnightParameterAddress::masterInput:  mMasterInput = value; break;
             default: break;
         }
     }
@@ -135,6 +136,7 @@ public:
             case JJMidnightParameterAddress::spaceOn:      return mSpaceOn;
             case JJMidnightParameterAddress::masterMix:    return mMasterMix;
             case JJMidnightParameterAddress::masterOutput: return mMasterOutput;
+            case JJMidnightParameterAddress::masterInput:  return mMasterInput;
             default: return 0.f;
         }
     }
@@ -242,6 +244,20 @@ public:
         const float masterMix = std::clamp(mMasterMix * 0.01f, 0.0f, 1.0f);
         const float outputGain = std::pow(10.0f, mMasterOutput / 20.0f);
 
+        // Input trim, applied before anything reads the signal. The compressor
+        // threshold and the drive curve are both absolute, so they only meet
+        // the instrument where the instrument is loud enough to reach them —
+        // and an electric guitar through an interface arrives 15-20 dB below
+        // a mixed file. Without a trim the Comp knob does nothing on a live
+        // rig but add make-up, which is heard as level and reads on the GR
+        // meter as the nothing it is.
+        //
+        // Deliberately ahead of the dry split rather than inside the wet path:
+        // this is the level the plug-in is being fed, so Mix keeps blending
+        // two signals that agree about it. The IN ladder reads post-trim for
+        // the same reason — it is the meter you set the trim by.
+        const float inputGain = std::pow(10.0f, mMasterInput / 20.0f);
+
         const float* inL = inputBuffers[0];
         const float* inR = inputBuffers.size() > 1 ? inputBuffers[1] : inputBuffers[0];
         float* outLPtr = outputBuffers[0];
@@ -253,8 +269,8 @@ public:
 
         for (AUAudioFrameCount n = 0; n < frameCount; ++n)
         {
-            const float dryL = inL[n];
-            const float dryR = inR[n];
+            const float dryL = inL[n] * inputGain;
+            const float dryR = inR[n] * inputGain;
 
             // --- Comp (stereo-linked detector) ---
             float wetL = dryL;
@@ -443,6 +459,7 @@ private:
 
     float mMasterMix = 100.0f;
     float mMasterOutput = 0.0f;
+    float mMasterInput = 0.0f;
 
     float mPeakIn = 0.f;
     float mPeakOut = 0.f;

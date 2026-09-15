@@ -336,7 +336,7 @@ public class JJMidnightAudioUnit: AUAudioUnit, @unchecked Sendable {
              .wobbleDepth, .wobbleShape,
              .slapMix, .springMix, .masterMix:
             return String(format: "%.0f %%", value)
-        case .masterOutput:
+        case .masterInput, .masterOutput:
             return String(format: "%+.1f dB", value)
         case .wobbleDivision:
             let names = JJMidnightWobbleDivisions.names

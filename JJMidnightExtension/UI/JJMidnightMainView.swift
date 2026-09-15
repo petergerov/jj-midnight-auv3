@@ -464,6 +464,12 @@ struct JJMidnightMainView: View {
             OutputMeter(audioUnit: audioUnit)
                 .frame(maxWidth: 440)
             Spacer(minLength: 8)
+            // First knob on the strip although it acts first in the chain,
+            // because it is the one you set before anything else is worth
+            // judging: every threshold downstream is absolute.
+            knob(parameterTree.master.masterInput, "INPUT",
+                 help: "Input trim, −12 to +24 dB, before the whole chain. A guitar straight into an interface lands well below the Comp threshold — bring the IN ladder up to around −12 dBFS on your loudest playing and the GR meter will start to move.")
+                .frame(maxWidth: 130)
             knob(parameterTree.master.masterMix, "MIX",
                  help: "Dry/wet for the entire chain. Leave it at 100% on a guitar track; pull it back to use this as a parallel colour.")
                 .frame(maxWidth: 130)

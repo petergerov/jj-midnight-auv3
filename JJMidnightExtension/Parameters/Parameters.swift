@@ -76,6 +76,12 @@ let JJMidnightParameterSpecs = ParameterTreeSpec {
                       units: .boolean, valueRange: 0.0...1.0, defaultValue: 1.0)
     }
     ParameterGroupSpec(identifier: "master", name: "Master") {
+        // Asymmetric on purpose. The chain's thresholds are absolute dBFS, so
+        // what this has to correct is an instrument sitting *below* them —
+        // a guitar into an interface arrives 15-20 dB quieter than a mixed
+        // file. Cutting is the rare case; boosting is the everyday one.
+        ParameterSpec(address: .masterInput, identifier: "masterInput", name: "Input",
+                      units: .decibels, valueRange: -12.0...24.0, defaultValue: 0.0, unitName: "dB")
         ParameterSpec(address: .masterMix, identifier: "masterMix", name: "Mix",
                       units: .percent, valueRange: 0.0...100.0, defaultValue: 100.0, unitName: "%")
         ParameterSpec(address: .masterOutput, identifier: "masterOutput", name: "Output",

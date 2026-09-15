@@ -1,6 +1,6 @@
 # Master
 
-Mix and Output act on the whole chain, and the output meter reports what
+Input, Mix and Output act on the whole chain, and the output meter reports what
 leaves it. Not a fifth stage in the signal path — a strip under the four
 blocks, which is why it has no on/off switch of its own.
 
@@ -8,8 +8,44 @@ blocks, which is why it has no on/off switch of its own.
 
 | Control | Range | What it does |
 |---|---|---|
+| **Input** | −12 … +24 dB | Trim before the whole chain, dry path included. The first thing to set on a live rig; see below. |
 | **Mix** | 0 … 100 % | Dry/wet for the **entire** chain, not for one block. Leave it at 100 % on a guitar track. |
 | **Output** | −12 … +12 dB | Trim after the mix. |
+
+## Input, and why it is asymmetric
+
+The compressor threshold is an absolute dBFS number, and so is the point where
+the drive curve starts to bend. Neither of them knows how loud the instrument
+is — they only meet it where it is loud enough to arrive. A mixed file peaks
+near 0 dBFS and reaches everything; an electric guitar into an interface
+arrives 15–20 dB lower and reaches almost none of it.
+
+With Comp at its default 55 % the threshold is −17.4 dBFS and the 9 dB knee
+means nothing at all happens below −21.9 dBFS. Measured, maximum gain
+reduction on a guitar part:
+
+| Guitar peak | Trim 0 | +6 dB | +12 dB | +18 dB | +24 dB |
+|---|---|---|---|---|---|
+| −18 dBFS | 0.1 dB | 1.4 dB | 4.7 dB | 9.8 dB | 14.1 dB |
+| −24 dBFS | 0.0 dB | 0.1 dB | 1.4 dB | 4.7 dB | 9.8 dB |
+| −30 dBFS | 0.0 dB | 0.0 dB | 0.1 dB | 1.4 dB | 4.7 dB |
+
+Untrimmed, a live rig gets the Comp knob's make-up — up to +13 dB — and none
+of its compression. That is audible as the track getting louder and the drive
+stage breaking up earlier, which is easy to mistake for the compressor
+working, while the GR meter correctly reports the nothing that is happening.
+The trim is what closes that gap, and it boosts far more than it cuts because
+being too quiet is the case that actually occurs.
+
+It sits **ahead of the dry split**, not inside the wet path, so Mix goes on
+blending two signals that agree about how loud the input was. The IN ladder in
+the header reads post-trim for the same reason: it is the meter you set the
+trim by. Bring it to around −12 dBFS on your loudest playing and the GR meter
+starts to move.
+
+Factory presets do not carry a value for it. Trim is a property of the rig,
+not of the sound, so changing preset leaves it where you set it. Your own
+saved presets do store it, since those are tied to your rig.
 
 Every block has its own switch, so Mix is not the way to take one out — it is
 the way to put the whole chain in parallel with the dry signal. That is worth

@@ -69,6 +69,12 @@ What the bar dropped was height. A needle needs several times the depth of a bar
 
 Set the Comp knob by this and by ear, not by arithmetic.
 
+If the bar barely moves while the compressor still seems to be doing
+something, the input is too quiet rather than the meter wrong: the threshold
+is absolute, so a guitar arriving 20 dB below a mixed file never reaches it,
+and what is left to hear is the make-up gain. Master's **Input** trim is the
+fix; `docs/master.md` has the measurements.
+
 ## How to use it
 
 - **Front-end glue on a DI** — Comp around 60 %, everything else off. That is the **Flat & Even** preset.
