@@ -1,0 +1,22 @@
+.DS_Store
+build/
+DerivedData/
+*.xcuserstate
+*.xcuserdata/
+/.idea/
+/.vscode/
+*.moved-aside
+*.hmap
+*.ipa
+*.dSYM.zip
+*.dSYM
+
+# App Store Connect / StoreKit private keys — never commit
+api/
+*.p8
+
+# Raw guitar takes — the bundled demo parts are the mixed-down loop_*.mp3
+loop/synthetic-test.mp3
+loop/*.wav
+loop/*.aif
+loop/*.aiff

@@ -1,0 +1,776 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 77;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		022EEE9AD9B528953A0B26F1 /* CrossPlatform.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBC23A2D1ACF6B1D4148357B /* CrossPlatform.swift */; };
+		04E28D12FF0490D0A4C1772B /* EntitlementService.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2F5DFC93945FFE10534CD7B /* EntitlementService.swift */; };
+		0D8E26952EE8530265C92789 /* JJMidnightAudioUnit.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96382907F2BC6933B6239EC7 /* JJMidnightAudioUnit.swift */; };
+		0DBF2CBE505B85436F6DAD20 /* loop_3.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 27802A7EA1416B24EC2BD222 /* loop_3.mp3 */; };
+		11B2BC66C47EB5CD9AFD326C /* KnobView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 87EF411AC036BC52EC0D73EC /* KnobView.swift */; };
+		125ED393590425B7C8703C2D /* KnobView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 87EF411AC036BC52EC0D73EC /* KnobView.swift */; };
+		126CB80BA50825FC1E2CC882 /* Parameters.swift in Sources */ = {isa = PBXBuildFile; fileRef = 295C6566E43200AF9AA2FA1F /* Parameters.swift */; };
+		143B839909208857E9477111 /* CrossPlatform.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBC23A2D1ACF6B1D4148357B /* CrossPlatform.swift */; };
+		15916D5BD38F17AF5EE045AA /* PaywallView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 904067411C31B06D2041CA42 /* PaywallView.swift */; };
+		1DB5676BB90E266383EBCEFD /* StringHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46D6748D1447689C344F9971 /* StringHelpers.swift */; };
+		25F0E2A9DE09C2C7D0DE422F /* Skew.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A14042492B67A1583DE000E /* Skew.swift */; };
+		298857D18FBC5BC1D703AD0B /* AudioUnitViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 218BC82B81995EA75ABB29CA /* AudioUnitViewController.swift */; };
+		2A3D3E7FE5C9B594668B6D7F /* LedToggle.swift in Sources */ = {isa = PBXBuildFile; fileRef = D60C90782CD05AF973E18099 /* LedToggle.swift */; };
+		3E899150B42ACAE22EC48C3F /* EntitlementService.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2F5DFC93945FFE10534CD7B /* EntitlementService.swift */; };
+		3EA583993D93534C75FF8957 /* LevelMeterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F56B9A4DBCCE123733968D04 /* LevelMeterView.swift */; };
+		45D7ECC493BA2B9D6FD6341D /* UnlockStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 364FFFF1A5321EC83ED5B660 /* UnlockStore.swift */; };
+		47006060A0BF55BC704422AE /* RackPanel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 522A2AEE854E07F29FD43372 /* RackPanel.swift */; };
+		4EAB085DDED4AC76DF1A8AFA /* Meters.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D037E7C3F0ABC5C5161C3C9 /* Meters.swift */; };
+		4FB60AE252D814BF33CE7E3B /* SimplePlayEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3044E873C361A280158C791 /* SimplePlayEngine.swift */; };
+		5445E815E657F2C220CC0658 /* ParameterSpecBase.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8EF3FF8DEF068283125DFF5 /* ParameterSpecBase.swift */; };
+		55258F0A10CB071DFB208CC7 /* UserPresetStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7698EDB42E2D1E16254DFB8 /* UserPresetStore.swift */; };
+		55DD15CB3BC8D03E1666DC42 /* JJMidnightExtension.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = 571D79333EE20F5FFD13E355 /* JJMidnightExtension.appex */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		5FCD32880A7DA8FC9DC71BB6 /* ObservableAUParameter.swift in Sources */ = {isa = PBXBuildFile; fileRef = A8B86D7D1BA45C8A1C30358D /* ObservableAUParameter.swift */; };
+		6442D5C7B92D784A0EEB84D9 /* String+Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4280A8DCF1EACA529C51511 /* String+Utils.swift */; };
+		6893EB9253B13BA69F3D1878 /* ObservableAUParameter.swift in Sources */ = {isa = PBXBuildFile; fileRef = A8B86D7D1BA45C8A1C30358D /* ObservableAUParameter.swift */; };
+		6AAF1E7DAE4C43D438F87978 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5BC1113C6FE422BD875546D /* ContentView.swift */; };
+		6C3373A1DCEF3B400068CF8F /* RackPanel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 522A2AEE854E07F29FD43372 /* RackPanel.swift */; };
+		6D9C86C8F179E2D83CDF3967 /* GearTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = E0150094D6284609376E58F6 /* GearTheme.swift */; };
+		7CF2FAA839194911A95A09A4 /* ExceptionCatcher.m in Sources */ = {isa = PBXBuildFile; fileRef = 66581276716A063CEE970EB2 /* ExceptionCatcher.m */; };
+		889F228821E9F316AAD9E663 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A592F19AB3B83FD063066F18 /* Assets.xcassets */; };
+		8E934E0938C5CA9BC64A47F9 /* ViewControllerRepresentable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C0CE617C25505657EE595C3 /* ViewControllerRepresentable.swift */; };
+		9C3484ACE0CA85648F132D6B /* loop_2.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 52073B5EFA04A4383A988A1F /* loop_2.mp3 */; };
+		A0D1993839247B20D9C6CA38 /* ParameterSpecBase.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8EF3FF8DEF068283125DFF5 /* ParameterSpecBase.swift */; };
+		A20C64EFA26CA2AB5038BB74 /* AudioUnitHostModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 974EFE1DCBA90C11FCB1FFC9 /* AudioUnitHostModel.swift */; };
+		A3729E651AF5FB31D8643C01 /* PurchaseProducts.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8ACB4C3169AE03120AF160C1 /* PurchaseProducts.swift */; };
+		A4621675960ACD0430847D37 /* Presets.swift in Sources */ = {isa = PBXBuildFile; fileRef = B38B00B38BB7BBD20111D31E /* Presets.swift */; };
+		A5105F68EB5A256ED0B1DA8A /* PurchaseProducts.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8ACB4C3169AE03120AF160C1 /* PurchaseProducts.swift */; };
+		A99B3017158652668A8FE44C /* AudioUnitViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6AF32DA8051A9AFCB039743 /* AudioUnitViewModel.swift */; };
+		ACA5755D535E60D462D4A7F1 /* loop_1.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 80DA7A44A4791AF1554CA881 /* loop_1.mp3 */; };
+		AE9EB228BA13AE2F5DA6BF44 /* JJMidnightApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6AD22350AC6ADFE5980BA3AA /* JJMidnightApp.swift */; };
+		AEE4B51269D197DDDF8EEBFF /* UnlockStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 364FFFF1A5321EC83ED5B660 /* UnlockStore.swift */; };
+		B06715D4B879982DF35E99AD /* Parameters.swift in Sources */ = {isa = PBXBuildFile; fileRef = 295C6566E43200AF9AA2FA1F /* Parameters.swift */; };
+		B10F16359EA6318632621AE3 /* Meters.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D037E7C3F0ABC5C5161C3C9 /* Meters.swift */; };
+		B3C36F4E070C6ED2C71D7F8F /* LedToggle.swift in Sources */ = {isa = PBXBuildFile; fileRef = D60C90782CD05AF973E18099 /* LedToggle.swift */; };
+		B6EC5D1C0CFE6DA01858AE78 /* LevelMeterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F56B9A4DBCCE123733968D04 /* LevelMeterView.swift */; };
+		BD81991D8764AE6A6F7E5A00 /* JJMidnightMainView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F384477D6732F8A0394AB98 /* JJMidnightMainView.swift */; };
+		BE55F8313A67056BBD3656E7 /* Skew.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A14042492B67A1583DE000E /* Skew.swift */; };
+		C376CD6B9B3087F8A31D2988 /* UserPresetStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7698EDB42E2D1E16254DFB8 /* UserPresetStore.swift */; };
+		CC431E504E20F0FD092363F0 /* PresetBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B6FB3DC8022C8A3B8397B48 /* PresetBar.swift */; };
+		D3712FBF4DC951BED02D083B /* PaywallView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 904067411C31B06D2041CA42 /* PaywallView.swift */; };
+		D4250FB77CA4028CF4AF84F4 /* TypeAliases.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1DDBE24AA2523EA586EE81F4 /* TypeAliases.swift */; };
+		D514542733EF027C898D2D2D /* Presets.swift in Sources */ = {isa = PBXBuildFile; fileRef = B38B00B38BB7BBD20111D31E /* Presets.swift */; };
+		D7502A8E8F3640661941F857 /* JJMidnightMainView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F384477D6732F8A0394AB98 /* JJMidnightMainView.swift */; };
+		E4364362CEAE014204C1C39E /* String+Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4280A8DCF1EACA529C51511 /* String+Utils.swift */; };
+		E6ABC7097C31B671308E0C5C /* PresetBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B6FB3DC8022C8A3B8397B48 /* PresetBar.swift */; };
+		ED13C8752F1FD39841668EE2 /* JJMidnightAudioUnit.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96382907F2BC6933B6239EC7 /* JJMidnightAudioUnit.swift */; };
+		F3C31908FFF8378014D22844 /* GearTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = E0150094D6284609376E58F6 /* GearTheme.swift */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		23C804EC05ECF84721BCB8C6 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 33A34F17E60E347073B3F739 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 10C1BF55513580A6F4B7568E;
+			remoteInfo = JJMidnightExtension;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		CB0311BEB192C92BE5010AC2 /* Embed Foundation Extensions */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 13;
+			files = (
+				55DD15CB3BC8D03E1666DC42 /* JJMidnightExtension.appex in Embed Foundation Extensions */,
+			);
+			name = "Embed Foundation Extensions";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
+/* Begin PBXFileReference section */
+		00E86C2CF2BD6ACC0732BF79 /* ExceptionCatcher.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ExceptionCatcher.h; sourceTree = "<group>"; };
+		071CDEF1A22058A39564C6CF /* JJMidnightBufferedAudioBus.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = JJMidnightBufferedAudioBus.hpp; sourceTree = "<group>"; };
+		1DDBE24AA2523EA586EE81F4 /* TypeAliases.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TypeAliases.swift; sourceTree = "<group>"; };
+		218BC82B81995EA75ABB29CA /* AudioUnitViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioUnitViewController.swift; sourceTree = "<group>"; };
+		27802A7EA1416B24EC2BD222 /* loop_3.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = loop_3.mp3; sourceTree = "<group>"; };
+		295C6566E43200AF9AA2FA1F /* Parameters.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Parameters.swift; sourceTree = "<group>"; };
+		34231A7AE0E29879CD31908E /* Tremolo.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Tremolo.h; sourceTree = "<group>"; };
+		364FFFF1A5321EC83ED5B660 /* UnlockStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnlockStore.swift; sourceTree = "<group>"; };
+		3BD3EB2CCAFE891F034F1752 /* JJMidnightAUProcessHelper.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = JJMidnightAUProcessHelper.hpp; sourceTree = "<group>"; };
+		46D6748D1447689C344F9971 /* StringHelpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StringHelpers.swift; sourceTree = "<group>"; };
+		4D037E7C3F0ABC5C5161C3C9 /* Meters.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Meters.swift; sourceTree = "<group>"; };
+		4DA6E1CCAD9A869E4EC4D16E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
+		52073B5EFA04A4383A988A1F /* loop_2.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = loop_2.mp3; sourceTree = "<group>"; };
+		522A2AEE854E07F29FD43372 /* RackPanel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RackPanel.swift; sourceTree = "<group>"; };
+		571D79333EE20F5FFD13E355 /* JJMidnightExtension.appex */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = "wrapper.app-extension"; path = JJMidnightExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
+		6623B356928CF0A93CAD7866 /* DSPCommon.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DSPCommon.h; sourceTree = "<group>"; };
+		66581276716A063CEE970EB2 /* ExceptionCatcher.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ExceptionCatcher.m; sourceTree = "<group>"; };
+		68786F09493BF3B6A31690D9 /* JJMidnight-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "JJMidnight-Bridging-Header.h"; sourceTree = "<group>"; };
+		6AD22350AC6ADFE5980BA3AA /* JJMidnightApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JJMidnightApp.swift; sourceTree = "<group>"; };
+		6C0CE617C25505657EE595C3 /* ViewControllerRepresentable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewControllerRepresentable.swift; sourceTree = "<group>"; };
+		73FC1C3453A5C263DCA6FD1B /* Biquad.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = Biquad.hpp; sourceTree = "<group>"; };
+		7F384477D6732F8A0394AB98 /* JJMidnightMainView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JJMidnightMainView.swift; sourceTree = "<group>"; };
+		80DA7A44A4791AF1554CA881 /* loop_1.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = loop_1.mp3; sourceTree = "<group>"; };
+		87EF411AC036BC52EC0D73EC /* KnobView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KnobView.swift; sourceTree = "<group>"; };
+		8ACB4C3169AE03120AF160C1 /* PurchaseProducts.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PurchaseProducts.swift; sourceTree = "<group>"; };
+		8B6FB3DC8022C8A3B8397B48 /* PresetBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PresetBar.swift; sourceTree = "<group>"; };
+		904067411C31B06D2041CA42 /* PaywallView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaywallView.swift; sourceTree = "<group>"; };
+		932464E609C56F12A914D4DF /* DriveStage.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DriveStage.h; sourceTree = "<group>"; };
+		96382907F2BC6933B6239EC7 /* JJMidnightAudioUnit.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JJMidnightAudioUnit.swift; sourceTree = "<group>"; };
+		974EFE1DCBA90C11FCB1FFC9 /* AudioUnitHostModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioUnitHostModel.swift; sourceTree = "<group>"; };
+		9A14042492B67A1583DE000E /* Skew.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Skew.swift; sourceTree = "<group>"; };
+		A4743220A41A2135BD8742BA /* JJMidnight.app */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.application; path = JJMidnight.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		A592F19AB3B83FD063066F18 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		A7698EDB42E2D1E16254DFB8 /* UserPresetStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserPresetStore.swift; sourceTree = "<group>"; };
+		A8B86D7D1BA45C8A1C30358D /* ObservableAUParameter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ObservableAUParameter.swift; sourceTree = "<group>"; };
+		AFAC8D9C790DF6FAB49CD8F3 /* JJMidnight.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = JJMidnight.entitlements; sourceTree = "<group>"; };
+		B38B00B38BB7BBD20111D31E /* Presets.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Presets.swift; sourceTree = "<group>"; };
+		B6AF32DA8051A9AFCB039743 /* AudioUnitViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioUnitViewModel.swift; sourceTree = "<group>"; };
+		B8EF3FF8DEF068283125DFF5 /* ParameterSpecBase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ParameterSpecBase.swift; sourceTree = "<group>"; };
+		B9B55BD94EC1FF7D06EB080E /* SpringReverb.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SpringReverb.h; sourceTree = "<group>"; };
+		BB205387391209F22B85D7B5 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
+		BB4F3ED7A5D41F302A58A018 /* ModulatedDelay.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ModulatedDelay.h; sourceTree = "<group>"; };
+		C348CD1BA81DE75E5EB5ED04 /* JJMidnightApp-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "JJMidnightApp-Bridging-Header.h"; sourceTree = "<group>"; };
+		CA8A8868124E1A1FA1667D6D /* JJMidnightParameterAddresses.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = JJMidnightParameterAddresses.h; sourceTree = "<group>"; };
+		D3044E873C361A280158C791 /* SimplePlayEngine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SimplePlayEngine.swift; sourceTree = "<group>"; };
+		D56CECE720EC1987F96EBDDF /* JJMidnightExtension.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = JJMidnightExtension.entitlements; sourceTree = "<group>"; };
+		D5BC1113C6FE422BD875546D /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
+		D60C90782CD05AF973E18099 /* LedToggle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LedToggle.swift; sourceTree = "<group>"; };
+		D6143FF0B44074CE41D97ADE /* CabVoicing.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CabVoicing.h; sourceTree = "<group>"; };
+		DBC23A2D1ACF6B1D4148357B /* CrossPlatform.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CrossPlatform.swift; sourceTree = "<group>"; };
+		E0150094D6284609376E58F6 /* GearTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GearTheme.swift; sourceTree = "<group>"; };
+		E2F5DFC93945FFE10534CD7B /* EntitlementService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EntitlementService.swift; sourceTree = "<group>"; };
+		E8FDE5AB53D62C2A8451175B /* JJMidnightDSPKernel.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = JJMidnightDSPKernel.hpp; sourceTree = "<group>"; };
+		F1CB7DF4EF66E084DA880C18 /* CompressorStage.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CompressorStage.h; sourceTree = "<group>"; };
+		F4280A8DCF1EACA529C51511 /* String+Utils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+Utils.swift"; sourceTree = "<group>"; };
+		F56B9A4DBCCE123733968D04 /* LevelMeterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LevelMeterView.swift; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXGroup section */
+		06B709BB0C48C096A784E625 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				974EFE1DCBA90C11FCB1FFC9 /* AudioUnitHostModel.swift */,
+				B6AF32DA8051A9AFCB039743 /* AudioUnitViewModel.swift */,
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
+		232CE0A881BCC98FF755228C /* Parameters */ = {
+			isa = PBXGroup;
+			children = (
+				B8EF3FF8DEF068283125DFF5 /* ParameterSpecBase.swift */,
+			);
+			path = Parameters;
+			sourceTree = "<group>";
+		};
+		2E185C6E129AE229F10FF0F1 = {
+			isa = PBXGroup;
+			children = (
+				F8A441762B398827DD000EFE /* JJMidnight */,
+				D7151A7759ABD0FDC15437F1 /* JJMidnightExtension */,
+				5C4C2F5840E6B8C807B01D12 /* loop */,
+				E9CEB8206E41012646B765B6 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		43865318044C80F1A313485C /* UI */ = {
+			isa = PBXGroup;
+			children = (
+				E0150094D6284609376E58F6 /* GearTheme.swift */,
+				7F384477D6732F8A0394AB98 /* JJMidnightMainView.swift */,
+				87EF411AC036BC52EC0D73EC /* KnobView.swift */,
+				D60C90782CD05AF973E18099 /* LedToggle.swift */,
+				F56B9A4DBCCE123733968D04 /* LevelMeterView.swift */,
+				4D037E7C3F0ABC5C5161C3C9 /* Meters.swift */,
+				904067411C31B06D2041CA42 /* PaywallView.swift */,
+				8B6FB3DC8022C8A3B8397B48 /* PresetBar.swift */,
+				522A2AEE854E07F29FD43372 /* RackPanel.swift */,
+				9A14042492B67A1583DE000E /* Skew.swift */,
+			);
+			path = UI;
+			sourceTree = "<group>";
+		};
+		599BA4CD331417CC3704D3B9 /* UI */ = {
+			isa = PBXGroup;
+			children = (
+				218BC82B81995EA75ABB29CA /* AudioUnitViewController.swift */,
+				A8B86D7D1BA45C8A1C30358D /* ObservableAUParameter.swift */,
+			);
+			path = UI;
+			sourceTree = "<group>";
+		};
+		5C4C2F5840E6B8C807B01D12 /* loop */ = {
+			isa = PBXGroup;
+			children = (
+				80DA7A44A4791AF1554CA881 /* loop_1.mp3 */,
+				52073B5EFA04A4383A988A1F /* loop_2.mp3 */,
+				27802A7EA1416B24EC2BD222 /* loop_3.mp3 */,
+			);
+			path = loop;
+			sourceTree = "<group>";
+		};
+		611BEAF99B6D2EFA9869EB4B /* Parameters */ = {
+			isa = PBXGroup;
+			children = (
+				E2F5DFC93945FFE10534CD7B /* EntitlementService.swift */,
+				CA8A8868124E1A1FA1667D6D /* JJMidnightParameterAddresses.h */,
+				295C6566E43200AF9AA2FA1F /* Parameters.swift */,
+				B38B00B38BB7BBD20111D31E /* Presets.swift */,
+				8ACB4C3169AE03120AF160C1 /* PurchaseProducts.swift */,
+				364FFFF1A5321EC83ED5B660 /* UnlockStore.swift */,
+				A7698EDB42E2D1E16254DFB8 /* UserPresetStore.swift */,
+			);
+			path = Parameters;
+			sourceTree = "<group>";
+		};
+		7E5E7326E038A70DC7DD90A3 /* Common */ = {
+			isa = PBXGroup;
+			children = (
+				00E86C2CF2BD6ACC0732BF79 /* ExceptionCatcher.h */,
+				66581276716A063CEE970EB2 /* ExceptionCatcher.m */,
+				C348CD1BA81DE75E5EB5ED04 /* JJMidnightApp-Bridging-Header.h */,
+				D3044E873C361A280158C791 /* SimplePlayEngine.swift */,
+				46D6748D1447689C344F9971 /* StringHelpers.swift */,
+				1DDBE24AA2523EA586EE81F4 /* TypeAliases.swift */,
+				6C0CE617C25505657EE595C3 /* ViewControllerRepresentable.swift */,
+			);
+			path = Common;
+			sourceTree = "<group>";
+		};
+		87297B21B1F82C55F5064C30 /* Audio Unit */ = {
+			isa = PBXGroup;
+			children = (
+				96382907F2BC6933B6239EC7 /* JJMidnightAudioUnit.swift */,
+			);
+			path = "Audio Unit";
+			sourceTree = "<group>";
+		};
+		89EE7ADF677C3586D267DF83 /* DSP */ = {
+			isa = PBXGroup;
+			children = (
+				3BD3EB2CCAFE891F034F1752 /* JJMidnightAUProcessHelper.hpp */,
+				071CDEF1A22058A39564C6CF /* JJMidnightBufferedAudioBus.hpp */,
+			);
+			path = DSP;
+			sourceTree = "<group>";
+		};
+		9BC56752AB823535D8E21EB3 /* DSP */ = {
+			isa = PBXGroup;
+			children = (
+				73FC1C3453A5C263DCA6FD1B /* Biquad.hpp */,
+				D6143FF0B44074CE41D97ADE /* CabVoicing.h */,
+				F1CB7DF4EF66E084DA880C18 /* CompressorStage.h */,
+				932464E609C56F12A914D4DF /* DriveStage.h */,
+				6623B356928CF0A93CAD7866 /* DSPCommon.h */,
+				E8FDE5AB53D62C2A8451175B /* JJMidnightDSPKernel.hpp */,
+				BB4F3ED7A5D41F302A58A018 /* ModulatedDelay.h */,
+				B9B55BD94EC1FF7D06EB080E /* SpringReverb.h */,
+				34231A7AE0E29879CD31908E /* Tremolo.h */,
+			);
+			path = DSP;
+			sourceTree = "<group>";
+		};
+		D7151A7759ABD0FDC15437F1 /* JJMidnightExtension */ = {
+			isa = PBXGroup;
+			children = (
+				EE7C5EE9232520456D5BB1A4 /* Common */,
+				9BC56752AB823535D8E21EB3 /* DSP */,
+				611BEAF99B6D2EFA9869EB4B /* Parameters */,
+				43865318044C80F1A313485C /* UI */,
+				4DA6E1CCAD9A869E4EC4D16E /* Info.plist */,
+				D56CECE720EC1987F96EBDDF /* JJMidnightExtension.entitlements */,
+			);
+			path = JJMidnightExtension;
+			sourceTree = "<group>";
+		};
+		DB4CAC0D887E8C3D1E0D9AE8 /* Utility */ = {
+			isa = PBXGroup;
+			children = (
+				DBC23A2D1ACF6B1D4148357B /* CrossPlatform.swift */,
+				F4280A8DCF1EACA529C51511 /* String+Utils.swift */,
+			);
+			path = Utility;
+			sourceTree = "<group>";
+		};
+		E9CEB8206E41012646B765B6 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				A4743220A41A2135BD8742BA /* JJMidnight.app */,
+				571D79333EE20F5FFD13E355 /* JJMidnightExtension.appex */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		EE7C5EE9232520456D5BB1A4 /* Common */ = {
+			isa = PBXGroup;
+			children = (
+				87297B21B1F82C55F5064C30 /* Audio Unit */,
+				89EE7ADF677C3586D267DF83 /* DSP */,
+				232CE0A881BCC98FF755228C /* Parameters */,
+				599BA4CD331417CC3704D3B9 /* UI */,
+				DB4CAC0D887E8C3D1E0D9AE8 /* Utility */,
+				68786F09493BF3B6A31690D9 /* JJMidnight-Bridging-Header.h */,
+			);
+			path = Common;
+			sourceTree = "<group>";
+		};
+		F8A441762B398827DD000EFE /* JJMidnight */ = {
+			isa = PBXGroup;
+			children = (
+				7E5E7326E038A70DC7DD90A3 /* Common */,
+				06B709BB0C48C096A784E625 /* Model */,
+				A592F19AB3B83FD063066F18 /* Assets.xcassets */,
+				D5BC1113C6FE422BD875546D /* ContentView.swift */,
+				BB205387391209F22B85D7B5 /* Info.plist */,
+				AFAC8D9C790DF6FAB49CD8F3 /* JJMidnight.entitlements */,
+				6AD22350AC6ADFE5980BA3AA /* JJMidnightApp.swift */,
+			);
+			path = JJMidnight;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		10C1BF55513580A6F4B7568E /* JJMidnightExtension */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = B0983D2EF13D998EF73CCFC7 /* Build configuration list for PBXNativeTarget "JJMidnightExtension" */;
+			buildPhases = (
+				EB85326432F9D8A0500C3BB9 /* Sources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = JJMidnightExtension;
+			packageProductDependencies = (
+			);
+			productName = JJMidnightExtension;
+			productReference = 571D79333EE20F5FFD13E355 /* JJMidnightExtension.appex */;
+			productType = "com.apple.product-type.app-extension";
+		};
+		5ADA559D3EF472A9CDF77ED0 /* JJMidnight */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 13D075147F233716577098C7 /* Build configuration list for PBXNativeTarget "JJMidnight" */;
+			buildPhases = (
+				F8B1CAFE108AA027B2B9497C /* Sources */,
+				5763706FE41CC315F7878F17 /* Resources */,
+				CB0311BEB192C92BE5010AC2 /* Embed Foundation Extensions */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				FC5B79CE2269D68077EEFD3E /* PBXTargetDependency */,
+			);
+			name = JJMidnight;
+			packageProductDependencies = (
+			);
+			productName = JJMidnight;
+			productReference = A4743220A41A2135BD8742BA /* JJMidnight.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		33A34F17E60E347073B3F739 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = YES;
+				LastUpgradeCheck = 1600;
+				TargetAttributes = {
+					10C1BF55513580A6F4B7568E = {
+						DevelopmentTeam = C9LBGZNZ6P;
+						ProvisioningStyle = Automatic;
+					};
+					5ADA559D3EF472A9CDF77ED0 = {
+						DevelopmentTeam = C9LBGZNZ6P;
+						ProvisioningStyle = Automatic;
+					};
+				};
+			};
+			buildConfigurationList = D78120D2D8F709EEC7B80556 /* Build configuration list for PBXProject "JJMidnight" */;
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				Base,
+				en,
+			);
+			mainGroup = 2E185C6E129AE229F10FF0F1;
+			minimizedProjectReferenceProxies = 1;
+			preferredProjectObjectVersion = 77;
+			productRefGroup = E9CEB8206E41012646B765B6 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				5ADA559D3EF472A9CDF77ED0 /* JJMidnight */,
+				10C1BF55513580A6F4B7568E /* JJMidnightExtension */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		5763706FE41CC315F7878F17 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				889F228821E9F316AAD9E663 /* Assets.xcassets in Resources */,
+				ACA5755D535E60D462D4A7F1 /* loop_1.mp3 in Resources */,
+				9C3484ACE0CA85648F132D6B /* loop_2.mp3 in Resources */,
+				0DBF2CBE505B85436F6DAD20 /* loop_3.mp3 in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		EB85326432F9D8A0500C3BB9 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				298857D18FBC5BC1D703AD0B /* AudioUnitViewController.swift in Sources */,
+				143B839909208857E9477111 /* CrossPlatform.swift in Sources */,
+				3E899150B42ACAE22EC48C3F /* EntitlementService.swift in Sources */,
+				6D9C86C8F179E2D83CDF3967 /* GearTheme.swift in Sources */,
+				ED13C8752F1FD39841668EE2 /* JJMidnightAudioUnit.swift in Sources */,
+				D7502A8E8F3640661941F857 /* JJMidnightMainView.swift in Sources */,
+				125ED393590425B7C8703C2D /* KnobView.swift in Sources */,
+				2A3D3E7FE5C9B594668B6D7F /* LedToggle.swift in Sources */,
+				B6EC5D1C0CFE6DA01858AE78 /* LevelMeterView.swift in Sources */,
+				B10F16359EA6318632621AE3 /* Meters.swift in Sources */,
+				6893EB9253B13BA69F3D1878 /* ObservableAUParameter.swift in Sources */,
+				5445E815E657F2C220CC0658 /* ParameterSpecBase.swift in Sources */,
+				126CB80BA50825FC1E2CC882 /* Parameters.swift in Sources */,
+				D3712FBF4DC951BED02D083B /* PaywallView.swift in Sources */,
+				E6ABC7097C31B671308E0C5C /* PresetBar.swift in Sources */,
+				D514542733EF027C898D2D2D /* Presets.swift in Sources */,
+				A5105F68EB5A256ED0B1DA8A /* PurchaseProducts.swift in Sources */,
+				47006060A0BF55BC704422AE /* RackPanel.swift in Sources */,
+				25F0E2A9DE09C2C7D0DE422F /* Skew.swift in Sources */,
+				6442D5C7B92D784A0EEB84D9 /* String+Utils.swift in Sources */,
+				AEE4B51269D197DDDF8EEBFF /* UnlockStore.swift in Sources */,
+				C376CD6B9B3087F8A31D2988 /* UserPresetStore.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		F8B1CAFE108AA027B2B9497C /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				A20C64EFA26CA2AB5038BB74 /* AudioUnitHostModel.swift in Sources */,
+				A99B3017158652668A8FE44C /* AudioUnitViewModel.swift in Sources */,
+				6AAF1E7DAE4C43D438F87978 /* ContentView.swift in Sources */,
+				022EEE9AD9B528953A0B26F1 /* CrossPlatform.swift in Sources */,
+				04E28D12FF0490D0A4C1772B /* EntitlementService.swift in Sources */,
+				7CF2FAA839194911A95A09A4 /* ExceptionCatcher.m in Sources */,
+				F3C31908FFF8378014D22844 /* GearTheme.swift in Sources */,
+				AE9EB228BA13AE2F5DA6BF44 /* JJMidnightApp.swift in Sources */,
+				0D8E26952EE8530265C92789 /* JJMidnightAudioUnit.swift in Sources */,
+				BD81991D8764AE6A6F7E5A00 /* JJMidnightMainView.swift in Sources */,
+				11B2BC66C47EB5CD9AFD326C /* KnobView.swift in Sources */,
+				B3C36F4E070C6ED2C71D7F8F /* LedToggle.swift in Sources */,
+				3EA583993D93534C75FF8957 /* LevelMeterView.swift in Sources */,
+				4EAB085DDED4AC76DF1A8AFA /* Meters.swift in Sources */,
+				5FCD32880A7DA8FC9DC71BB6 /* ObservableAUParameter.swift in Sources */,
+				A0D1993839247B20D9C6CA38 /* ParameterSpecBase.swift in Sources */,
+				B06715D4B879982DF35E99AD /* Parameters.swift in Sources */,
+				15916D5BD38F17AF5EE045AA /* PaywallView.swift in Sources */,
+				CC431E504E20F0FD092363F0 /* PresetBar.swift in Sources */,
+				A4621675960ACD0430847D37 /* Presets.swift in Sources */,
+				A3729E651AF5FB31D8643C01 /* PurchaseProducts.swift in Sources */,
+				6C3373A1DCEF3B400068CF8F /* RackPanel.swift in Sources */,
+				4FB60AE252D814BF33CE7E3B /* SimplePlayEngine.swift in Sources */,
+				BE55F8313A67056BBD3656E7 /* Skew.swift in Sources */,
+				E4364362CEAE014204C1C39E /* String+Utils.swift in Sources */,
+				1DB5676BB90E266383EBCEFD /* StringHelpers.swift in Sources */,
+				D4250FB77CA4028CF4AF84F4 /* TypeAliases.swift in Sources */,
+				45D7ECC493BA2B9D6FD6341D /* UnlockStore.swift in Sources */,
+				55258F0A10CB071DFB208CC7 /* UserPresetStore.swift in Sources */,
+				8E934E0938C5CA9BC64A47F9 /* ViewControllerRepresentable.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		FC5B79CE2269D68077EEFD3E /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 10C1BF55513580A6F4B7568E /* JJMidnightExtension */;
+			targetProxy = 23C804EC05ECF84721BCB8C6 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin XCBuildConfiguration section */
+		1B0F59CE3BD4DA574747350E /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_STYLE = Automatic;
+				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEVELOPMENT_TEAM = C9LBGZNZ6P;
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				MARKETING_VERSION = 1.0.0;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = YES;
+				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				SWIFT_VERSION = 6.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+		254E5B628424FB554B038AD2 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_ENTITLEMENTS = JJMidnight/JJMidnight.entitlements;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				GENERATE_INFOPLIST_FILE = NO;
+				HEADER_SEARCH_PATHS = "$(SRCROOT)/JJMidnightExtension/DSP $(SRCROOT)/JJMidnightExtension/Parameters $(SRCROOT)/JJMidnightExtension/Common/DSP";
+				INFOPLIST_FILE = JJMidnight/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				OTHER_LDFLAGS = "-framework AudioToolbox -framework AVFoundation -framework CoreAudioKit";
+				PRODUCT_BUNDLE_IDENTIFIER = com.gerov.jjmidnight;
+				PRODUCT_NAME = "jj-midnight";
+				SDKROOT = iphoneos;
+				SWIFT_OBJC_BRIDGING_HEADER = "JJMidnight/Common/JJMidnightApp-Bridging-Header.h";
+				SWIFT_OBJC_INTEROP_MODE = objcxx;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				USER_HEADER_SEARCH_PATHS = "$(SRCROOT)/JJMidnightExtension/DSP $(SRCROOT)/JJMidnightExtension/Parameters $(SRCROOT)/JJMidnightExtension/Common/DSP";
+			};
+			name = Debug;
+		};
+		71D7CADD7CDF93FD8883BC25 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				APPLICATION_EXTENSION_API_ONLY = YES;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_ENTITLEMENTS = JJMidnightExtension/JJMidnightExtension.entitlements;
+				GENERATE_INFOPLIST_FILE = NO;
+				HEADER_SEARCH_PATHS = "$(SRCROOT)/JJMidnightExtension/DSP $(SRCROOT)/JJMidnightExtension/Parameters $(SRCROOT)/JJMidnightExtension/Common/DSP";
+				INFOPLIST_FILE = JJMidnightExtension/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
+				OTHER_LDFLAGS = "-framework AudioToolbox -framework AVFoundation -framework CoreAudioKit";
+				PRODUCT_BUNDLE_IDENTIFIER = com.gerov.jjmidnight.AUv3;
+				PRODUCT_MODULE_NAME = JJMidnightExtension;
+				PRODUCT_NAME = JJMidnightExtension;
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				SWIFT_OBJC_BRIDGING_HEADER = "JJMidnightExtension/Common/JJMidnight-Bridging-Header.h";
+				SWIFT_OBJC_INTEROP_MODE = objcxx;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				USER_HEADER_SEARCH_PATHS = "$(SRCROOT)/JJMidnightExtension/DSP $(SRCROOT)/JJMidnightExtension/Parameters $(SRCROOT)/JJMidnightExtension/Common/DSP";
+			};
+			name = Release;
+		};
+		8E3754E987A710011879CB45 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				APPLICATION_EXTENSION_API_ONLY = YES;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_ENTITLEMENTS = JJMidnightExtension/JJMidnightExtension.entitlements;
+				GENERATE_INFOPLIST_FILE = NO;
+				HEADER_SEARCH_PATHS = "$(SRCROOT)/JJMidnightExtension/DSP $(SRCROOT)/JJMidnightExtension/Parameters $(SRCROOT)/JJMidnightExtension/Common/DSP";
+				INFOPLIST_FILE = JJMidnightExtension/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
+				OTHER_LDFLAGS = "-framework AudioToolbox -framework AVFoundation -framework CoreAudioKit";
+				PRODUCT_BUNDLE_IDENTIFIER = com.gerov.jjmidnight.AUv3;
+				PRODUCT_MODULE_NAME = JJMidnightExtension;
+				PRODUCT_NAME = JJMidnightExtension;
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				SWIFT_OBJC_BRIDGING_HEADER = "JJMidnightExtension/Common/JJMidnight-Bridging-Header.h";
+				SWIFT_OBJC_INTEROP_MODE = objcxx;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				USER_HEADER_SEARCH_PATHS = "$(SRCROOT)/JJMidnightExtension/DSP $(SRCROOT)/JJMidnightExtension/Parameters $(SRCROOT)/JJMidnightExtension/Common/DSP";
+			};
+			name = Debug;
+		};
+		F1BE8607DACA0EFB58A32C9D /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_STYLE = Automatic;
+				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				DEVELOPMENT_TEAM = C9LBGZNZ6P;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"$(inherited)",
+					"DEBUG=1",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				MARKETING_VERSION = 1.0.0;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = YES;
+				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 6.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		FF6AA5A79A8670F030C55F7E /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_ENTITLEMENTS = JJMidnight/JJMidnight.entitlements;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				GENERATE_INFOPLIST_FILE = NO;
+				HEADER_SEARCH_PATHS = "$(SRCROOT)/JJMidnightExtension/DSP $(SRCROOT)/JJMidnightExtension/Parameters $(SRCROOT)/JJMidnightExtension/Common/DSP";
+				INFOPLIST_FILE = JJMidnight/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				OTHER_LDFLAGS = "-framework AudioToolbox -framework AVFoundation -framework CoreAudioKit";
+				PRODUCT_BUNDLE_IDENTIFIER = com.gerov.jjmidnight;
+				PRODUCT_NAME = "jj-midnight";
+				SDKROOT = iphoneos;
+				SWIFT_OBJC_BRIDGING_HEADER = "JJMidnight/Common/JJMidnightApp-Bridging-Header.h";
+				SWIFT_OBJC_INTEROP_MODE = objcxx;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				USER_HEADER_SEARCH_PATHS = "$(SRCROOT)/JJMidnightExtension/DSP $(SRCROOT)/JJMidnightExtension/Parameters $(SRCROOT)/JJMidnightExtension/Common/DSP";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		13D075147F233716577098C7 /* Build configuration list for PBXNativeTarget "JJMidnight" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				254E5B628424FB554B038AD2 /* Debug */,
+				FF6AA5A79A8670F030C55F7E /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		B0983D2EF13D998EF73CCFC7 /* Build configuration list for PBXNativeTarget "JJMidnightExtension" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				8E3754E987A710011879CB45 /* Debug */,
+				71D7CADD7CDF93FD8883BC25 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		D78120D2D8F709EEC7B80556 /* Build configuration list for PBXProject "JJMidnight" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				F1BE8607DACA0EFB58A32C9D /* Debug */,
+				1B0F59CE3BD4DA574747350E /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 33A34F17E60E347073B3F739 /* Project object */;
+}

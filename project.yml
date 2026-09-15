@@ -1,0 +1,128 @@
+name: JJMidnight
+options:
+  bundleIdPrefix: com.gerov
+  deploymentTarget:
+    iOS: "17.0"
+  createIntermediateGroups: true
+  groupSortPosition: top
+  xcodeVersion: "16.0"
+
+settings:
+  base:
+    SWIFT_VERSION: "6.0"
+    IPHONEOS_DEPLOYMENT_TARGET: "17.0"
+    CURRENT_PROJECT_VERSION: "1"
+    MARKETING_VERSION: "1.0.0"
+    DEVELOPMENT_TEAM: C9LBGZNZ6P
+    CODE_SIGN_STYLE: Automatic
+
+    # Supported Destinations. These four settings are exactly what Xcode's
+    # "Supported Destinations" editor writes, so they belong here and nowhere
+    # else: `xcodegen generate` rewrites project.pbxproj from this file, and
+    # anything set only in the Xcode GUI is gone at the next run.
+    #
+    # In `base` rather than per target on purpose. They were previously on the
+    # app alone, which left the appex either silent on them or disagreeing —
+    # and an extension whose supported destinations do not match its host app
+    # is a submission problem, not a cosmetic one.
+    TARGETED_DEVICE_FAMILY: "1,2"          # 1 = iPhone, 2 = iPad
+    SUPPORTS_MACCATALYST: NO
+    SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD: YES
+    SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD: NO
+
+targets:
+  JJMidnight:
+    type: application
+    platform: iOS
+    sources:
+      - path: JJMidnight
+      # Same DSP/AU/UI as the appex so the companion app can host in-process
+      # without waiting for iOS to register the extension (fails often on iPad).
+      - path: JJMidnightExtension/DSP
+      - path: JJMidnightExtension/Parameters
+      - path: JJMidnightExtension/UI
+      - path: JJMidnightExtension/Common/Audio Unit
+      - path: JJMidnightExtension/Common/DSP
+      - path: JJMidnightExtension/Common/Parameters
+      - path: JJMidnightExtension/Common/Utility
+      - path: JJMidnightExtension/Common/UI
+        excludes:
+          - AudioUnitViewController.swift
+      - path: loop/loop_1.mp3
+        type: file
+        buildPhase: resources
+      - path: loop/loop_2.mp3
+        type: file
+        buildPhase: resources
+      - path: loop/loop_3.mp3
+        type: file
+        buildPhase: resources
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.gerov.jjmidnight
+        PRODUCT_NAME: jj-midnight
+        INFOPLIST_FILE: JJMidnight/Info.plist
+        GENERATE_INFOPLIST_FILE: NO
+        CODE_SIGN_ENTITLEMENTS: JJMidnight/JJMidnight.entitlements
+        ASSETCATALOG_COMPILER_APPICON_NAME: AppIcon
+        ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME: AccentColor
+        LD_RUNPATH_SEARCH_PATHS: "$(inherited) @executable_path/Frameworks"
+        ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES: YES
+        SWIFT_OBJC_BRIDGING_HEADER: JJMidnight/Common/JJMidnightApp-Bridging-Header.h
+        CLANG_ENABLE_MODULES: YES
+        SWIFT_OBJC_INTEROP_MODE: objcxx
+        CLANG_CXX_LANGUAGE_STANDARD: gnu++20
+        CLANG_CXX_LIBRARY: libc++
+        HEADER_SEARCH_PATHS: "$(SRCROOT)/JJMidnightExtension/DSP $(SRCROOT)/JJMidnightExtension/Parameters $(SRCROOT)/JJMidnightExtension/Common/DSP"
+        USER_HEADER_SEARCH_PATHS: "$(SRCROOT)/JJMidnightExtension/DSP $(SRCROOT)/JJMidnightExtension/Parameters $(SRCROOT)/JJMidnightExtension/Common/DSP"
+        OTHER_LDFLAGS: "-framework AudioToolbox -framework AVFoundation -framework CoreAudioKit"
+    dependencies:
+      - target: JJMidnightExtension
+        embed: true
+        codeSign: true
+    scheme:
+      gatherCoverageData: false
+
+  JJMidnightExtension:
+    type: app-extension
+    platform: iOS
+    sources:
+      - path: JJMidnightExtension
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.gerov.jjmidnight.AUv3
+        PRODUCT_NAME: JJMidnightExtension
+        PRODUCT_MODULE_NAME: JJMidnightExtension
+        INFOPLIST_FILE: JJMidnightExtension/Info.plist
+        GENERATE_INFOPLIST_FILE: NO
+        CODE_SIGN_ENTITLEMENTS: JJMidnightExtension/JJMidnightExtension.entitlements
+        SWIFT_OBJC_BRIDGING_HEADER: JJMidnightExtension/Common/JJMidnight-Bridging-Header.h
+        SWIFT_OBJC_INTEROP_MODE: objcxx
+        CLANG_CXX_LANGUAGE_STANDARD: gnu++20
+        CLANG_CXX_LIBRARY: libc++
+        CLANG_ENABLE_MODULES: YES
+        APPLICATION_EXTENSION_API_ONLY: YES
+        SKIP_INSTALL: YES
+        LD_RUNPATH_SEARCH_PATHS: "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks"
+        HEADER_SEARCH_PATHS: "$(SRCROOT)/JJMidnightExtension/DSP $(SRCROOT)/JJMidnightExtension/Parameters $(SRCROOT)/JJMidnightExtension/Common/DSP"
+        USER_HEADER_SEARCH_PATHS: "$(SRCROOT)/JJMidnightExtension/DSP $(SRCROOT)/JJMidnightExtension/Parameters $(SRCROOT)/JJMidnightExtension/Common/DSP"
+        OTHER_LDFLAGS: "-framework AudioToolbox -framework AVFoundation -framework CoreAudioKit"
+
+schemes:
+  jj-midnight:
+    build:
+      targets:
+        JJMidnight: all
+        # Do not archive the appex as its own product — that becomes a
+        # generic archive and App Store Connect has no record for it.
+        JJMidnightExtension:
+          - run
+          - test
+          - profile
+          - analyze
+    run:
+      config: Debug
+      askForAppToLaunch: false
+      storeKitConfiguration: Configuration/Products.storekit
+    archive:
+      config: Release
