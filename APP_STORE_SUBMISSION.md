@@ -247,7 +247,7 @@ Order to upload them in — the first is the one shown in search results, so
 it is the whole panel:
 
 1. `01-panel` — the panel as it opens.
-2. `02-space-master` — Wobble, Space and the master strip. **iPhone only.**
+2. `02-wobble-space` — Wobble and Space. **iPhone only.** The master strip is at the top of the panel, so it is in shot 1.
    On an iPad the panel already fits on screen, so there is nothing to
    scroll to and the test skips the shot rather than shipping the same
    picture twice.

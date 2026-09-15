@@ -356,3 +356,179 @@ private final class OutputFollower: @unchecked Sendable {
                      clipped: now < clipUntil)
     }
 }
+
+// MARK: - Input level
+
+/// Input peak, post-trim, with the range the rest of the chain is calibrated
+/// for marked on the track.
+///
+/// Stacked directly above the output meter and drawn to the same width and
+/// the same scale, so the two bars can be read against each other: what
+/// arrived on top, what left underneath, and the gap between them is what the
+/// chain did. That comparison is the reason both use the same −54 dBFS floor
+/// and the same tick labels — a meter that agreed only approximately would be
+/// worse than one that plainly did not match.
+///
+/// The header's IN ladder cannot do this job. Ten segments over 48 dB is
+/// 4.8 dB each, so −14, −12 and −10 dBFS all light exactly seven — the whole
+/// useful target for the trim falls inside one segment, and a guitar arriving
+/// 20 dB too quiet still shows three lit lamps, which reads as "signal is
+/// there" rather than "nothing downstream will trigger".
+///
+/// So this one is numeric first. The bar is there to be glanced at while
+/// playing; the number is what you set the trim by, and the band drawn on the
+/// track is where the compressor threshold and the drive curve actually live.
+struct InputMeter: View {
+    let audioUnit: JJMidnightAudioUnit?
+
+    /// The window the chain is built around. Comp's make-up assumes a −10 dBFS
+    /// source, and the drive curve starts to bend in the same region; below
+    /// this the Comp knob is only make-up and the GR meter correctly reads
+    /// zero. Not a clip warning — the top of the band is nowhere near 0 dBFS.
+    private static let targetLowDb: Double = -15
+    private static let targetHighDb: Double = -8
+    /// Matches OutputMeter.floorDb. The two bars sit one above the other; if
+    /// their scales differed, the eye would compare them anyway and be wrong.
+    private static let floorDb: Double = -54
+
+    private func fill(_ db: Double) -> Double {
+        min(max((db - Self.floorDb) / -Self.floorDb, 0), 1)
+    }
+
+    var body: some View {
+        TimelineView(.animation) { context in
+            let peak = audioUnit?.takeInputPeak() ?? 0
+            let state = InputFollower.shared.tick(now: context.date, peak: peak)
+            content(state)
+        }
+        .accessibilityElement()
+        .accessibilityLabel("Input level")
+        .accessibilityValue(Self.readout(InputFollower.shared.lastHoldDb))
+    }
+
+    private static func readout(_ db: Double) -> String {
+        db > floorDb ? String(format: "%+.1f decibels full scale", db) : "no signal"
+    }
+
+    private func content(_ state: InputFollower.State) -> some View {
+        let theme = GearTheme.current
+        let verdict = Verdict(holdDb: state.holdDb)
+        return VStack(alignment: .leading, spacing: 3) {
+            HStack(spacing: 4) {
+                Text("INPUT")
+                    .font(.system(size: 8, weight: .heavy))
+                    .tracking(1.2)
+                    .foregroundStyle(theme.textLight.opacity(0.85))
+                    .shadow(color: .black.opacity(0.6), radius: 0, y: 0.5)
+                Spacer(minLength: 4)
+                Text(state.holdDb > Self.floorDb ? String(format: "%+.1f dB", state.holdDb) : "—")
+                    .font(.system(size: 9, weight: .semibold, design: .monospaced))
+                    .foregroundStyle(verdict.colour(theme))
+                    .shadow(color: verdict.colour(theme).opacity(0.7), radius: 2)
+                    .monospacedDigit()
+            }
+
+            BarScale(labels: [(-48, "-48"), (-36, "-36"), (-24, "-24"),
+                              (-12, "-12"), (-6, "-6"), (0, "0")],
+                     fraction: { self.fill($0) },
+                     theme: theme)
+
+            GeometryReader { geo in
+                ZStack(alignment: .leading) {
+                    BarTrack(theme: theme)
+
+                    // The target band, painted into the slot rather than
+                    // printed above it: it has to stay readable next to the
+                    // fill, and at this width there is no room for a scale.
+                    Rectangle()
+                        .fill(theme.meterGreen.opacity(0.18))
+                        .frame(width: geo.size.width * (fill(Self.targetHighDb) - fill(Self.targetLowDb)))
+                        .offset(x: geo.size.width * fill(Self.targetLowDb))
+                        .padding(.vertical, 1.5)
+
+                    LinearGradient(colors: [theme.meterGreen, theme.meterGreen, theme.meterAmber],
+                                   startPoint: .leading, endPoint: .trailing)
+                        .mask(alignment: .leading) {
+                            RoundedRectangle(cornerRadius: 1.5)
+                                .frame(width: geo.size.width * fill(state.db))
+                        }
+                        .padding(1.5)
+
+                    if state.holdDb > Self.floorDb {
+                        Rectangle()
+                            .fill(theme.metalLight.opacity(0.9))
+                            .frame(width: 1.5)
+                            .offset(x: min(geo.size.width - 2.5,
+                                           max(1, geo.size.width * fill(state.holdDb) - 0.75)))
+                    }
+                }
+            }
+            .frame(height: 10)
+        }
+    }
+
+    /// Where the peak hold sits relative to the band, as a colour. Three
+    /// states and no text: the number is already there to be read, and a word
+    /// that changed while playing would pull the eye off the part.
+    private enum Verdict {
+        case low, good, hot
+
+        init(holdDb: Double) {
+            if holdDb < InputMeter.targetLowDb { self = .low }
+            else if holdDb > InputMeter.targetHighDb { self = .hot }
+            else { self = .good }
+        }
+
+        func colour(_ theme: GearPalette) -> Color {
+            switch self {
+            case .low: return theme.textMuted
+            case .good: return theme.meterGreen
+            case .hot: return theme.meterAmber
+            }
+        }
+    }
+}
+
+/// Mono peak ballistics for the input: instant rise, timed fall, 1.5 s hold —
+/// the same programme-meter behaviour as the output pair, which is what lets
+/// the two readouts be compared directly.
+private final class InputFollower: @unchecked Sendable {
+    struct State {
+        var db: Double
+        var holdDb: Double
+    }
+
+    static let shared = InputFollower()
+
+    private var level: Double = -120
+    private var hold: Double = -120
+    private var holdUntil: Date = .distantPast
+    private var lastDate: Date?
+
+    private let fallDbPerSecond: Double = 20
+    private let holdSeconds: Double = 1.5
+
+    /// For the accessibility value, which is read outside the timeline tick
+    /// and must not consume a peak.
+    var lastHoldDb: Double { hold }
+
+    func tick(now: Date, peak: Float) -> State {
+        let dt: Double
+        if let lastDate {
+            dt = min(max(now.timeIntervalSince(lastDate), 0), 1.0 / 10.0)
+        } else {
+            dt = 1.0 / 60.0
+        }
+        lastDate = now
+
+        let db = peak > 0 ? 20 * log10(Double(peak)) : -120
+        level = max(level - fallDbPerSecond * dt, db)
+
+        if level > hold || now > holdUntil {
+            hold = now > holdUntil ? level : max(hold, level)
+            holdUntil = now.addingTimeInterval(holdSeconds)
+        }
+
+        return State(db: level, holdDb: hold)
+    }
+}

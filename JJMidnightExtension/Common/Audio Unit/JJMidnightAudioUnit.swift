@@ -364,6 +364,15 @@ public class JJMidnightAudioUnit: AUAudioUnit, @unchecked Sendable {
         return (input, output)
     }
 
+    /// Input peak since the last call, then reset. Separate from
+    /// `takeMeterPeaks` for the same reason as the output pair: reading
+    /// clears, so two consumers of one accumulator see half the signal each.
+    func takeInputPeak() -> Float {
+        var peak: Float = 0
+        kernel.readInputPeak(&peak)
+        return peak
+    }
+
     /// Left and right output peaks since the last call, then reset. Separate
     /// from `takeMeterPeaks` so the header ladders and the master strip's
     /// stereo bars do not consume each other's readings.

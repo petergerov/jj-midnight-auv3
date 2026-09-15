@@ -324,6 +324,19 @@ public:
         capturePeaks(peakIn, peakOutL, peakOutR);
     }
 
+    /// Input peak since the last read, then reset. A second accumulator
+    /// rather than a second reader of mPeakIn: reading clears, so the header
+    /// ladder and the master strip's input meter would otherwise take turns
+    /// seeing silence. Post-trim, because the trim is what it is there to set.
+    void readInputPeak(float* peak)
+    {
+        if (peak)
+        {
+            *peak = mPeakInTrim;
+            mPeakInTrim = 0.f;
+        }
+    }
+
     /// Left and right output peaks since the last read, then reset. Separate
     /// from readPeaks so the header ladders and the master bars can each
     /// consume at their own rate without starving the other.
@@ -462,6 +475,7 @@ private:
     float mMasterInput = 0.0f;
 
     float mPeakIn = 0.f;
+    float mPeakInTrim = 0.f;
     float mPeakOut = 0.f;
     // Kept per channel as well as summed: the header's IN/OUT ladders want one
     // number, the master strip's stereo bars want two.
@@ -473,6 +487,8 @@ private:
     {
         if (inPeak > mPeakIn)
             mPeakIn = inPeak;
+        if (inPeak > mPeakInTrim)
+            mPeakInTrim = inPeak;
         const float outPeak = std::max(outPeakL, outPeakR);
         if (outPeak > mPeakOut)
             mPeakOut = outPeak;

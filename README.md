@@ -13,7 +13,7 @@ whose AU scaffolding and panel UI this reuses.
 Four macro blocks in signal order, each with its own on/off, plus a master strip:
 
 ```
-In → [COMP] → [DRIVE → cab] → [WOBBLE] → [SPACE: slap + spring] → Mix → Out
+In → trim → [COMP] → [DRIVE → cab] → [WOBBLE] → [SPACE: slap + spring] → Mix → Out
 ```
 
 - **COMP** — optical compressor with program-dependent release. One knob for
@@ -24,6 +24,10 @@ In → [COMP] → [DRIVE → cab] → [WOBBLE] → [SPACE: slap + spring] → Mi
 - **WOBBLE** — amp-style amplitude tremolo, LFO morphing from sine to chop.
 - **SPACE** — one slapback repeat (no feedback) into a spring tank with
   dispersion allpasses for the chirp.
+
+The master strip sits above the four blocks, not below them: its Input trim is
+the first thing to set, because every threshold downstream is an absolute
+dBFS number and a guitar into an interface arrives 15–20 dB below them.
 
 **AU identity:** type `aufx`, subtype `Jjm1`, manufacturer `Grov` — listed in
 hosts as **jj-midnight** (Gerov).

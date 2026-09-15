@@ -76,7 +76,7 @@ PY
 # label and trial banner (≈700 px), and the transport bar at the foot
 # (≈300 px).
 crop "$STORE/iphone-6.9/01-panel.png"        "$OUT/panel-iphone.jpg"   0.245 0.105
-crop "$STORE/iphone-6.9/02-space-master.png" "$OUT/panel-iphone-2.jpg" 0.245 0.105
+crop "$STORE/iphone-6.9/02-wobble-space.png" "$OUT/panel-iphone-2.jpg" 0.245 0.105
 
 # iPad: 2064x2752 portrait. Much more to cut here than on the phone — the
 # panel is wide and short, so a portrait window centres it with bare chassis
