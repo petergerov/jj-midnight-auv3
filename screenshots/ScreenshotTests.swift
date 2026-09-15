@@ -75,7 +75,7 @@ final class ScreenshotTests: XCTestCase {
     func testSpaceAndMaster() {
         // Drag the rack ear, not the middle of the panel. The scroll view is
         // full width and the knobs inside it read a vertical drag as a value
-        // change, so a centred swipe sets Tone to 8 kHz instead of scrolling.
+        // change, so a centred swipe sets Tone to 10 kHz instead of scrolling.
         // The ear is 18 pt of empty chassis with nothing on it.
         let earX = 0.035
         let header = app.buttons["Preset"]

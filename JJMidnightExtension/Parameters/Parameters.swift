@@ -39,7 +39,7 @@ let JJMidnightParameterSpecs = ParameterTreeSpec {
         ParameterSpec(address: .driveAmount, identifier: "driveAmount", name: "Drive",
                       units: .percent, valueRange: 0.0...100.0, defaultValue: 30.0, unitName: "%")
         ParameterSpec(address: .driveTone, identifier: "driveTone", name: "Tone",
-                      units: .hertz, valueRange: 800.0...8_000.0, defaultValue: 3_000.0, unitName: "Hz")
+                      units: .hertz, valueRange: 800.0...10_000.0, defaultValue: 3_000.0, unitName: "Hz")
         ParameterSpec(address: .driveCab, identifier: "driveCab", name: "Mic",
                       units: .percent, valueRange: 0.0...100.0, defaultValue: 50.0, unitName: "%")
         ParameterSpec(address: .driveOn, identifier: "driveOn", name: "Drive On",
