@@ -12,22 +12,25 @@ private let log = Logger(subsystem: "com.gerov.jjmidnight", category: "PlayEngin
 @Observable
 public class SimplePlayEngine {
     enum Source: String, CaseIterable, Identifiable {
-        // Segmented-picker labels. Four segments on a phone leave about 80 pt
-        // each, so the guitar parts are bare numbers — "Guitar 1" truncates at
-        // that width. `spokenName` carries what the numbers drop, so nothing
-        // is lost to a screen reader.
-        case loop1 = "1"
-        case loop2 = "2"
-        case loop3 = "3"
+        // Segmented-picker labels. The guitar parts are bare numbers —
+        // "Guitar 1" truncates in a segment this narrow even now that there
+        // are three of them rather than four. `spokenName` carries what the
+        // numbers drop, so nothing is lost to a screen reader.
+        //
+        // The case names are positional, not file names: part one is
+        // `loop_3.mp3`, part two is `loop_1.mp3`. The picker opens on part
+        // one, so the take that shows the whole chain off best is the one
+        // playing before the user touches anything.
+        case partOne = "1"
+        case partTwo = "2"
         case microphone = "Mic"
         var id: String { rawValue }
 
         /// Bundle resource holding this source's audio, or nil for live input.
         var resourceName: String? {
             switch self {
-            case .loop1: return "loop_1"
-            case .loop2: return "loop_2"
-            case .loop3: return "loop_3"
+            case .partOne: return "loop_3"
+            case .partTwo: return "loop_1"
             case .microphone: return nil
             }
         }
@@ -37,9 +40,8 @@ public class SimplePlayEngine {
         /// What the visual label would say if there were room for it.
         var spokenName: String {
             switch self {
-            case .loop1: return "Guitar part 1"
-            case .loop2: return "Guitar part 2"
-            case .loop3: return "Guitar part 3"
+            case .partOne: return "Guitar part 1"
+            case .partTwo: return "Guitar part 2"
             case .microphone: return "Microphone"
             }
         }
@@ -56,16 +58,16 @@ public class SimplePlayEngine {
     private var graphFormat: AVAudioFormat
     private(set) var isPlaying = false
     private(set) var lastError: String?
-    var source: Source = .loop1
+    var source: Source = .partOne
 
     public init() {
         // Preload the first part only, so `graphFormat` starts out matching
         // real audio and the first tap on Play does not have to decode.
         graphFormat = AVAudioFormat(standardFormatWithSampleRate: 44_100, channels: 2)!
-        if let buffer = loadDemoBuffer(for: .loop1) {
+        if let buffer = loadDemoBuffer(for: .partOne) {
             graphFormat = buffer.format
         } else {
-            log.error("Demo part missing: loop_1.mp3 is not in the app bundle")
+            log.error("Demo part missing: loop_3.mp3 is not in the app bundle")
         }
     }
 
@@ -180,7 +182,7 @@ public class SimplePlayEngine {
         guard startEngine(engine) else { return }
 
         switch source {
-        case .loop1, .loop2, .loop3:
+        case .partOne, .partTwo:
             player.stop()
             if let demoBuffer = partBuffer {
                 // Non-async overload: for a looping buffer the completion callback
@@ -254,7 +256,7 @@ public class SimplePlayEngine {
         }
 
         switch source {
-        case .loop1, .loop2, .loop3:
+        case .partOne, .partTwo:
             engine.connect(player, to: avAudioUnit, format: graphFormat)
             engine.connect(avAudioUnit, to: mixer, format: graphFormat)
             engine.connect(mixer, to: output, format: ioFormat)
@@ -330,7 +332,7 @@ public class SimplePlayEngine {
         let session = AVAudioSession.sharedInstance()
         do {
             switch source {
-            case .loop1, .loop2, .loop3:
+            case .partOne, .partTwo:
                 try session.setCategory(.playback, mode: .default, options: [.mixWithOthers])
             case .microphone:
                 try session.setCategory(.playAndRecord, mode: .default, options: [.defaultToSpeaker, .mixWithOthers])

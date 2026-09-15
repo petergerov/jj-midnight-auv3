@@ -10,13 +10,27 @@
             buildForTesting = "YES"
             buildForRunning = "YES"
             buildForProfiling = "YES"
-            buildForArchiving = "YES"
-            buildForAnalyzing = "YES">
+            buildForArchiving = "NO"
+            buildForAnalyzing = "NO">
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "5ADA559D3EF472A9CDF77ED0"
                BuildableName = "jj-midnight.app"
                BlueprintName = "JJMidnight"
+               ReferencedContainer = "container:JJMidnight.xcodeproj">
+            </BuildableReference>
+         </BuildActionEntry>
+         <BuildActionEntry
+            buildForTesting = "YES"
+            buildForRunning = "NO"
+            buildForProfiling = "NO"
+            buildForArchiving = "NO"
+            buildForAnalyzing = "NO">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "141FC48DB876CE852DB5826C"
+               BuildableName = "JJMidnightScreenshots.xctest"
+               BlueprintName = "JJMidnightScreenshots"
                ReferencedContainer = "container:JJMidnight.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
@@ -37,6 +51,16 @@
          </BuildableReference>
       </MacroExpansion>
       <Testables>
+         <TestableReference
+            skipped = "NO">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "141FC48DB876CE852DB5826C"
+               BuildableName = "JJMidnightScreenshots.xctest"
+               BlueprintName = "JJMidnightScreenshots"
+               ReferencedContainer = "container:JJMidnight.xcodeproj">
+            </BuildableReference>
+         </TestableReference>
       </Testables>
    </TestAction>
    <LaunchAction
@@ -59,6 +83,9 @@
             ReferencedContainer = "container:JJMidnight.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
+      <StoreKitConfigurationFileReference
+         identifier = "../../Configuration/Products.storekit">
+      </StoreKitConfigurationFileReference>
    </LaunchAction>
    <ProfileAction
       buildConfiguration = "Release"

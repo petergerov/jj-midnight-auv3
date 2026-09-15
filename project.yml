@@ -48,13 +48,12 @@ targets:
       - path: JJMidnightExtension/Common/UI
         excludes:
           - AudioUnitViewController.swift
-      - path: loop/loop_1.mp3
-        type: file
-        buildPhase: resources
-      - path: loop/loop_2.mp3
-        type: file
-        buildPhase: resources
+      # The two demo parts, in picker order: loop_3 is segment 1, loop_1 is
+      # segment 2. See SimplePlayEngine.Source.
       - path: loop/loop_3.mp3
+        type: file
+        buildPhase: resources
+      - path: loop/loop_1.mp3
         type: file
         buildPhase: resources
     settings:
@@ -108,6 +107,23 @@ targets:
         USER_HEADER_SEARCH_PATHS: "$(SRCROOT)/JJMidnightExtension/DSP $(SRCROOT)/JJMidnightExtension/Parameters $(SRCROOT)/JJMidnightExtension/Common/DSP"
         OTHER_LDFLAGS: "-framework AudioToolbox -framework AVFoundation -framework CoreAudioKit"
 
+  # Asset generator, not a test suite. It drives the container app and
+  # attaches the marketing screenshots; `screenshots/make-screenshots.sh`
+  # runs it and unpacks the result bundle. Deliberately kept out of the
+  # `jj-midnight` scheme so a normal build or archive never waits on it.
+  JJMidnightScreenshots:
+    type: bundle.ui-testing
+    platform: iOS
+    sources:
+      - path: screenshots/ScreenshotTests.swift
+    dependencies:
+      - target: JJMidnight
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.gerov.jjmidnight.screenshots
+        GENERATE_INFOPLIST_FILE: YES
+        TEST_TARGET_NAME: JJMidnight
+
 schemes:
   jj-midnight:
     build:
@@ -126,3 +142,19 @@ schemes:
       storeKitConfiguration: Configuration/Products.storekit
     archive:
       config: Release
+
+  screenshots:
+    build:
+      targets:
+        JJMidnight: [run, test]
+        JJMidnightScreenshots: [test]
+    test:
+      config: Debug
+      targets:
+        - JJMidnightScreenshots
+      # Without this the paywall shot is a spinner: StoreKit has no products
+      # to price outside a configured environment.
+      storeKitConfiguration: Configuration/Products.storekit
+    run:
+      config: Debug
+      storeKitConfiguration: Configuration/Products.storekit

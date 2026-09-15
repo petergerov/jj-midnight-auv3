@@ -38,7 +38,6 @@
 		7CF2FAA839194911A95A09A4 /* ExceptionCatcher.m in Sources */ = {isa = PBXBuildFile; fileRef = 66581276716A063CEE970EB2 /* ExceptionCatcher.m */; };
 		889F228821E9F316AAD9E663 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A592F19AB3B83FD063066F18 /* Assets.xcassets */; };
 		8E934E0938C5CA9BC64A47F9 /* ViewControllerRepresentable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C0CE617C25505657EE595C3 /* ViewControllerRepresentable.swift */; };
-		9C3484ACE0CA85648F132D6B /* loop_2.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 52073B5EFA04A4383A988A1F /* loop_2.mp3 */; };
 		A0D1993839247B20D9C6CA38 /* ParameterSpecBase.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8EF3FF8DEF068283125DFF5 /* ParameterSpecBase.swift */; };
 		A20C64EFA26CA2AB5038BB74 /* AudioUnitHostModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 974EFE1DCBA90C11FCB1FFC9 /* AudioUnitHostModel.swift */; };
 		A3729E651AF5FB31D8643C01 /* PurchaseProducts.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8ACB4C3169AE03120AF160C1 /* PurchaseProducts.swift */; };
@@ -60,6 +59,7 @@
 		D4250FB77CA4028CF4AF84F4 /* TypeAliases.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1DDBE24AA2523EA586EE81F4 /* TypeAliases.swift */; };
 		D514542733EF027C898D2D2D /* Presets.swift in Sources */ = {isa = PBXBuildFile; fileRef = B38B00B38BB7BBD20111D31E /* Presets.swift */; };
 		D7502A8E8F3640661941F857 /* JJMidnightMainView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F384477D6732F8A0394AB98 /* JJMidnightMainView.swift */; };
+		D87D7EB69F56F01BF7341272 /* ScreenshotTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFB0C409A34EFB8B4FAD09E6 /* ScreenshotTests.swift */; };
 		E4364362CEAE014204C1C39E /* String+Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4280A8DCF1EACA529C51511 /* String+Utils.swift */; };
 		E6ABC7097C31B671308E0C5C /* PresetBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B6FB3DC8022C8A3B8397B48 /* PresetBar.swift */; };
 		ED13C8752F1FD39841668EE2 /* JJMidnightAudioUnit.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96382907F2BC6933B6239EC7 /* JJMidnightAudioUnit.swift */; };
@@ -67,6 +67,13 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
+		0FA8179E29E24E9517C1FD72 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 33A34F17E60E347073B3F739 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 5ADA559D3EF472A9CDF77ED0;
+			remoteInfo = JJMidnight;
+		};
 		23C804EC05ECF84721BCB8C6 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 33A34F17E60E347073B3F739 /* Project object */;
@@ -93,6 +100,7 @@
 /* Begin PBXFileReference section */
 		00E86C2CF2BD6ACC0732BF79 /* ExceptionCatcher.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ExceptionCatcher.h; sourceTree = "<group>"; };
 		071CDEF1A22058A39564C6CF /* JJMidnightBufferedAudioBus.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = JJMidnightBufferedAudioBus.hpp; sourceTree = "<group>"; };
+		191D538C85F48587B814F463 /* JJMidnightScreenshots.xctest */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.cfbundle; path = JJMidnightScreenshots.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		1DDBE24AA2523EA586EE81F4 /* TypeAliases.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TypeAliases.swift; sourceTree = "<group>"; };
 		218BC82B81995EA75ABB29CA /* AudioUnitViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioUnitViewController.swift; sourceTree = "<group>"; };
 		27802A7EA1416B24EC2BD222 /* loop_3.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = loop_3.mp3; sourceTree = "<group>"; };
@@ -103,7 +111,6 @@
 		46D6748D1447689C344F9971 /* StringHelpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StringHelpers.swift; sourceTree = "<group>"; };
 		4D037E7C3F0ABC5C5161C3C9 /* Meters.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Meters.swift; sourceTree = "<group>"; };
 		4DA6E1CCAD9A869E4EC4D16E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
-		52073B5EFA04A4383A988A1F /* loop_2.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = loop_2.mp3; sourceTree = "<group>"; };
 		522A2AEE854E07F29FD43372 /* RackPanel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RackPanel.swift; sourceTree = "<group>"; };
 		571D79333EE20F5FFD13E355 /* JJMidnightExtension.appex */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = "wrapper.app-extension"; path = JJMidnightExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		6623B356928CF0A93CAD7866 /* DSPCommon.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DSPCommon.h; sourceTree = "<group>"; };
@@ -135,6 +142,7 @@
 		BB4F3ED7A5D41F302A58A018 /* ModulatedDelay.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ModulatedDelay.h; sourceTree = "<group>"; };
 		C348CD1BA81DE75E5EB5ED04 /* JJMidnightApp-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "JJMidnightApp-Bridging-Header.h"; sourceTree = "<group>"; };
 		CA8A8868124E1A1FA1667D6D /* JJMidnightParameterAddresses.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = JJMidnightParameterAddresses.h; sourceTree = "<group>"; };
+		CFB0C409A34EFB8B4FAD09E6 /* ScreenshotTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScreenshotTests.swift; sourceTree = "<group>"; };
 		D3044E873C361A280158C791 /* SimplePlayEngine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SimplePlayEngine.swift; sourceTree = "<group>"; };
 		D56CECE720EC1987F96EBDDF /* JJMidnightExtension.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = JJMidnightExtension.entitlements; sourceTree = "<group>"; };
 		D5BC1113C6FE422BD875546D /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -173,8 +181,17 @@
 				F8A441762B398827DD000EFE /* JJMidnight */,
 				D7151A7759ABD0FDC15437F1 /* JJMidnightExtension */,
 				5C4C2F5840E6B8C807B01D12 /* loop */,
+				31244059377BC41F676FA7EC /* screenshots */,
 				E9CEB8206E41012646B765B6 /* Products */,
 			);
+			sourceTree = "<group>";
+		};
+		31244059377BC41F676FA7EC /* screenshots */ = {
+			isa = PBXGroup;
+			children = (
+				CFB0C409A34EFB8B4FAD09E6 /* ScreenshotTests.swift */,
+			);
+			path = screenshots;
 			sourceTree = "<group>";
 		};
 		43865318044C80F1A313485C /* UI */ = {
@@ -207,7 +224,6 @@
 			isa = PBXGroup;
 			children = (
 				80DA7A44A4791AF1554CA881 /* loop_1.mp3 */,
-				52073B5EFA04A4383A988A1F /* loop_2.mp3 */,
 				27802A7EA1416B24EC2BD222 /* loop_3.mp3 */,
 			);
 			path = loop;
@@ -301,6 +317,7 @@
 			children = (
 				A4743220A41A2135BD8742BA /* JJMidnight.app */,
 				571D79333EE20F5FFD13E355 /* JJMidnightExtension.appex */,
+				191D538C85F48587B814F463 /* JJMidnightScreenshots.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -352,6 +369,24 @@
 			productReference = 571D79333EE20F5FFD13E355 /* JJMidnightExtension.appex */;
 			productType = "com.apple.product-type.app-extension";
 		};
+		141FC48DB876CE852DB5826C /* JJMidnightScreenshots */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 137E9FFEA338E7E08F76CC05 /* Build configuration list for PBXNativeTarget "JJMidnightScreenshots" */;
+			buildPhases = (
+				20CA6A015DE9E473FECBD857 /* Sources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				96B841B035A0032CDE93CA08 /* PBXTargetDependency */,
+			);
+			name = JJMidnightScreenshots;
+			packageProductDependencies = (
+			);
+			productName = JJMidnightScreenshots;
+			productReference = 191D538C85F48587B814F463 /* JJMidnightScreenshots.xctest */;
+			productType = "com.apple.product-type.bundle.ui-testing";
+		};
 		5ADA559D3EF472A9CDF77ED0 /* JJMidnight */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 13D075147F233716577098C7 /* Build configuration list for PBXNativeTarget "JJMidnight" */;
@@ -385,6 +420,11 @@
 						DevelopmentTeam = C9LBGZNZ6P;
 						ProvisioningStyle = Automatic;
 					};
+					141FC48DB876CE852DB5826C = {
+						DevelopmentTeam = C9LBGZNZ6P;
+						ProvisioningStyle = Automatic;
+						TestTargetID = 5ADA559D3EF472A9CDF77ED0;
+					};
 					5ADA559D3EF472A9CDF77ED0 = {
 						DevelopmentTeam = C9LBGZNZ6P;
 						ProvisioningStyle = Automatic;
@@ -407,6 +447,7 @@
 			targets = (
 				5ADA559D3EF472A9CDF77ED0 /* JJMidnight */,
 				10C1BF55513580A6F4B7568E /* JJMidnightExtension */,
+				141FC48DB876CE852DB5826C /* JJMidnightScreenshots */,
 			);
 		};
 /* End PBXProject section */
@@ -418,7 +459,6 @@
 			files = (
 				889F228821E9F316AAD9E663 /* Assets.xcassets in Resources */,
 				ACA5755D535E60D462D4A7F1 /* loop_1.mp3 in Resources */,
-				9C3484ACE0CA85648F132D6B /* loop_2.mp3 in Resources */,
 				0DBF2CBE505B85436F6DAD20 /* loop_3.mp3 in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -426,6 +466,14 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
+		20CA6A015DE9E473FECBD857 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				D87D7EB69F56F01BF7341272 /* ScreenshotTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		EB85326432F9D8A0500C3BB9 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -495,6 +543,11 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
+		96B841B035A0032CDE93CA08 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 5ADA559D3EF472A9CDF77ED0 /* JJMidnight */;
+			targetProxy = 0FA8179E29E24E9517C1FD72 /* PBXContainerItemProxy */;
+		};
 		FC5B79CE2269D68077EEFD3E /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = 10C1BF55513580A6F4B7568E /* JJMidnightExtension */;
@@ -593,6 +646,23 @@
 			};
 			name = Debug;
 		};
+		50F262111D600B2B5836C094 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				GENERATE_INFOPLIST_FILE = YES;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.gerov.jjmidnight.screenshots;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = JJMidnight;
+			};
+			name = Release;
+		};
 		71D7CADD7CDF93FD8883BC25 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -640,6 +710,23 @@
 				SWIFT_OBJC_INTEROP_MODE = objcxx;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				USER_HEADER_SEARCH_PATHS = "$(SRCROOT)/JJMidnightExtension/DSP $(SRCROOT)/JJMidnightExtension/Parameters $(SRCROOT)/JJMidnightExtension/Common/DSP";
+			};
+			name = Debug;
+		};
+		D11BEDED21D04A30C2BD04CD /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				GENERATE_INFOPLIST_FILE = YES;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.gerov.jjmidnight.screenshots;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = JJMidnight;
 			};
 			name = Debug;
 		};
@@ -743,6 +830,15 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		137E9FFEA338E7E08F76CC05 /* Build configuration list for PBXNativeTarget "JJMidnightScreenshots" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				D11BEDED21D04A30C2BD04CD /* Debug */,
+				50F262111D600B2B5836C094 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
 		13D075147F233716577098C7 /* Build configuration list for PBXNativeTarget "JJMidnight" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (

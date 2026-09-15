@@ -113,7 +113,7 @@ enum FactoryPresets {
         // The rolling boogie shuffle: brighter, bouncier, barely any
         // breakup, mic close to the dust cap. Tremolo quick enough to sit
         // with the shuffle rather than sway against it.
-        FactoryPreset(number: 10, name: "Call Me The Breeze",
+        FactoryPreset(number: 10, name: "Breeze",
                       compAmount: 58, compAttack: 30, compRelease: 120,
                       driveAmount: 22, driveTone: 3800, driveCab: 40,
                       wobbleRate: 6.8, wobbleDepth: 30, wobbleShape: 20, wobbleDivision: 4,
@@ -123,7 +123,7 @@ enum FactoryPresets {
 
         // Clean and funky with the tremolo well forward — the one preset
         // here where Wobble is the loudest thing in the chain.
-        FactoryPreset(number: 11, name: "After Midnight",
+        FactoryPreset(number: 11, name: "Midnight",
                       compAmount: 64, compAttack: 26, compRelease: 150,
                       driveAmount: 16, driveTone: 3400, driveCab: 45,
                       wobbleRate: 5.8, wobbleDepth: 52, wobbleShape: 45, wobbleDivision: 4,
