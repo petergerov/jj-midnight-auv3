@@ -38,7 +38,38 @@ crop () {
        --setProperty format jpeg \
        --setProperty formatOptions "$quality" \
        --out "$dst" >/dev/null
+  strip_exif "$dst"
   echo "   $(basename "$dst")  $(sips -g pixelWidth -g pixelHeight "$dst" | awk '/pixel/{printf "%s ", $2}')"
+}
+
+# Removes the Exif segment from a JPEG.
+#
+# sips writes one even when the source PNG has none, and on the landscape
+# iPad frames it writes orientation 8 — "rotate 90" — onto pixels that are
+# already the right way up. Browsers honour that tag, so the panel arrives on
+# the site lying on its side. The pixels are correct; only the metadata lies,
+# so the whole segment goes.
+strip_exif () {
+  python3 - "$1" <<'PY'
+import struct, sys
+
+path = sys.argv[1]
+d = open(path, "rb").read()
+out, i = bytearray(d[:2]), 2
+while i < len(d):
+    if d[i] != 0xFF:
+        out += d[i:]
+        break
+    marker = d[i + 1]
+    if marker == 0xDA:          # start of scan — the rest is entropy-coded
+        out += d[i:]
+        break
+    length = struct.unpack(">H", d[i + 2:i + 4])[0]
+    if not (marker == 0xE1 and d[i + 4:i + 10] == b"Exif\x00\x00"):
+        out += d[i:i + 2 + length]
+    i += 2 + length
+open(path, "wb").write(bytes(out))
+PY
 }
 
 # iPhone: 1320x2868. Chrome is the status bar plus the "Standalone player"
@@ -46,20 +77,21 @@ crop () {
 # (≈300 px).
 crop "$STORE/iphone-6.9/01-panel.png"        "$OUT/panel-iphone.jpg"   0.245 0.105
 crop "$STORE/iphone-6.9/02-space-master.png" "$OUT/panel-iphone-2.jpg" 0.245 0.105
-crop "$STORE/iphone-6.9/03-presets.png"      "$OUT/presets-iphone.jpg" 0.245 0.105
 
-# iPad: 2752x2064 landscape. The same chrome is a much smaller fraction of a
-# shorter frame.
-crop "$STORE/ipad-13/01-panel.png"           "$OUT/panel-ipad.jpg"     0.165 0.105
-crop "$STORE/ipad-13/03-presets.png"         "$OUT/presets-ipad.jpg"   0.165 0.105
+# iPad: 2064x2752 portrait. Much more to cut here than on the phone — the
+# panel is wide and short, so a portrait window centres it with bare chassis
+# above and below, and the site wants the panel rather than the furniture.
+crop "$STORE/ipad-13/01-panel.png"           "$OUT/panel-ipad.jpg"     0.285 0.320
+crop "$STORE/ipad-13/03-presets.png"         "$OUT/presets-ipad.jpg"   0.285 0.100
 
 # One close-up for the site's detail slot: Comp and Drive off the iPad panel
 # — the gain-reduction meter, and enough brass and bakelite to show how the
 # thing is drawn.
 if [ -f "$STORE/ipad-13/01-panel.png" ]; then
-  sips --cropToHeightWidth 760 1120 --cropOffset 700 150 \
+  sips --cropToHeightWidth 620 1000 --cropOffset 960 60 \
        "$STORE/ipad-13/01-panel.png" \
        --setProperty format jpeg --setProperty formatOptions 80 \
        --out "$OUT/detail-comp.jpg" >/dev/null
-  echo "   detail-comp.jpg  1120 760"
+  strip_exif "$OUT/detail-comp.jpg"
+  echo "   detail-comp.jpg  1000 620"
 fi

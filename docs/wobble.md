@@ -47,7 +47,7 @@ Factory presets all ship with SYNC **off**. A synced tremolo changes speed with 
 ## How to use it
 
 - **A shimmer under everything** — Rate 4–5 Hz, Depth 25–30 %, Shape low. **Laid Back**.
-- **The effect out front** — Depth 50–70 %, Shape 45 %+. **After Midnight**, **Whisper Trem**.
+- **The effect out front** — Depth 50–70 %, Shape 45 %+. **Midnight**, **Whisper Trem**.
 - **Tape warble** — Rate down near 1.8 Hz, Depth 40 %, Shape 0. **Cassette**.
 - **Off** — some of the best settings here have no tremolo at all. **Night Drive**.
 

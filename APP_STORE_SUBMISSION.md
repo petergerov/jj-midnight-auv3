@@ -23,9 +23,9 @@ and are worth restating before anything gets pasted:
 | Binary | Builds and runs. Not archived or uploaded yet. |
 | App Store Connect record | **Not created.** |
 | IAP record | **Not created.** Must ship attached to v1.0.0. |
-| Screenshots | iPhone 6.9" done. iPad 13" needs one re-run — see below. |
+| Screenshots | Generated and verified, iPhone and iPad. |
 | Copy | Drafted here, not entered. |
-| Privacy policy | Live at `docs/privacy.html`, one stale sentence to fix. |
+| Privacy policy | Live at `docs/privacy.html` and current. |
 | Repo/Pages rename | **Outstanding** — every `jj-midnight` URL 404s until done. |
 
 The repository rename is the one that blocks the others: the support and
@@ -175,10 +175,11 @@ All three are dead until the repository is renamed from `jj-tulsa`. GitHub
 redirects the old URLs afterwards, so the rename is safe to do late — but it
 has to happen before these are entered.
 
-`docs/privacy.html` also still says the app bundles **three** guitar parts.
-It bundles two. Fix that before submitting: the privacy policy is a document
-Apple links to from the listing, and it should not describe an app that does
-not exist.
+`docs/privacy.html` is current. It used to say the app bundled three guitar
+parts, which stopped being true when `loop_2.mp3` was dropped; it now says
+two. Worth re-reading on every release — Apple links to it from the listing,
+so it is the one document that must never describe an app that does not
+exist.
 
 ---
 
@@ -231,10 +232,10 @@ backgrounds, no marketing text over the top: App Review rejects screenshots
 showing UI the app does not have, and this panel is its own best
 advertisement.
 
-| Slot | Path | Size |
-|---|---|---|
-| iPhone 6.9" (required) | `screenshots/store/iphone-6.9/` | 1320 x 2868 |
-| iPad 13" (required) | `screenshots/store/ipad-13/` | 2752 x 2064 |
+| Slot | Path | Size | Shots |
+|---|---|---|---|
+| iPhone 6.9" (required) | `screenshots/store/iphone-6.9/` | 1320 x 2868 | 3 |
+| iPad 13" (required) | `screenshots/store/ipad-13/` | 2064 x 2752 | 2 |
 
 Apple scales every other size from these two, so no other set is needed.
 
@@ -242,22 +243,26 @@ Order to upload them in — the first is the one shown in search results, so
 it is the whole panel:
 
 1. `01-panel` — the panel as it opens.
-2. `02-space-master` — Wobble, Space and the master strip (iPhone only; on
-   an iPad the panel already fits and the script drops this as a duplicate).
+2. `02-space-master` — Wobble, Space and the master strip. **iPhone only.**
+   On an iPad the panel already fits on screen, so there is nothing to
+   scroll to and the test skips the shot rather than shipping the same
+   picture twice.
 3. `03-presets` — the preset window open over the panel.
+
+Both iPad shots are portrait. Landscape is the better-looking crop and does
+not survive automation — rotating from inside a UI test flips the frame
+before the window relayouts, and the capture lands mid-rotation with a black
+band down one side and Space clipped off the other. 2064 x 2752 is an
+accepted 13" size, so portrait costs nothing here.
 
 **There is deliberately no paywall screenshot.** The price on that sheet is
 whatever the viewer's storefront charges, and a screenshot freezes one
 currency onto a listing sold in every country. The trial terms live in the
 description, where they can be edited without a new binary.
 
-⚠️ **The iPad set needs one more run.** The iPad shots are taken in
-landscape, and the first attempts came back as portrait pixels carrying an
-EXIF rotation tag — which previews render correctly and App Store Connect,
-which reads pixel dimensions, would read as the wrong size. The fix (taking
-`app.screenshot()` rather than `XCUIScreen.main.screenshot()`) is committed
-but has not been run to completion. Re-run the script and confirm the iPad
-PNGs are **2752 x 2064 with no `eXIf` chunk** before uploading:
+The generated set is current and was produced by the committed script. To
+confirm after any future run — the sizes have to be exact, and a stray EXIF
+orientation tag will rotate a correct image onto its side:
 
 ```sh
 screenshots/make-screenshots.sh
@@ -269,6 +274,8 @@ for p in sorted(glob.glob("screenshots/store/*/*.png")):
     print(f"{w}x{h}", "EXIF-TAGGED" if b"eXIf" in d else "ok", p)
 PY
 ```
+
+Expect six lines: three at 1320x2868, two at 2064x2752, all `ok`.
 
 ---
 
@@ -344,9 +351,8 @@ the app can be reviewed without granting it.
 
 - [ ] Rename the repository and Pages site from `jj-tulsa`, then confirm all
       three URLs above resolve.
-- [ ] Fix "three guitar parts" in `docs/privacy.html`.
-- [ ] Re-run `screenshots/make-screenshots.sh`; verify the iPad PNGs are
-      2752 x 2064 with no EXIF tag.
+- [ ] Re-run `screenshots/make-screenshots.sh` if the panel has changed since
+      the committed set, and check the six lines it prints.
 - [ ] Create the App Store Connect record and the IAP; attach the IAP to the
       v1.0.0 build.
 - [ ] Set `APP_STORE_URL` in `docs/index.html` once the listing exists —

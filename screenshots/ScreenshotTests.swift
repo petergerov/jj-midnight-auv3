@@ -1,5 +1,4 @@
 import XCTest
-import UIKit
 
 /// Drives the container app and attaches one PNG per marketing shot.
 ///
@@ -25,25 +24,35 @@ final class ScreenshotTests: XCTestCase {
     override func setUp() {
         continueAfterFailure = false
 
+        // Pin the orientation before launching. A simulator remembers how it
+        // was left, so without this the shots depend on what the last run —
+        // or the last person to use that simulator by hand — did to it, and
+        // an iPad left in landscape silently produces a different frame size
+        // from the one App Store Connect is expecting.
+        XCUIDevice.shared.orientation = .portrait
+
         app = XCUIApplication()
         app.launch()
         XCTAssertTrue(app.buttons["Preset"].waitForExistence(timeout: 30),
                       "Panel header never appeared — the editor failed to load.")
 
-        // Shoot the iPad in landscape. The panel lays its four blocks out
-        // side by side at any width past 900 pt, which a 13" iPad clears
-        // either way up — but portrait then centres that wide, short panel
-        // in a 1376 pt window and half the screenshot is bare chassis.
-        // Landscape is also how anyone holds an iPad with a guitar in their
-        // lap.
+        // The iPad is shot in portrait, and that is not laziness.
         //
-        // After `launch`, not before: set on a device with nothing in the
-        // foreground, the orientation is reset by the app coming up, and
-        // the first run of this came back portrait.
-        if UIDevice.current.userInterfaceIdiom == .pad {
-            XCUIDevice.shared.orientation = .landscapeLeft
-            sleep(2)
-        }
+        // Landscape is the nicer crop — the panel lays its four blocks out
+        // side by side past 900 pt, which a 13" iPad clears either way up,
+        // and portrait leaves bare chassis above and below it. But rotating
+        // from inside the test does not survive being photographed:
+        // `XCUIDevice.shared.orientation = .landscapeLeft` flips the frame
+        // immediately while the window keeps its portrait width for a while
+        // afterwards, and `app.screenshot()` in that window returns a
+        // landscape buffer holding a portrait window — black band down the
+        // top, Space clipped off the right. Waiting on `app.frame` to report
+        // landscape does not help, because the frame is the thing that
+        // updates first.
+        //
+        // 2064x2752 is an accepted 13" App Store size, so portrait costs
+        // nothing at the store; `make-site-images.sh` crops the chassis off
+        // for the site, where the panel wants to be wide.
 
         // Meters and LED lamps settle over the first frames; a beat here
         // keeps them from being caught mid-fade.
@@ -56,21 +65,33 @@ final class ScreenshotTests: XCTestCase {
         capture("01-panel")
     }
 
-    /// The bottom of the chain — Space and the master strip. The panel is one
-    /// scroll view, so on an iPad, where it already fits, this scrolls
-    /// nowhere and the shot is a duplicate that the shell script drops.
+    /// The bottom of the chain — Space and the master strip.
+    ///
+    /// Only on a device where the panel does not already fit. The panel is
+    /// one scroll view that centres itself when the window is taller than it
+    /// needs, so on an iPad this drag scrolls nowhere and the frame is the
+    /// panel shot again. Whether that happens is a question about the device,
+    /// so it is measured here rather than guessed from a screen size.
     func testSpaceAndMaster() {
-        // Drag up the rack ear, not the middle of the panel. The scroll view
-        // is full width and the knobs inside it take a vertical drag as a
-        // value change, so a centred swipe sets Tone to 8 kHz instead of
-        // scrolling. The ear is 18 pt of empty chassis with nothing on it.
-        let ear = CGVector(dx: 0.035, dy: 0.0)
+        // Drag the rack ear, not the middle of the panel. The scroll view is
+        // full width and the knobs inside it read a vertical drag as a value
+        // change, so a centred swipe sets Tone to 8 kHz instead of scrolling.
+        // The ear is 18 pt of empty chassis with nothing on it.
+        let earX = 0.035
+        let header = app.buttons["Preset"]
+        let before = header.frame.origin.y
+
         for _ in 0..<2 {
-            app.coordinate(withNormalizedOffset: CGVector(dx: ear.dx, dy: 0.80))
+            app.coordinate(withNormalizedOffset: CGVector(dx: earX, dy: 0.80))
                 .press(forDuration: 0.05,
-                       thenDragTo: app.coordinate(withNormalizedOffset: CGVector(dx: ear.dx, dy: 0.20)))
+                       thenDragTo: app.coordinate(withNormalizedOffset: CGVector(dx: earX, dy: 0.20)))
             sleep(1)
         }
+
+        // The header rides the content, so if it has not moved, nothing has.
+        // Shipping the duplicate would mean the same picture twice in the
+        // App Store carousel.
+        guard abs(header.frame.origin.y - before) > 20 else { return }
         capture("02-space-master")
     }
 

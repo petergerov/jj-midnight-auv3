@@ -8,7 +8,7 @@
 # unpacks the attachments out of the result bundles, and writes:
 #
 #   screenshots/store/iphone-6.9/*.png    1320x2868 — App Store, required
-#   screenshots/store/ipad-13/*.png       2752x2064 — App Store, required
+#   screenshots/store/ipad-13/*.png       2064x2752 — App Store, required
 #   docs/images/*.jpg                     the marketing site
 #
 # The store PNGs are what App Store Connect wants: exact pixel sizes, no
@@ -79,29 +79,60 @@ run_device () {
 
   mkdir -p "$ROOT/screenshots/store/$outdir"
   python3 - "$WORK/$outdir-att" "$ROOT/screenshots/store/$outdir" <<'PY'
-import json, os, shutil, sys
+import json, os, struct, sys
+
 src, dst = sys.argv[1], sys.argv[2]
+
+
+def strip_exif(data):
+    """Drop the eXIf chunk, returning (png, orientation_it_claimed).
+
+    The simulator stamps an EXIF orientation onto every screenshot, and it
+    does not always agree with the pixels underneath it. Anything that
+    honours the tag — browsers do, for PNG — then shows a panel that is
+    already the right way up rotated onto its side. Nothing downstream of
+    here needs EXIF, so the whole chunk goes rather than being rewritten
+    to 1, and what the file says it is becomes what it is.
+    """
+    out, i, orientation = bytearray(data[:8]), 8, None
+    while i < len(data):
+        length = struct.unpack(">I", data[i:i + 4])[0]
+        kind = data[i + 4:i + 8]
+        if kind == b"eXIf":
+            e = data[i + 8:i + 8 + length]
+            bo = ">" if e[:2] == b"MM" else "<"
+            off = struct.unpack(bo + "I", e[4:8])[0]
+            for k in range(struct.unpack(bo + "H", e[off:off + 2])[0]):
+                f = off + 2 + k * 12
+                if struct.unpack(bo + "H", e[f:f + 2])[0] == 0x0112:
+                    orientation = struct.unpack(bo + "H", e[f + 8:f + 10])[0]
+        else:
+            out += data[i:i + 12 + length]
+        i += 12 + length
+    return bytes(out), orientation
+
+
 for test in json.load(open(os.path.join(src, "manifest.json"))):
     for a in test.get("attachments", []):
-        name = a["suggestedHumanReadableName"].split("_")[0]
-        shutil.copy(os.path.join(src, a["exportedFileName"]),
-                    os.path.join(dst, name + ".png"))
-        print("   ", name + ".png")
+        name = a["suggestedHumanReadableName"].split("_")[0] + ".png"
+        raw = open(os.path.join(src, a["exportedFileName"]), "rb").read()
+        clean, orientation = strip_exif(raw)
+        open(os.path.join(dst, name), "wb").write(clean)
+        w, h = struct.unpack(">II", clean[16:24])
+        note = "" if orientation in (None, 1) else f"  (dropped orientation {orientation})"
+        print(f"    {name}  {w}x{h}{note}")
 PY
 }
 
 run_device "$IPHONE" iphone-6.9
 run_device "$IPAD"   ipad-13
 
-# On an iPad the whole panel already fits, so the scroll shot is a duplicate
-# of the panel shot. Drop it rather than ship the same picture twice.
-if [ -f "$ROOT/screenshots/store/ipad-13/02-space-master.png" ]; then
-  if cmp -s "$ROOT/screenshots/store/ipad-13/01-panel.png" \
-            "$ROOT/screenshots/store/ipad-13/02-space-master.png"; then
-    rm "$ROOT/screenshots/store/ipad-13/02-space-master.png"
-    echo "==> Dropped the iPad scroll shot (identical to the panel shot)"
-  fi
-fi
+
+# The scroll shot is skipped by the test itself on any device where the panel
+# already fits, so there is no duplicate to clean up here. It used to be
+# dropped by byte-comparing the two PNGs, which missed: a live meter and the
+# LED lamps differ by a pixel or two between two captures of the same screen,
+# so the compare said "different" and the same picture shipped twice.
 
 echo "==> Site images"
 "$ROOT/screenshots/make-site-images.sh"

@@ -510,6 +510,13 @@ speak to each end: *Laid Back*, *Escondido*, *Magnolia* for one; *Faded*,
   Titles are too short to carry copyright, which is what makes them the
   tolerable end of this; an artist's name in a product is a false-endorsement
   problem.
+- **When in doubt, shorten.** *Call Me The Breeze* became **Breeze** and
+  *After Midnight* became **Midnight**. Both still point at the same feel,
+  and a one-word name is much harder to read as a claim about a particular
+  recording than the full title is. The full title buys nothing the short
+  form does not — anyone who knows the song still hears it, which is the
+  whole `jj-breeze` trick above — and it carries all of the risk. Prefer the
+  short form when writing new presets, not just when auditing old ones.
 - **Never claim** a preset reproduces a particular recording. They are original
   settings arrived at by ear.
 - **The App Store listing is a much smaller surface than the app.** None of the
