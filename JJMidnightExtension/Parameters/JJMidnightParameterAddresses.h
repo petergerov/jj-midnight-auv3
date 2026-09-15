@@ -35,7 +35,13 @@ typedef NS_ENUM(AUParameterAddress, JJMidnightParameterAddress) {
     // Master. Prefixed because the unprefixed names would be global
     // constants in the C++ kernel and are too generic to leave unqualified.
     masterMix,
-    masterOutput
+    masterOutput,
+
+    // Input trim. Last in this list although it is first in the chain: the
+    // raw values are what a saved AU state and the user's own presets are
+    // keyed on, so a new address goes on the end rather than in the middle
+    // where it would renumber everything after it.
+    masterInput
 };
 
 /// Number of note divisions the tempo-synced tremolo offers. The names live in

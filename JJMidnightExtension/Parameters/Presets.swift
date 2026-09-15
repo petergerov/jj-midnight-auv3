@@ -175,7 +175,7 @@ enum FactoryPresets {
         // front-end glue and nothing else.
         FactoryPreset(number: 8, name: "Flat & Even",
                       compAmount: 62, compAttack: 26, compRelease: 130,
-                      driveAmount: 0, driveTone: 8000, driveCab: 20,
+                      driveAmount: 0, driveTone: 10000, driveCab: 20,
                       wobbleRate: 4.6, wobbleDepth: 0, wobbleShape: 0, wobbleDivision: 4,
                       slapTime: 98, slapMix: 0, springMix: 0,
                       masterMix: 100, masterOutput: 0,

@@ -38,7 +38,13 @@ public:
         filter.setFromArray(Biquad::makeLowPass(sampleRate, hz, 0.707f));
     }
 
-    void setDrive(float amount01) { drive = amount01; }
+    void setDrive(float amount01)
+    {
+        if (std::abs(amount01 - drive) < 1.0e-4f)
+            return;
+        drive = amount01;
+        updateDriveCurve();
+    }
 
     void setBodyAmount(float amount01)
     {
@@ -56,9 +62,25 @@ public:
         if (drive < 1.0e-4f)
             return filtered;
 
+        const float clipped = std::tanh(filtered * gain + bias) - offset;
+
+        // Two divisions, and they do different jobs. Normalising by the true
+        // maximum excursion keeps the curve inside ±1: it has to be the larger
+        // half — the offset pushes one side out to 1 + offset while the other
+        // only reaches 1 - offset — or the loud half clips past unity. The
+        // makeup then takes the stage back to unity gain; see updateDriveCurve.
+        return (clipped / (1.0f + offset)) * makeup;
+    }
+
+private:
+    /// Everything that depends only on the drive amount, so the render loop
+    /// does not recompute a tanh and a cosh per sample for values that change
+    /// once per block.
+    void updateDriveCurve()
+    {
         // Gain tops out well below a fuzz: the knob's whole range stays in
         // clean-to-edge-of-breakup territory.
-        const float k = 1.0f + drive * 11.0f;
+        gain = 1.0f + drive * 11.0f;
 
         // The bias grows with drive. A fixed bias would be swamped as the
         // tanh saturates — a fully clipped wave is symmetric no matter what
@@ -68,18 +90,28 @@ public:
         // operating point as the stage is pushed. Measured over the knob's
         // range this puts second harmonic at 2.5% of the fundamental at the
         // bottom and 11% at the top, always well under the odd content.
-        const float bias = biasTracking * drive;
-        const float offset = std::tanh(bias);
-        const float clipped = std::tanh(filtered * k + bias) - offset;
+        bias = biasTracking * drive;
+        offset = std::tanh(bias);
 
-        // Normalise by the true maximum excursion. It has to be the larger
-        // half — the offset pushes one side out to 1 + offset while the other
-        // only reaches 1 - offset — or the loud half clips past unity and the
-        // stage turns into an 11 dB boost.
-        return clipped / (1.0f + offset);
+        // Makeup. Without it the knob is mostly a volume control: clamping the
+        // curve to ±1 bounds the peak but says nothing about level, and a
+        // signal that never reaches the ceiling just gets the raw gain. Metered
+        // on guitar the old stage ran +9 dB hotter at the top of the knob for a
+        // hot part and +15 dB for a quiet one, which is louder, not driven.
+        //
+        // The compensation is the inverse of the stage's own small-signal
+        // slope — the derivative of the curve at zero — so quiet passages come
+        // out at exactly the gain they went in at and the only level change
+        // left is the one the clipping actually causes. That is the right
+        // residue to keep: drive should thicken and compress, and a part
+        // pushed into breakup does sit a little differently. Deriving it from
+        // the curve rather than from a measured table also means it stays
+        // correct if the gain or the bias tracking is ever retuned.
+        const float coshBias = std::cosh(bias);
+        const float slope = gain / (coshBias * coshBias * (1.0f + offset));
+        makeup = 1.0f / slope;
     }
 
-private:
     void updateLowShelf()
     {
         static constexpr float bodyHz = 150.0f;
@@ -95,4 +127,8 @@ private:
     Biquad filter;
     float drive = 0.0f;
     float bodyAmount = 0.0f;
+    float gain = 1.0f;
+    float bias = 0.0f;
+    float offset = 0.0f;
+    float makeup = 1.0f;
 };

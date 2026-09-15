@@ -17,7 +17,23 @@ Measured across the knob's range, with the rest of the chain out of the way:
 | 60 % | 10.3 % | 25 % |
 | 100 % | 11.4 % | 29 % |
 
-Output peak stays at unity across the whole range, so turning Drive up changes texture, not level.
+## Level
+
+Clipping the curve to ±1 bounds the peak but says nothing about level, and for a long time that was all this stage did. A part that never reached the ceiling simply got the raw gain, so the knob was mostly a volume control: metered on guitar it ran **+9 dB** hotter at the top of the knob for a hot part and **+15 dB** for a quiet one — and the quieter the part, the worse it got, because a signal that never clips gets the gain and none of the compression that would otherwise eat it.
+
+The stage now divides out its own small-signal slope — the derivative of the clipping curve at zero. Quiet passages come out at exactly the gain they went in at, and the only level change left is the one the clipping actually causes:
+
+| Input peak | Drive 0 → 100 % |
+|---|---|
+| −3 dBFS | −4.5 dB |
+| −6 dBFS | −2.3 dB |
+| −12 dBFS | +0.5 dB |
+| −18 dBFS | +1.2 dB |
+| −24 dBFS | +1.0 dB |
+
+That residue is the right thing to keep rather than flatten. Drive should thicken and compress, and a part pushed into breakup does sit a little differently — a hot signal losing a couple of dB is the clipper taking its peaks off, which is the effect, not a bug in the gain staging. What is gone is the 15 dB of plain boost that used to sit underneath it.
+
+Deriving the compensation from the curve rather than from a measured table also means it stays correct if the gain or the bias tracking is ever retuned. The harmonic figures above are ratios and are unaffected by it.
 
 **Body** is not a separate knob. A low shelf at 150 Hz comes up with Drive, because pushing the front end of a real amp always thickens the bottom — an independent body control only invites settings that sound like a console EQ rather than an amp.
 
@@ -55,7 +71,7 @@ It did not always. Presence was originally fixed, on the reasoning that the rise
 | Control | Range | What it does |
 |---|---|---|
 | **Drive** | 0 … 100 % | Clean through to the edge of breakup. Body follows it. |
-| **Tone** | 800 Hz … 8 kHz | Low-pass after the clipper — the rolled-back tone control, not a gentle de-esser. |
+| **Tone** | 800 Hz … 10 kHz | Low-pass after the clipper — the rolled-back tone control, not a gentle de-esser. Above about 6 kHz the cab's own rolloff is the lower of the two corners, so the last part of the range opens the knob up rather than the sound: with Mic at 0 it is worth +0.3 dB at 5 kHz and +1.8 dB at 8 kHz. The cab corner, not Tone, is what caps the top end. |
 | **Mic** | 0 … 100 % | 0 is on the dust cap: present and bright. 100 is well out toward the cone edge: rounder, darker, deeper dip. |
 | **On/Off** | | Bypasses breakup *and* cabinet. Switching off the amp switches off the speaker too. |
 

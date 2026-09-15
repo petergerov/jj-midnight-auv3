@@ -60,22 +60,22 @@ final class ScreenshotTests: XCTestCase {
     }
 
     /// The panel as it opens. On an iPad that is the whole chain at once; on
-    /// a phone it is Comp, Drive and the top of Wobble.
+    /// a phone it is the master strip and Comp.
     func testPanel() {
         capture("01-panel")
     }
 
-    /// The bottom of the chain — Space and the master strip.
+    /// The bottom of the chain — Wobble and Space.
     ///
     /// Only on a device where the panel does not already fit. The panel is
     /// one scroll view that centres itself when the window is taller than it
     /// needs, so on an iPad this drag scrolls nowhere and the frame is the
     /// panel shot again. Whether that happens is a question about the device,
     /// so it is measured here rather than guessed from a screen size.
-    func testSpaceAndMaster() {
+    func testWobbleAndSpace() {
         // Drag the rack ear, not the middle of the panel. The scroll view is
         // full width and the knobs inside it read a vertical drag as a value
-        // change, so a centred swipe sets Tone to 8 kHz instead of scrolling.
+        // change, so a centred swipe sets Tone to 10 kHz instead of scrolling.
         // The ear is 18 pt of empty chassis with nothing on it.
         let earX = 0.035
         let header = app.buttons["Preset"]
@@ -92,7 +92,7 @@ final class ScreenshotTests: XCTestCase {
         // Shipping the duplicate would mean the same picture twice in the
         // App Store carousel.
         guard abs(header.frame.origin.y - before) > 20 else { return }
-        capture("02-space-master")
+        capture("02-wobble-space")
     }
 
     /// The preset dropdown over the panel. The factory list is what a buyer

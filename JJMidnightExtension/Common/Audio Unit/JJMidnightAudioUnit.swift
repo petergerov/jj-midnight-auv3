@@ -336,7 +336,7 @@ public class JJMidnightAudioUnit: AUAudioUnit, @unchecked Sendable {
              .wobbleDepth, .wobbleShape,
              .slapMix, .springMix, .masterMix:
             return String(format: "%.0f %%", value)
-        case .masterOutput:
+        case .masterInput, .masterOutput:
             return String(format: "%+.1f dB", value)
         case .wobbleDivision:
             let names = JJMidnightWobbleDivisions.names
@@ -362,6 +362,15 @@ public class JJMidnightAudioUnit: AUAudioUnit, @unchecked Sendable {
         var output: Float = 0
         kernel.readPeaks(&input, &output)
         return (input, output)
+    }
+
+    /// Input peak since the last call, then reset. Separate from
+    /// `takeMeterPeaks` for the same reason as the output pair: reading
+    /// clears, so two consumers of one accumulator see half the signal each.
+    func takeInputPeak() -> Float {
+        var peak: Float = 0
+        kernel.readInputPeak(&peak)
+        return peak
     }
 
     /// Left and right output peaks since the last call, then reset. Separate
