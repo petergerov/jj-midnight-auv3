@@ -20,17 +20,17 @@ and are worth restating before anything gets pasted:
 
 | | |
 |---|---|
-| Binary | Builds and runs. Not archived or uploaded yet. |
+| Binary | Archives clean, arm64, signed. Not uploaded. |
 | App Store Connect record | **Not created.** |
 | IAP record | **Not created.** Must ship attached to v1.0.0. |
 | Screenshots | Generated and verified, iPhone and iPad. |
 | Copy | Drafted here, not entered. |
 | Privacy policy | Live at `docs/privacy.html` and current. |
-| Repo/Pages rename | **Outstanding** — every `jj-midnight` URL 404s until done. |
+| Distribution profiles | **Missing** — see *Signing* below. This blocks the upload. |
 
-The repository rename is the one that blocks the others: the support and
-marketing URLs below point at a repo still named `jj-tulsa`, and a listing
-cannot go in with dead links.
+The archive builds and validates locally. What stands between here and an
+upload is the App Store Connect record and the distribution provisioning
+that record makes possible.
 
 ---
 
@@ -167,13 +167,17 @@ anyway, so "midnight", "vintage" and "chain" would be wasted.
 
 | Field | Value |
 |---|---|
-| Marketing URL | `https://petergerov.github.io/jj-midnight` |
-| Support URL | `https://github.com/petergerov/jj-midnight/issues` |
-| Privacy Policy URL | `https://petergerov.github.io/jj-midnight/privacy.html` |
+| Marketing URL | `https://petergerov.github.io/jj-midnight-auv3` |
+| Support URL | `https://github.com/petergerov/jj-midnight-auv3/issues` |
+| Privacy Policy URL | `https://petergerov.github.io/jj-midnight-auv3/privacy.html` |
 
-All three are dead until the repository is renamed from `jj-tulsa`. GitHub
-redirects the old URLs afterwards, so the rename is safe to do late — but it
-has to happen before these are entered.
+All three verified live (HTTP 200) on 15 September 2026.
+
+The repository is `petergerov/jj-midnight-auv3`, so the Pages site is served
+from `/jj-midnight-auv3` — the `-auv3` suffix is part of the URL, exactly as
+it is for the sibling `jj-breeze-auv3`. Dropping it, which is the natural
+thing to type, gives a 404, and that is the mistake to watch for when these
+get copied into App Store Connect by hand.
 
 `docs/privacy.html` is current. It used to say the app bundled three guitar
 parts, which stopped being true when `loop_2.mp3` was dropped; it now says
@@ -296,6 +300,46 @@ Permission is optional — the two bundled guitar parts work without it.
 
 ---
 
+## Signing and archiving
+
+The archive itself is fine. Verified on 15 September 2026 by building one:
+
+```sh
+xcodebuild -project JJMidnight.xcodeproj -scheme jj-midnight \
+           -configuration Release -destination 'generic/platform=iOS' \
+           -archivePath DerivedData/jj-midnight.xcarchive archive
+```
+
+It comes out as a proper app archive — `ApplicationProperties` present, so
+Organizer will offer to distribute it rather than calling it generic; arm64
+only; `com.gerov.jjmidnight` at 1.0.0 (1); the appex embedded under
+`PlugIns/` with every build variable substituted and its `AudioComponents`
+entry intact; the App Group entitlement on both binaries; `AppIcon60x60@2x`
+and `AppIcon76x76@2x~ipad` generated into the bundle; and `loop_3.mp3` and
+`loop_1.mp3` shipped, with no leftover `loop_2.mp3`.
+
+**Exporting it for the store does not work yet.** With no profiles created:
+
+```
+error: exportArchive No profiles for 'com.gerov.jjmidnight.AUv3' were found
+error: exportArchive No profiles for 'com.gerov.jjmidnight' were found
+```
+
+An *Apple Distribution: Petar Gerov (C9LBGZNZ6P)* certificate is installed,
+so the certificate is not what is missing — the App Store provisioning
+profiles for the two bundle IDs are. Both need one, the appex as much as the
+app. The fix is either to let Xcode create them (Organizer → Distribute App,
+or `-allowProvisioningUpdates` on the export) or to create them by hand in
+the developer portal. Xcode does it as a side effect of the first upload,
+which is why this usually goes unnoticed until someone tries to script it.
+
+Note that `xcodebuild archive` signs with *Apple Development* and leaves
+`get-task-allow` set. That is normal and not a problem: distribution signing
+happens at export, and the re-signing clears it. An archive is not the
+artefact that gets uploaded.
+
+---
+
 ## Export compliance
 
 `ITSAppUsesNonExemptEncryption` is already `false` in `JJMidnight/Info.plist`,
@@ -349,12 +393,15 @@ the app can be reviewed without granting it.
 
 ## Before you hit submit
 
-- [ ] Rename the repository and Pages site from `jj-tulsa`, then confirm all
-      three URLs above resolve.
+- [ ] Paste the three URLs above with the `-auv3` suffix intact. They are
+      live; dropping the suffix is what breaks them.
 - [ ] Re-run `screenshots/make-screenshots.sh` if the panel has changed since
-      the committed set, and check the six lines it prints.
+      the committed set, and check the five lines it prints.
 - [ ] Create the App Store Connect record and the IAP; attach the IAP to the
       v1.0.0 build.
+- [ ] Create App Store provisioning profiles for **both** `com.gerov.jjmidnight`
+      and `com.gerov.jjmidnight.AUv3`. Without them the export fails; see
+      *Signing and archiving*.
 - [ ] Set `APP_STORE_URL` in `docs/index.html` once the listing exists —
       until then the download buttons fall back to the repository.
 - [ ] Archive with the **jj-midnight** scheme, Release config. Do not archive

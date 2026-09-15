@@ -5,8 +5,8 @@ tremolo, slapback and spring — as an Audio Unit (AUv3) for iPhone and iPad.
 Sibling project to [jj-breeze](https://github.com/petergerov/jj-breeze-auv3),
 whose AU scaffolding and panel UI this reuses.
 
-**Website:** [petergerov.github.io/jj-midnight](https://petergerov.github.io/jj-midnight)
-**Support:** [GitHub Issues](https://github.com/petergerov/jj-midnight/issues)
+**Website:** [petergerov.github.io/jj-midnight-auv3](https://petergerov.github.io/jj-midnight-auv3)
+**Support:** [GitHub Issues](https://github.com/petergerov/jj-midnight-auv3/issues)
 
 ## What it is
 
@@ -30,9 +30,12 @@ hosts as **jj-midnight** (Gerov).
 
 ## Naming
 
-The product name is **not settled** — see [marketing.md](marketing.md) for the
-candidates, the reasoning, and why the decision is cheap now and impossible
-after the first App Store submission.
+The name is **jj-midnight**, and it is now baked into the bundle IDs, the AU
+subtype, the repo and the site — cheap to change before the first App Store
+submission, effectively impossible afterwards, because hosts store the AU
+identity in every saved project. [marketing.md](marketing.md) keeps the
+candidates and the reasoning. What is *not* settled is trademark clearance;
+that is still on the list below.
 
 The engine is generic and the presets are the flavour. Preset names describe a
 *feel* or a place, never a person or a record; the plug-in is not affiliated
@@ -200,7 +203,11 @@ loop, none of which a recording gives you. Its output is gitignored.
 
 Every field App Store Connect asks for is drafted in
 [APP_STORE_SUBMISSION.md](APP_STORE_SUBMISSION.md), inside Apple's character
-limits. What is left is the work that cannot be written down in advance:
+limits, and the Pages site is live at
+[petergerov.github.io/jj-midnight-auv3](https://petergerov.github.io/jj-midnight-auv3)
+— suffix included, the same shape as `jj-breeze-auv3`, and the part that gets
+dropped by accident. What is left is the work that cannot be written down in
+advance:
 
 - [ ] **App Store Connect** — new app record, new IAP for
       `com.gerov.jjmidnight.unlock`. The IAP has to be attached to the 1.0.0
@@ -210,9 +217,11 @@ limits. What is left is the work that cannot be written down in advance:
       cleared. Focusrite's withdrawn Midnight plug-in suite and the current
       Midnight Plaza AUv3 were both checked and neither disqualifies it, but
       that was a web search; see [marketing.md](marketing.md).
-- [ ] **Rename the repository** — this repo and its Pages site are still
-      `jj-tulsa`, so the `jj-midnight` links here and in `docs/` 404 until
-      it is renamed. GitHub redirects the old URLs afterwards.
+- [ ] **Distribution profiles** — an App Store export needs provisioning
+      profiles for both `com.gerov.jjmidnight` and `.AUv3`. Neither exists
+      yet, so `xcodebuild -exportArchive` fails; Xcode creates them on the
+      first Organizer upload. See
+      [APP_STORE_SUBMISSION.md](APP_STORE_SUBMISSION.md).
 - [ ] **Store link** — `APP_STORE_URL` in `docs/index.html` is empty, so the
       buttons fall back to the repository. Fill it in once there is a listing.
 - [ ] **Privacy policy** — `docs/privacy.html` is live and linked from the
