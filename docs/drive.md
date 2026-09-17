@@ -19,21 +19,11 @@ Measured across the knob's range, with the rest of the chain out of the way:
 
 ## Level
 
-Clipping the curve to ±1 bounds the peak but says nothing about level, and for a long time that was all this stage did. A part that never reached the ceiling simply got the raw gain, so the knob was mostly a volume control: metered on guitar it ran **+9 dB** hotter at the top of the knob for a hot part and **+15 dB** for a quiet one — and the quieter the part, the worse it got, because a signal that never clips gets the gain and none of the compression that would otherwise eat it.
+Clipping the curve to ±1 bounds the peak but says nothing about level. For a while the stage only divided out its own small-signal slope — quiet passages stayed put, and the only level change left was the one the clipping itself caused. Metered on guitar after Comp's make-up (where parts often sit near −6…−3 dBFS) that meant Drive 0 → 100 % ran **−2 to −4.5 dB quieter** exactly when you were pushing into breakup.
 
-The stage now divides out its own small-signal slope — the derivative of the clipping curve at zero. Quiet passages come out at exactly the gain they went in at, and the only level change left is the one the clipping actually causes:
+The stage now matches RMS before and after the clipper, over a ~40 ms window. Loudness stays put across the knob; what changes is harmonics and compression inside the wave, not the fader. The match is against the clipper's own input — body and tone already applied — so the body shelf that comes up with Drive still thickens the bottom the way an amp does, without the clipper undoing the overall level.
 
-| Input peak | Drive 0 → 100 % |
-|---|---|
-| −3 dBFS | −4.5 dB |
-| −6 dBFS | −2.3 dB |
-| −12 dBFS | +0.5 dB |
-| −18 dBFS | +1.2 dB |
-| −24 dBFS | +1.0 dB |
-
-That residue is the right thing to keep rather than flatten. Drive should thicken and compress, and a part pushed into breakup does sit a little differently — a hot signal losing a couple of dB is the clipper taking its peaks off, which is the effect, not a bug in the gain staging. What is gone is the 15 dB of plain boost that used to sit underneath it.
-
-Deriving the compensation from the curve rather than from a measured table also means it stays correct if the gain or the bias tracking is ever retuned. The harmonic figures above are ratios and are unaffected by it.
+Seeded from the small-signal inverse slope whenever the Drive knob moves, so a turn does not dip for a moment while the followers catch up. The harmonic figures above are ratios and are unaffected.
 
 **Body** is not a separate knob. A low shelf at 150 Hz comes up with Drive, because pushing the front end of a real amp always thickens the bottom — an independent body control only invites settings that sound like a console EQ rather than an amp.
 

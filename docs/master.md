@@ -88,9 +88,9 @@ Two bars, left over right, with a dB scale, peak-hold ticks and a clip lamp.
 
 It is here rather than only in the header's small IN/OUT ladders because this
 chain adds a lot of level on its own. The compressor's make-up reaches
-**+13 dB** at the top of the Comp knob, Drive adds more on top of that, and
-Output can add another 12. A clip after all of that is easy to miss, and the
-render path does not hard-limit — samples can and do exceed 0 dBFS.
+**+13 dB** at the top of the Comp knob, and Output can add another 12. A clip
+after all of that is easy to miss, and the render path does not hard-limit —
+samples can and do exceed 0 dBFS.
 
 | | |
 |---|---|

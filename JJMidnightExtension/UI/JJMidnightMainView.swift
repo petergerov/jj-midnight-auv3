@@ -407,7 +407,7 @@ struct JJMidnightMainView: View {
             sectionBody(enabled: driveOn) {
                 HStack(spacing: knobRowSpacing) {
                     knob(parameterTree.drive.driveAmount, "DRIVE",
-                         help: "Low-gain breakup. The whole range stays between clean and the edge of it; body comes up with it, the way it does on an amp.")
+                         help: "Low-gain breakup. The whole range stays between clean and the edge of it; body comes up with it. Level stays put — the knob changes character, not volume.")
                     knob(parameterTree.drive.driveTone, "TONE", skew: 0.3,
                          help: "Tone rolloff after the clipper. Turn it down for the classic rolled-back tone control.")
                     knob(parameterTree.drive.driveCab, "MIC",
@@ -521,8 +521,8 @@ struct JJMidnightMainView: View {
     /// Input is pinned to the top of the column and output to the bottom, so
     /// on a wide panel the pair brackets the knob row instead of floating in
     /// the middle of it. Output is the one that needs watching for a clip —
-    /// this chain can add a lot of level by itself, the compressor's make-up
-    /// reaches +13 dB and Drive adds more — and the bottom edge is where the
+    /// this chain can add a lot of level by itself — the compressor's make-up
+    /// reaches +13 dB — and the bottom edge is where the
     /// eye returns to.
     /// `stretched` only in the wide layout, where the column stands beside the
     /// knobs and has their height to fill. Stacked under them on a phone there

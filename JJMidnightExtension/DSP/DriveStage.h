@@ -14,6 +14,12 @@
     and it is the whole point of this plug-in's drive block.
 
     The offset is subtracted back out after clipping so the stage stays DC-free.
+
+    Level: an RMS follower matches the clipper's output loudness to its own
+    input (post body/tone), so turning Drive up changes character rather than
+    volume. Without that, soft-clip makeup that only restores the small-signal
+    slope leaves hot parts quieter as they dig into the curve — which is what
+    a guitar after Comp's make-up spends most of its time doing.
 */
 class DriveStage
 {
@@ -21,6 +27,10 @@ public:
     void prepare(double newSampleRate)
     {
         sampleRate = newSampleRate;
+        // ~40 ms: fast enough to follow a Drive knob move, slow enough not
+        // to pump on individual pick attacks.
+        const float tau = 0.04f;
+        rmsCoeff = 1.0f - std::exp(-1.0f / (tau * static_cast<float>(sampleRate)));
         updateLowShelf();
         reset();
     }
@@ -29,6 +39,9 @@ public:
     {
         lowShelf.reset();
         filter.reset();
+        inRmsSq = 0.0f;
+        outRmsSq = 0.0f;
+        makeup = 1.0f;
     }
 
     /// Tone is a low-pass corner, not a shelf: turning it down is the
@@ -62,20 +75,35 @@ public:
         if (drive < 1.0e-4f)
             return filtered;
 
-        const float clipped = std::tanh(filtered * gain + bias) - offset;
+        // Peak-normalise to the louder half of the asymmetric curve so the
+        // biased side cannot run past ±1.
+        const float clipped = (std::tanh(filtered * gain + bias) - offset)
+                            / (1.0f + offset);
 
-        // Two divisions, and they do different jobs. Normalising by the true
-        // maximum excursion keeps the curve inside ±1: it has to be the larger
-        // half — the offset pushes one side out to 1 + offset while the other
-        // only reaches 1 - offset — or the loud half clips past unity. The
-        // makeup then takes the stage back to unity gain; see updateDriveCurve.
-        return (clipped / (1.0f + offset)) * makeup;
+        // Loudness match against the clipper's own input (body + tone already
+        // applied). Matching pre-shelf would cancel the body boost that is
+        // supposed to come up with Drive.
+        inRmsSq += rmsCoeff * (filtered * filtered - inRmsSq);
+        outRmsSq += rmsCoeff * (clipped * clipped - outRmsSq);
+
+        const float inRms = std::sqrt(std::max(inRmsSq, 0.0f));
+        if (inRms > silenceFloor)
+        {
+            const float outRms = std::sqrt(std::max(outRmsSq, 0.0f));
+            const float target = inRms / std::max(outRms, silenceFloor);
+            // Same time constant as the RMS window: the ratio is already
+            // smoothed by the followers, so a second pole would lag a knob
+            // move. Clamp so a near-silent clipped sample cannot explode.
+            makeup = std::clamp(target, makeupMin, makeupMax);
+        }
+
+        return clipped * makeup;
     }
 
 private:
     /// Everything that depends only on the drive amount, so the render loop
-    /// does not recompute a tanh and a cosh per sample for values that change
-    /// once per block.
+    /// does not recompute a tanh per sample for values that change once per
+    /// block.
     void updateDriveCurve()
     {
         // Gain tops out well below a fuzz: the knob's whole range stays in
@@ -93,20 +121,9 @@ private:
         bias = biasTracking * drive;
         offset = std::tanh(bias);
 
-        // Makeup. Without it the knob is mostly a volume control: clamping the
-        // curve to ±1 bounds the peak but says nothing about level, and a
-        // signal that never reaches the ceiling just gets the raw gain. Metered
-        // on guitar the old stage ran +9 dB hotter at the top of the knob for a
-        // hot part and +15 dB for a quiet one, which is louder, not driven.
-        //
-        // The compensation is the inverse of the stage's own small-signal
-        // slope — the derivative of the curve at zero — so quiet passages come
-        // out at exactly the gain they went in at and the only level change
-        // left is the one the clipping actually causes. That is the right
-        // residue to keep: drive should thicken and compress, and a part
-        // pushed into breakup does sit a little differently. Deriving it from
-        // the curve rather than from a measured table also means it stays
-        // correct if the gain or the bias tracking is ever retuned.
+        // Seed makeup at the small-signal inverse slope so a Drive knob move
+        // does not dip for a moment while the RMS followers catch up. The
+        // follower then takes over for whatever level is actually playing.
         const float coshBias = std::cosh(bias);
         const float slope = gain / (coshBias * coshBias * (1.0f + offset));
         makeup = 1.0f / slope;
@@ -121,6 +138,12 @@ private:
     }
 
     static constexpr float biasTracking = 0.7f;
+    static constexpr float silenceFloor = 1.0e-5f;
+    // Floor below the full-Drive small-signal seed (~0.21): clamping at 0.25
+    // left quiet parts a couple of dB hot. Ceiling is a runaway guard only —
+    // steady guitar stays well under it.
+    static constexpr float makeupMin = 0.05f;
+    static constexpr float makeupMax = 8.0f;
 
     double sampleRate = 44100.0;
     Biquad lowShelf;
@@ -131,4 +154,7 @@ private:
     float bias = 0.0f;
     float offset = 0.0f;
     float makeup = 1.0f;
+    float rmsCoeff = 0.001f;
+    float inRmsSq = 0.0f;
+    float outRmsSq = 0.0f;
 };

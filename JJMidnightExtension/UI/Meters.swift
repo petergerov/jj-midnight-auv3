@@ -150,7 +150,7 @@ struct GainReductionMeter: View {
 ///
 /// Worth having here rather than trusting the header's small IN/OUT ladders,
 /// because this chain can add a lot of level on its own — the compressor's
-/// make-up reaches +13 dB and Drive adds more — and a clip after all that is
+/// make-up reaches +13 dB — and a clip after all that is
 /// easy to miss. Hence the peak-hold ticks and the latching clip lamp.
 struct OutputMeter: View {
     let audioUnit: JJMidnightAudioUnit?
