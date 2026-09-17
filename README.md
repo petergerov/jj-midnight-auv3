@@ -1,7 +1,8 @@
 # jj-midnight (AUv3)
 
-A vintage clean / low-gain guitar chain — optical compressor, amp breakup,
-tremolo, slapback and spring — as an Audio Unit (AUv3) for iPhone and iPad.
+An electric guitar effect: vintage clean / low-gain chain — optical compressor,
+amp breakup, tremolo, slapback and spring — as an Audio Unit (AUv3) for
+iPhone and iPad.
 Sibling project to [jj-breeze](https://github.com/petergerov/jj-breeze-auv3),
 whose AU scaffolding and panel UI this reuses.
 

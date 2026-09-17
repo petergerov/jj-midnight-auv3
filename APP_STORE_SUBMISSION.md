@@ -69,10 +69,10 @@ silently breaks every session a customer has already saved.
 jj-midnight
 ```
 
-**Subtitle** (30 char limit, currently 29):
+**Subtitle** (30 char limit, currently 27):
 
 ```
-Vintage guitar chain for AUv3
+Electric guitar FX for AUv3
 ```
 
 **Primary category:** Music
@@ -90,12 +90,12 @@ drugs. That is why the preset once called *Cocaine* is now *Magnolia*.
 4000 char limit; this is about 1,900.
 
 ```
-Squashed until nothing jumps out. Just past clean. Wobbling a little. One
-repeat behind.
+An electric guitar effect for the laid-back sound: squashed until nothing
+jumps out. Just past clean. Wobbling a little. One repeat behind.
 
-That sound is not one pedal — it is a whole chain, and jj-midnight is all of
-it in a single insert. Four blocks in signal order, each with its own on/off
-switch, plus a master strip.
+That sound is not one pedal — it is a whole vintage clean chain, and
+jj-midnight is all of it in a single AUv3 insert. Four blocks in signal
+order, each with its own on/off switch, plus a master strip.
 
 COMP — An optical compressor with program-dependent release, the way a real
 opto box behaves: one knob for threshold, ratio and make-up together, so it
@@ -145,19 +145,19 @@ recording.
 for launch notes rather than burning a release on a copy change):
 
 ```
-Compressor, amp breakup, tremolo, slapback and spring in one AUv3 insert.
-Seven days free, then one purchase — no subscription.
+Electric guitar effect: compressor, amp breakup, tremolo, slapback and spring
+in one AUv3. Seven days free, then one purchase — no subscription.
 ```
 
 **Keywords** (100 char limit, comma-separated, no spaces after commas — a
 space costs a character and buys nothing):
 
 ```
-guitar,auv3,audio unit,compressor,tremolo,spring,reverb,slapback,amp,pedal,lofi,effect,plugin
+vintage,chain,audio unit,compressor,tremolo,spring,reverb,slapback,amp,pedal,lofi,effect,plugin
 ```
 
 Do not repeat words already in the name or subtitle; Apple indexes those
-anyway, so "midnight", "vintage" and "chain" would be wasted.
+anyway, so "midnight", "electric", "guitar", "FX" and "AUv3" would be wasted.
 
 **What's New:** leave empty. It does not appear on a first release.
 

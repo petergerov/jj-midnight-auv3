@@ -100,9 +100,9 @@ struct PaywallView: View {
     private var headline: String {
         switch entitlement.accessState {
         case .trialExpired:
-            return "Your free trial has ended. Unlock to keep Shift, Vibrato, and Warmth."
+            return "Your free trial has ended. Unlock to keep this electric guitar effect."
         case .trialActive:
-            return "Enjoying the trial? Unlock once to keep the effect forever."
+            return "Enjoying the trial? Unlock once to keep this electric guitar effect forever."
         case .unlocked:
             return "You’re unlocked. Thanks for supporting jj-midnight."
         }

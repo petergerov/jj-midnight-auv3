@@ -124,32 +124,19 @@ struct JJMidnightMainView: View {
 
     // MARK: - Header
 
-    // One row: wordmark, preset selector, IN/OUT meters, power switch. The
-    // preset selector is the only flexible item, so it takes whatever width
-    // the wordmark, meters and switch leave; the strapline that used to sit
-    // under the wordmark moved to versionFooter so this stays a single line.
+    // One row: wordmark (+ category strapline), preset selector, IN/OUT
+    // meters, power switch. The preset selector is the only flexible item.
+    // The longer "VINTAGE CLEAN / LOW-GAIN CHAIN" line stays on the model
+    // plate at the foot — short category up here, tone description down there.
     private var header: some View {
         VStack(spacing: 8) {
             HStack(alignment: .center, spacing: 8) {
                 FinishSelector(theme: GearTheme.current)
                     .frame(width: 26, height: 26)
-                    // Nudged down and given its own gap: centred on the
-                    // row it reads as sitting above the wordmark, whose
-                    // visual weight is below its own frame centre.
-                    .offset(y: 2)
                     .padding(.trailing, 5)
                     .layoutPriority(1)
 
-                Text("j.j.midnight")
-                    .font(.custom("Georgia-BoldItalic", size: 18))
-                    .foregroundStyle(GearTheme.textLight)
-                    .shadow(color: .black.opacity(0.75), radius: 0, x: 0, y: 1.5)
-                    .shadow(color: .black.opacity(0.35), radius: 3, x: 0, y: 2)
-                    .lineLimit(1)
-                    // Keeps its full size while there is room and only
-                    // compresses on a narrow phone, so the preset window
-                    // beside it never has to truncate first.
-                    .minimumScaleFactor(0.6)
+                wordmark
                     .layoutPriority(1)
 
                 PresetBar(audioUnit: audioUnit)
@@ -169,6 +156,36 @@ struct JJMidnightMainView: View {
                 }
             }
         }
+    }
+
+    // Category under the name only — not a second full-width header row —
+    // so the preset window and meters keep their single-line slot.
+    private var wordmark: some View {
+        VStack(alignment: .leading, spacing: 1) {
+            Text("j.j.midnight")
+                .font(.custom("Georgia-BoldItalic", size: 18))
+                .foregroundStyle(GearTheme.textLight)
+                .shadow(color: .black.opacity(0.75), radius: 0, x: 0, y: 1.5)
+                .shadow(color: .black.opacity(0.35), radius: 3, x: 0, y: 2)
+                .lineLimit(1)
+                // Keeps its full size while there is room and only
+                // compresses on a narrow phone, so the preset window
+                // beside it never has to truncate first.
+                .minimumScaleFactor(0.6)
+
+            Text("ELECTRIC GUITAR")
+                .font(.system(size: 7.5, weight: .bold, design: .monospaced))
+                .tracking(1.1)
+                // Same cream silkscreen as the wordmark — textMuted sits too
+                // close to the Tweed lacquer and washes out there.
+                .foregroundStyle(GearTheme.textLight.opacity(0.88))
+                .shadow(color: .black.opacity(0.75), radius: 0, x: 0, y: 1)
+                .shadow(color: .black.opacity(0.35), radius: 2, x: 0, y: 1)
+                .lineLimit(1)
+                .minimumScaleFactor(0.7)
+        }
+        .accessibilityElement(children: .ignore)
+        .accessibilityLabel("j.j.midnight, electric guitar effect")
     }
 
     // The companion app puts its own trial banner in the chrome above the
