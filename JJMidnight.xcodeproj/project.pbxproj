@@ -129,7 +129,7 @@
 		96382907F2BC6933B6239EC7 /* JJMidnightAudioUnit.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JJMidnightAudioUnit.swift; sourceTree = "<group>"; };
 		974EFE1DCBA90C11FCB1FFC9 /* AudioUnitHostModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioUnitHostModel.swift; sourceTree = "<group>"; };
 		9A14042492B67A1583DE000E /* Skew.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Skew.swift; sourceTree = "<group>"; };
-		A4743220A41A2135BD8742BA /* JJMidnight.app */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.application; path = JJMidnight.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		A4743220A41A2135BD8742BA /* jj-midnight.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "jj-midnight.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		A592F19AB3B83FD063066F18 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		A7698EDB42E2D1E16254DFB8 /* UserPresetStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserPresetStore.swift; sourceTree = "<group>"; };
 		A8B86D7D1BA45C8A1C30358D /* ObservableAUParameter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ObservableAUParameter.swift; sourceTree = "<group>"; };
@@ -315,7 +315,7 @@
 		E9CEB8206E41012646B765B6 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				A4743220A41A2135BD8742BA /* JJMidnight.app */,
+				A4743220A41A2135BD8742BA /* jj-midnight.app */,
 				571D79333EE20F5FFD13E355 /* JJMidnightExtension.appex */,
 				191D538C85F48587B814F463 /* JJMidnightScreenshots.xctest */,
 			);
@@ -404,7 +404,7 @@
 			packageProductDependencies = (
 			);
 			productName = JJMidnight;
-			productReference = A4743220A41A2135BD8742BA /* JJMidnight.app */;
+			productReference = A4743220A41A2135BD8742BA /* jj-midnight.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -591,7 +591,7 @@
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				CODE_SIGN_STYLE = Automatic;
 				COPY_PHASE_STRIP = NO;
-				CURRENT_PROJECT_VERSION = 2;
+				CURRENT_PROJECT_VERSION = 3;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_TEAM = C9LBGZNZ6P;
 				ENABLE_NS_ASSERTIONS = NO;
@@ -631,18 +631,37 @@
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = JJMidnight/JJMidnight.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CURRENT_PROJECT_VERSION = 3;
 				GENERATE_INFOPLIST_FILE = NO;
-				HEADER_SEARCH_PATHS = "$(SRCROOT)/JJMidnightExtension/DSP $(SRCROOT)/JJMidnightExtension/Parameters $(SRCROOT)/JJMidnightExtension/Common/DSP";
+				HEADER_SEARCH_PATHS = (
+					"$(SRCROOT)/JJMidnightExtension/DSP",
+					"$(SRCROOT)/JJMidnightExtension/Parameters",
+					"$(SRCROOT)/JJMidnightExtension/Common/DSP",
+				);
 				INFOPLIST_FILE = JJMidnight/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				OTHER_LDFLAGS = "-framework AudioToolbox -framework AVFoundation -framework CoreAudioKit";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				OTHER_LDFLAGS = (
+					"-framework",
+					AudioToolbox,
+					"-framework",
+					AVFoundation,
+					"-framework",
+					CoreAudioKit,
+				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.gerov.jjmidnight;
 				PRODUCT_NAME = "jj-midnight";
 				SDKROOT = iphoneos;
 				SWIFT_OBJC_BRIDGING_HEADER = "JJMidnight/Common/JJMidnightApp-Bridging-Header.h";
 				SWIFT_OBJC_INTEROP_MODE = objcxx;
 				TARGETED_DEVICE_FAMILY = "1,2";
-				USER_HEADER_SEARCH_PATHS = "$(SRCROOT)/JJMidnightExtension/DSP $(SRCROOT)/JJMidnightExtension/Parameters $(SRCROOT)/JJMidnightExtension/Common/DSP";
+				USER_HEADER_SEARCH_PATHS = (
+					"$(SRCROOT)/JJMidnightExtension/DSP",
+					"$(SRCROOT)/JJMidnightExtension/Parameters",
+					"$(SRCROOT)/JJMidnightExtension/Common/DSP",
+				);
 			};
 			name = Debug;
 		};
@@ -672,10 +691,25 @@
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = JJMidnightExtension/JJMidnightExtension.entitlements;
 				GENERATE_INFOPLIST_FILE = NO;
-				HEADER_SEARCH_PATHS = "$(SRCROOT)/JJMidnightExtension/DSP $(SRCROOT)/JJMidnightExtension/Parameters $(SRCROOT)/JJMidnightExtension/Common/DSP";
+				HEADER_SEARCH_PATHS = (
+					"$(SRCROOT)/JJMidnightExtension/DSP",
+					"$(SRCROOT)/JJMidnightExtension/Parameters",
+					"$(SRCROOT)/JJMidnightExtension/Common/DSP",
+				);
 				INFOPLIST_FILE = JJMidnightExtension/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
-				OTHER_LDFLAGS = "-framework AudioToolbox -framework AVFoundation -framework CoreAudioKit";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				OTHER_LDFLAGS = (
+					"-framework",
+					AudioToolbox,
+					"-framework",
+					AVFoundation,
+					"-framework",
+					CoreAudioKit,
+				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.gerov.jjmidnight.AUv3;
 				PRODUCT_MODULE_NAME = JJMidnightExtension;
 				PRODUCT_NAME = JJMidnightExtension;
@@ -684,7 +718,11 @@
 				SWIFT_OBJC_BRIDGING_HEADER = "JJMidnightExtension/Common/JJMidnight-Bridging-Header.h";
 				SWIFT_OBJC_INTEROP_MODE = objcxx;
 				TARGETED_DEVICE_FAMILY = "1,2";
-				USER_HEADER_SEARCH_PATHS = "$(SRCROOT)/JJMidnightExtension/DSP $(SRCROOT)/JJMidnightExtension/Parameters $(SRCROOT)/JJMidnightExtension/Common/DSP";
+				USER_HEADER_SEARCH_PATHS = (
+					"$(SRCROOT)/JJMidnightExtension/DSP",
+					"$(SRCROOT)/JJMidnightExtension/Parameters",
+					"$(SRCROOT)/JJMidnightExtension/Common/DSP",
+				);
 			};
 			name = Release;
 		};
@@ -697,10 +735,25 @@
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = JJMidnightExtension/JJMidnightExtension.entitlements;
 				GENERATE_INFOPLIST_FILE = NO;
-				HEADER_SEARCH_PATHS = "$(SRCROOT)/JJMidnightExtension/DSP $(SRCROOT)/JJMidnightExtension/Parameters $(SRCROOT)/JJMidnightExtension/Common/DSP";
+				HEADER_SEARCH_PATHS = (
+					"$(SRCROOT)/JJMidnightExtension/DSP",
+					"$(SRCROOT)/JJMidnightExtension/Parameters",
+					"$(SRCROOT)/JJMidnightExtension/Common/DSP",
+				);
 				INFOPLIST_FILE = JJMidnightExtension/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
-				OTHER_LDFLAGS = "-framework AudioToolbox -framework AVFoundation -framework CoreAudioKit";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				OTHER_LDFLAGS = (
+					"-framework",
+					AudioToolbox,
+					"-framework",
+					AVFoundation,
+					"-framework",
+					CoreAudioKit,
+				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.gerov.jjmidnight.AUv3;
 				PRODUCT_MODULE_NAME = JJMidnightExtension;
 				PRODUCT_NAME = JJMidnightExtension;
@@ -709,7 +762,11 @@
 				SWIFT_OBJC_BRIDGING_HEADER = "JJMidnightExtension/Common/JJMidnight-Bridging-Header.h";
 				SWIFT_OBJC_INTEROP_MODE = objcxx;
 				TARGETED_DEVICE_FAMILY = "1,2";
-				USER_HEADER_SEARCH_PATHS = "$(SRCROOT)/JJMidnightExtension/DSP $(SRCROOT)/JJMidnightExtension/Parameters $(SRCROOT)/JJMidnightExtension/Common/DSP";
+				USER_HEADER_SEARCH_PATHS = (
+					"$(SRCROOT)/JJMidnightExtension/DSP",
+					"$(SRCROOT)/JJMidnightExtension/Parameters",
+					"$(SRCROOT)/JJMidnightExtension/Common/DSP",
+				);
 			};
 			name = Debug;
 		};
@@ -765,7 +822,7 @@
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				CODE_SIGN_STYLE = Automatic;
 				COPY_PHASE_STRIP = NO;
-				CURRENT_PROJECT_VERSION = 2;
+				CURRENT_PROJECT_VERSION = 3;
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				DEVELOPMENT_TEAM = C9LBGZNZ6P;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
@@ -812,18 +869,37 @@
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = JJMidnight/JJMidnight.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CURRENT_PROJECT_VERSION = 3;
 				GENERATE_INFOPLIST_FILE = NO;
-				HEADER_SEARCH_PATHS = "$(SRCROOT)/JJMidnightExtension/DSP $(SRCROOT)/JJMidnightExtension/Parameters $(SRCROOT)/JJMidnightExtension/Common/DSP";
+				HEADER_SEARCH_PATHS = (
+					"$(SRCROOT)/JJMidnightExtension/DSP",
+					"$(SRCROOT)/JJMidnightExtension/Parameters",
+					"$(SRCROOT)/JJMidnightExtension/Common/DSP",
+				);
 				INFOPLIST_FILE = JJMidnight/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				OTHER_LDFLAGS = "-framework AudioToolbox -framework AVFoundation -framework CoreAudioKit";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				OTHER_LDFLAGS = (
+					"-framework",
+					AudioToolbox,
+					"-framework",
+					AVFoundation,
+					"-framework",
+					CoreAudioKit,
+				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.gerov.jjmidnight;
 				PRODUCT_NAME = "jj-midnight";
 				SDKROOT = iphoneos;
 				SWIFT_OBJC_BRIDGING_HEADER = "JJMidnight/Common/JJMidnightApp-Bridging-Header.h";
 				SWIFT_OBJC_INTEROP_MODE = objcxx;
 				TARGETED_DEVICE_FAMILY = "1,2";
-				USER_HEADER_SEARCH_PATHS = "$(SRCROOT)/JJMidnightExtension/DSP $(SRCROOT)/JJMidnightExtension/Parameters $(SRCROOT)/JJMidnightExtension/Common/DSP";
+				USER_HEADER_SEARCH_PATHS = (
+					"$(SRCROOT)/JJMidnightExtension/DSP",
+					"$(SRCROOT)/JJMidnightExtension/Parameters",
+					"$(SRCROOT)/JJMidnightExtension/Common/DSP",
+				);
 			};
 			name = Release;
 		};
