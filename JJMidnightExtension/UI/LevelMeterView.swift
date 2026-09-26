@@ -1,16 +1,12 @@
 import SwiftUI
 
 struct LevelMeterView: View {
-    let audioUnit: JJMidnightAudioUnit?
+    let meters: MeterViewModel
 
     var body: some View {
-        TimelineView(.periodic(from: .now, by: 1.0 / 20.0)) { context in
-            let peaks = audioUnit?.takeMeterPeaks() ?? (0, 0)
-            let env = Envelope.shared.tick(now: context.date, peaks: peaks)
-            MeterBars(input: env.input, output: env.output, theme: GearTheme.current)
-        }
-        .frame(width: 58, height: 32)
-        .accessibilityHidden(true)
+        MeterBars(input: meters.headerInput, output: meters.headerOutput, theme: GearTheme.current)
+            .frame(width: 58, height: 32)
+            .accessibilityHidden(true)
     }
 }
 
@@ -80,21 +76,19 @@ private struct MeterBars: View {
     }
 }
 
-/// Holds decaying peak envelopes so the DSP can reset peaks each poll.
-private final class Envelope: @unchecked Sendable {
-    static let shared = Envelope()
-    private var input: Float = 0
-    private var output: Float = 0
-    private var lastDate = Date.distantPast
+/// Decaying peak envelopes for the header ladders, so the DSP can reset its
+/// peaks on every read.
+///
+/// Falls to 72 % every 50 ms — the rate the ladder was tuned at when it
+/// polled at 20 Hz — scaled to however long it has actually been since the
+/// last tick, so the fall looks the same at any frame rate.
+final class HeaderLevelEnvelope {
+    private(set) var input: Float = 0
+    private(set) var output: Float = 0
 
-    func tick(now: Date, peaks: (input: Float, output: Float)) -> (input: Float, output: Float) {
-        // TimelineView may evaluate the view builder more than once per frame.
-        // Only consume DSP peaks on a real time step.
-        if now.timeIntervalSince(lastDate) > 0.02 {
-            lastDate = now
-            input = max(input * 0.72, peaks.input)
-            output = max(output * 0.72, peaks.output)
-        }
-        return (input, output)
+    func tick(dt: Double, peaks: (input: Float, output: Float)) {
+        let decay = Float(pow(0.72, dt / 0.05))
+        input = max(input * decay, peaks.input)
+        output = max(output * decay, peaks.output)
     }
 }

@@ -1,6 +1,5 @@
 import SwiftUI
 import AudioToolbox
-import UIKit
 
 /// Max knob diameter for the whole panel, computed once from the panel
 /// width (see JJMidnightMainView.knobDiameter(forPanelWidth:)) and read by
@@ -37,6 +36,7 @@ struct KnobView: View {
     @State private var showValueEditor = false
     @State private var typedValue = ""
     @State private var showHelp = false
+    @State private var resets = 0
     @Environment(\.knobDiameter) private var knobDiameter
 
     private var range: SkewedRange {
@@ -65,9 +65,10 @@ struct KnobView: View {
                 .onLongPressGesture {
                     if helpText != nil {
                         showHelp = true
-                        UIImpactFeedbackGenerator(style: .light).impactOccurred()
                     }
                 }
+                .sensoryFeedback(.impact(weight: .light), trigger: showHelp) { _, isShown in isShown }
+                .sensoryFeedback(.impact(weight: .medium), trigger: resets)
 
             AnalogKnob(normalized: normalized, accent: GearTheme.accent, theme: GearTheme.current)
                 .aspectRatio(1, contentMode: .fit)
@@ -216,7 +217,7 @@ struct KnobView: View {
             peer.onEditingChanged(false)
         }
         param.onEditingChanged(false)
-        UIImpactFeedbackGenerator(style: .medium).impactOccurred()
+        resets += 1
     }
 
     private func commitTypedValue() {

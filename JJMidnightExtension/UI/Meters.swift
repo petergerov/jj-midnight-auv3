@@ -79,19 +79,15 @@ private struct BarScale: View {
 ///   few dB take up far more of the bar than the last few — 0–6 dB is where
 ///   the work happens and 20 dB just means "too much".
 struct GainReductionMeter: View {
-    let audioUnit: JJMidnightAudioUnit?
+    let meters: MeterViewModel
 
     private let fullScaleDb: Double = 20
 
     var body: some View {
-        TimelineView(.animation) { context in
-            let target = audioUnit?.gainReductionDb() ?? 0
-            let shown = GainReductionFollower.shared.tick(now: context.date, target: target)
-            content(reductionDb: shown)
-        }
-        .accessibilityElement()
-        .accessibilityLabel("Gain reduction")
-        .accessibilityValue(String(format: "%.1f decibels", max(0, audioUnit?.gainReductionDb() ?? 0)))
+        content(reductionDb: meters.gainReductionDb)
+            .accessibilityElement()
+            .accessibilityLabel("Gain reduction")
+            .accessibilityValue(String(format: "%.1f decibels", max(0, meters.gainReductionDb)))
     }
 
     /// dB to a fraction of the track measured from the **right** edge.
@@ -153,16 +149,12 @@ struct GainReductionMeter: View {
 /// make-up reaches +13 dB — and a clip after all that is
 /// easy to miss. Hence the peak-hold ticks and the latching clip lamp.
 struct OutputMeter: View {
-    let audioUnit: JJMidnightAudioUnit?
+    let meters: MeterViewModel
 
     var body: some View {
-        TimelineView(.animation) { context in
-            let peaks = audioUnit?.takeOutputPeaks() ?? (0, 0)
-            let state = OutputFollower.shared.tick(now: context.date, peaks: peaks)
-            content(state)
-        }
-        .accessibilityElement()
-        .accessibilityLabel("Output level")
+        content(meters.output)
+            .accessibilityElement()
+            .accessibilityLabel("Output level")
     }
 
     /// dBFS to a fraction of the track. Linear in dB over a 54 dB window,
@@ -252,9 +244,7 @@ struct OutputMeter: View {
 /// Measured at 60 Hz: 99% in 233 ms with 2.4% overshoot. Integrated
 /// semi-implicitly (velocity first, then position) because plain Euler goes
 /// unstable at this stiffness the moment a frame is dropped.
-private final class GainReductionFollower: @unchecked Sendable {
-    static let shared = GainReductionFollower()
-
+final class GainReductionFollower {
     private var position: Double = 0
     private var velocity: Double = 0
     private var lastDate: Date?
@@ -287,8 +277,8 @@ private final class GainReductionFollower: @unchecked Sendable {
 /// Output level ballistics: instant rise, then a fixed fall in dB per second,
 /// which is how a peak programme meter behaves. Spring ballistics would be
 /// wrong here — for level you want to see the peak, not a mass chasing it.
-private final class OutputFollower: @unchecked Sendable {
-    struct State {
+final class OutputFollower {
+    struct State: Equatable {
         var leftDb: Double
         var rightDb: Double
         var leftHoldDb: Double
@@ -297,8 +287,6 @@ private final class OutputFollower: @unchecked Sendable {
         var holdDb: Double
         var clipped: Bool
     }
-
-    static let shared = OutputFollower()
 
     private var left: Double = -120
     private var right: Double = -120
@@ -379,14 +367,14 @@ private final class OutputFollower: @unchecked Sendable {
 /// playing; the number is what you set the trim by, and the band drawn on the
 /// track is where the compressor threshold and the drive curve actually live.
 struct InputMeter: View {
-    let audioUnit: JJMidnightAudioUnit?
+    let meters: MeterViewModel
 
     /// The window the chain is built around. Comp's make-up assumes a −10 dBFS
     /// source, and the drive curve starts to bend in the same region; below
     /// this the Comp knob is only make-up and the GR meter correctly reads
     /// zero. Not a clip warning — the top of the band is nowhere near 0 dBFS.
-    private static let targetLowDb: Double = -15
-    private static let targetHighDb: Double = -8
+    nonisolated private static let targetLowDb: Double = -15
+    nonisolated private static let targetHighDb: Double = -8
     /// Matches OutputMeter.floorDb. The two bars sit one above the other; if
     /// their scales differed, the eye would compare them anyway and be wrong.
     private static let floorDb: Double = -54
@@ -396,14 +384,10 @@ struct InputMeter: View {
     }
 
     var body: some View {
-        TimelineView(.animation) { context in
-            let peak = audioUnit?.takeInputPeak() ?? 0
-            let state = InputFollower.shared.tick(now: context.date, peak: peak)
-            content(state)
-        }
-        .accessibilityElement()
-        .accessibilityLabel("Input level")
-        .accessibilityValue(Self.readout(InputFollower.shared.lastHoldDb))
+        content(meters.input)
+            .accessibilityElement()
+            .accessibilityLabel("Input level")
+            .accessibilityValue(Self.readout(meters.input.holdDb))
     }
 
     private static func readout(_ db: Double) -> String {
@@ -492,13 +476,11 @@ struct InputMeter: View {
 /// Mono peak ballistics for the input: instant rise, timed fall, 1.5 s hold —
 /// the same programme-meter behaviour as the output pair, which is what lets
 /// the two readouts be compared directly.
-private final class InputFollower: @unchecked Sendable {
-    struct State {
+final class InputFollower {
+    struct State: Equatable {
         var db: Double
         var holdDb: Double
     }
-
-    static let shared = InputFollower()
 
     private var level: Double = -120
     private var hold: Double = -120
@@ -507,10 +489,6 @@ private final class InputFollower: @unchecked Sendable {
 
     private let fallDbPerSecond: Double = 20
     private let holdSeconds: Double = 1.5
-
-    /// For the accessibility value, which is read outside the timeline tick
-    /// and must not consume a peak.
-    var lastHoldDb: Double { hold }
 
     func tick(now: Date, peak: Float) -> State {
         let dt: Double

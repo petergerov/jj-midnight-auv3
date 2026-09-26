@@ -1,32 +1,37 @@
 import Foundation
 
 /// Cached unlock / trial state shared between the container app and AUv3 extension.
-/// Trial start = first launch date (Gig Songbook pattern), stored in App Group + standard defaults.
+/// Trial start = first launch date (Gig Songbook pattern), stored in `SharedDefaults`.
 enum UnlockStore {
     private static let effectAllowedKey = "jjmidnight.effectAllowed.v1"
     private static let accessStateKey = "jjmidnight.accessState.v1"
     private static let installDateKey = "jjmidnight.installDate.v1"
 
+    private static var defaults: UserDefaults { SharedDefaults.primary }
+
     static var cachedEffectAllowed: Bool {
-        if let suite = groupDefaults, suite.object(forKey: effectAllowedKey) != nil {
-            return suite.bool(forKey: effectAllowedKey)
-        }
-        if UserDefaults.standard.object(forKey: effectAllowedKey) != nil {
-            return UserDefaults.standard.bool(forKey: effectAllowedKey)
+        for store in [defaults, SharedDefaults.legacy].compactMap({ $0 })
+        where store.object(forKey: effectAllowedKey) != nil {
+            return store.bool(forKey: effectAllowedKey)
         }
         // Before first refresh: assume trial so audio is not dry on cold start.
         return true
     }
 
     static var cachedAccessState: AccessState {
-        let raw = groupDefaults?.string(forKey: accessStateKey)
-            ?? UserDefaults.standard.string(forKey: accessStateKey)
+        let raw = defaults.string(forKey: accessStateKey)
+            ?? SharedDefaults.legacy?.string(forKey: accessStateKey)
         return decode(raw) ?? computeAccessState(hasUnlock: false)
     }
 
+    /// The trial clock's start. A date only an earlier build's second copy
+    /// holds is carried forward, so moving to one store never restarts the
+    /// trial.
     static var installDate: Date? {
-        if let date = groupDefaults?.object(forKey: installDateKey) as? Date { return date }
-        return UserDefaults.standard.object(forKey: installDateKey) as? Date
+        if let date = defaults.object(forKey: installDateKey) as? Date { return date }
+        guard let date = SharedDefaults.legacy?.object(forKey: installDateKey) as? Date else { return nil }
+        defaults.set(date, forKey: installDateKey)
+        return date
     }
 
     /// Records first launch if missing (both app and extension call this).
@@ -34,7 +39,7 @@ enum UnlockStore {
     static func ensureInstallDate() -> Date {
         if let existing = installDate { return existing }
         let now = Date()
-        writeInstallDate(now)
+        defaults.set(now, forKey: installDateKey)
         return now
     }
 
@@ -51,28 +56,8 @@ enum UnlockStore {
     }
 
     static func write(accessState: AccessState) {
-        let allowed = accessState.isEffectAllowed
-        let encoded = encode(accessState)
-        if let suite = groupDefaults {
-            suite.set(allowed, forKey: effectAllowedKey)
-            suite.set(encoded, forKey: accessStateKey)
-        }
-        UserDefaults.standard.set(allowed, forKey: effectAllowedKey)
-        UserDefaults.standard.set(encoded, forKey: accessStateKey)
-    }
-
-    private static func writeInstallDate(_ date: Date) {
-        if let suite = groupDefaults {
-            suite.set(date, forKey: installDateKey)
-        }
-        UserDefaults.standard.set(date, forKey: installDateKey)
-    }
-
-    private static var groupDefaults: UserDefaults? {
-        guard FileManager.default.containerURL(forSecurityApplicationGroupIdentifier: UserPresetStore.appGroupID) != nil else {
-            return nil
-        }
-        return UserDefaults(suiteName: UserPresetStore.appGroupID)
+        defaults.set(accessState.isEffectAllowed, forKey: effectAllowedKey)
+        defaults.set(encode(accessState), forKey: accessStateKey)
     }
 
     private static func encode(_ state: AccessState) -> String {

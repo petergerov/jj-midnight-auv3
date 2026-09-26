@@ -31,6 +31,36 @@ struct FactoryPreset: Sendable {
         preset.name = name
         return preset
     }
+
+    /// Every parameter this preset sets, by address — the one place the
+    /// fields above are tied to the parameter tree.
+    ///
+    /// Input trim is not in the list: it is set for the rig rather than the
+    /// sound, so changing presets leaves it where the player put it.
+    var parameterValues: [(address: JJMidnightParameterAddress, value: AUValue)] {
+        [
+            (.compAmount, compAmount),
+            (.compAttack, compAttack),
+            (.compRelease, compRelease),
+            (.driveAmount, driveAmount),
+            (.driveTone, driveTone),
+            (.driveCab, driveCab),
+            (.wobbleRate, wobbleRate),
+            (.wobbleDepth, wobbleDepth),
+            (.wobbleShape, wobbleShape),
+            (.wobbleDivision, wobbleDivision),
+            (.slapTime, slapTime),
+            (.slapMix, slapMix),
+            (.springMix, springMix),
+            (.masterMix, masterMix),
+            (.masterOutput, masterOutput),
+            (.compOn, compOn ? 1 : 0),
+            (.driveOn, driveOn ? 1 : 0),
+            (.wobbleOn, wobbleOn ? 1 : 0),
+            (.wobbleSync, wobbleSync ? 1 : 0),
+            (.spaceOn, spaceOn ? 1 : 0),
+        ]
+    }
 }
 
 /// The engine underneath is a generic vintage clean / low-gain chain; these

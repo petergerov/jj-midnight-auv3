@@ -61,8 +61,9 @@ public class AudioUnitViewController: AUViewController, AUAudioUnitFactory {
         }
 
         guard let observableParameterTree = audioUnit.observableParameterTree else { return }
-        let breezeAU = audioUnit as? JJMidnightAudioUnit
-        let content = JJMidnightMainView(parameterTree: observableParameterTree, audioUnit: breezeAU)
+        let model = MainPanelViewModel(audioUnit: audioUnit as? JJMidnightAudioUnit,
+                                       entitlement: EntitlementService.shared)
+        let content = JJMidnightMainView(parameterTree: observableParameterTree, model: model)
         preferredContentSize = idealInitialContentSize(for: content)
         let host = HostingController(rootView: content)
         self.addChild(host)

@@ -2,7 +2,7 @@ import StoreKit
 import SwiftUI
 
 struct PaywallView: View {
-    @Bindable var entitlement: EntitlementService
+    let entitlement: EntitlementService
     var showsCloseWhenAllowed = false
     var onDismiss: (() -> Void)?
 

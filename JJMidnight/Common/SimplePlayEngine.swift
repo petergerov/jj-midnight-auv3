@@ -98,7 +98,7 @@ public class SimplePlayEngine {
         var local = AudioComponentDescription()
         local.componentType = kAudioUnitType_Effect
         local.componentSubType = "JjtH".fourCharCode ?? 0
-        local.componentManufacturer = "Grov".fourCharCode ?? 0
+        local.componentManufacturer = AudioUnitIdentity.manufacturer.fourCharCode ?? 0
         local.componentFlags = 0
         local.componentFlagsMask = 0
 
@@ -135,7 +135,8 @@ public class SimplePlayEngine {
             lastError = "Effect parameters failed to load."
             return nil
         }
-        let host = HostingController(rootView: JJMidnightMainView(parameterTree: tree, audioUnit: unit))
+        let model = MainPanelViewModel(audioUnit: unit, entitlement: EntitlementService.shared)
+        let host = HostingController(rootView: JJMidnightMainView(parameterTree: tree, model: model))
         host.view.backgroundColor = .black
         return host
     }

@@ -105,47 +105,61 @@ public class JJMidnightAudioUnit: AUAudioUnit, @unchecked Sendable {
     public override var supportsUserPresets: Bool { true }
 
     public override var userPresets: [AUAudioUnitPreset] {
-        UserPresetStore.load().map { record in
-            let preset = AUAudioUnitPreset()
-            preset.number = record.number
-            preset.name = record.name
-            return preset
-        }
+        UserPresetStore.loadLibrary().records.map(\.auPreset)
     }
 
     public override func saveUserPreset(_ userPreset: AUAudioUnitPreset) throws {
         guard userPreset.number < 0 else { throw JJMidnightPresetError.persistFailed }
-        let snapshot = currentParameterSnapshot()
-        var records = UserPresetStore.load()
-        if let index = records.firstIndex(where: { $0.number == userPreset.number }) {
-            records[index].name = userPreset.name
-            records[index].values = snapshot
-        } else if let index = records.firstIndex(where: { $0.name.caseInsensitiveCompare(userPreset.name) == .orderedSame }) {
-            records[index].values = snapshot
-        } else {
-            records.append(UserPresetRecord(number: userPreset.number, name: userPreset.name, values: snapshot))
-        }
-        willChangeValue(forKey: "userPresets")
-        try UserPresetStore.save(records)
-        didChangeValue(forKey: "userPresets")
+        var library = UserPresetStore.loadLibrary()
+        library.save(number: userPreset.number, name: userPreset.name, values: currentParameterSnapshot())
+        try persist(library)
     }
 
     public override func deleteUserPreset(_ userPreset: AUAudioUnitPreset) throws {
-        var records = UserPresetStore.load()
-        records.removeAll { $0.number == userPreset.number }
-        willChangeValue(forKey: "userPresets")
-        try UserPresetStore.save(records)
-        didChangeValue(forKey: "userPresets")
+        var library = UserPresetStore.loadLibrary()
+        library.remove(number: userPreset.number)
+        try persist(library)
     }
 
+    /// Saves the library and tells KVO observers of `userPresets` — hosts
+    /// and our own preset bar — that the list changed.
+    private func persist(_ library: UserPresetLibrary) throws {
+        willChangeValue(forKey: "userPresets")
+        defer { didChangeValue(forKey: "userPresets") }
+        try UserPresetStore.save(library)
+    }
+
+    /// Parameter values by identifier, carried alongside the system's own
+    /// state so `presetState(for:)` can describe a preset without loading it.
+    /// States saved before this key existed restore through `super` alone.
+    private static let parameterValuesStateKey = "jjmidnight.parameterValues"
+
+    public override var fullState: [String: Any]? {
+        get {
+            var state = super.fullState ?? [:]
+            state[Self.parameterValuesStateKey] = currentParameterSnapshot()
+            return state
+        }
+        set {
+            super.fullState = newValue
+            if let stored = newValue?[Self.parameterValuesStateKey] as? [String: NSNumber] {
+                applyUserValues(stored.mapValues(\.floatValue))
+            }
+        }
+    }
+
+    /// Built from the stored record rather than by loading the preset and
+    /// reading `fullState` back: loading it would be heard on the render
+    /// thread and reported to the host as parameter changes.
     public override func presetState(for userPreset: AUAudioUnitPreset) throws -> [String: Any] {
         guard let record = matchingRecord(for: userPreset) else {
             throw JJMidnightPresetError.notFound
         }
-        let previous = currentParameterSnapshot()
-        applyUserValues(record.values)
-        let state = fullState ?? [:]
-        applyUserValues(previous)
+        // A record saved before a parameter existed leaves that parameter
+        // where it is, the same as selecting the preset does.
+        let values = currentParameterSnapshot().merging(record.values) { _, stored in stored }
+        var state = super.fullState ?? [:]
+        state[Self.parameterValuesStateKey] = values
         return state
     }
 
@@ -166,7 +180,6 @@ public class JJMidnightAudioUnit: AUAudioUnit, @unchecked Sendable {
             }
             _currentPreset = preset
             loadedSnapshot = currentParameterSnapshot()
-            NotificationCenter.default.post(name: .jjMidnightPresetChanged, object: self)
         }
     }
 
@@ -174,13 +187,10 @@ public class JJMidnightAudioUnit: AUAudioUnit, @unchecked Sendable {
         let trimmed = name.trimmingCharacters(in: .whitespacesAndNewlines)
         guard !trimmed.isEmpty else { throw JJMidnightPresetError.emptyName }
 
+        let library = UserPresetStore.loadLibrary()
         let preset = AUAudioUnitPreset()
         preset.name = trimmed
-        if let existing = userPresets.first(where: { $0.name.caseInsensitiveCompare(trimmed) == .orderedSame }) {
-            preset.number = existing.number
-        } else {
-            preset.number = nextUserPresetNumber()
-        }
+        preset.number = library.record(named: trimmed)?.number ?? library.nextNumber
         try saveUserPreset(preset)
         currentPreset = preset
     }
@@ -190,14 +200,9 @@ public class JJMidnightAudioUnit: AUAudioUnit, @unchecked Sendable {
         guard !trimmed.isEmpty else { throw JJMidnightPresetError.emptyName }
         guard preset.number < 0 else { return }
 
-        var records = UserPresetStore.load()
-        guard let index = records.firstIndex(where: { $0.number == preset.number }) else {
-            throw JJMidnightPresetError.notFound
-        }
-        records[index].name = trimmed
-        willChangeValue(forKey: "userPresets")
-        try UserPresetStore.save(records)
-        didChangeValue(forKey: "userPresets")
+        var library = UserPresetStore.loadLibrary()
+        try library.rename(number: preset.number, to: trimmed)
+        try persist(library)
 
         if _currentPreset?.number == preset.number {
             let updated = AUAudioUnitPreset()
@@ -206,7 +211,6 @@ public class JJMidnightAudioUnit: AUAudioUnit, @unchecked Sendable {
             willChangeValue(forKey: "currentPreset")
             _currentPreset = updated
             didChangeValue(forKey: "currentPreset")
-            NotificationCenter.default.post(name: .jjMidnightPresetChanged, object: self)
         }
     }
 
@@ -219,24 +223,8 @@ public class JJMidnightAudioUnit: AUAudioUnit, @unchecked Sendable {
         }
     }
 
-    private func nextUserPresetNumber() -> Int {
-        let used = Set(UserPresetStore.load().map(\.number))
-        var number = -1
-        while used.contains(number) {
-            number -= 1
-        }
-        return number
-    }
-
     private func matchingRecord(for preset: AUAudioUnitPreset) -> UserPresetRecord? {
-        let records = UserPresetStore.load()
-        if let match = records.first(where: { $0.number == preset.number && $0.name == preset.name }) {
-            return match
-        }
-        if let match = records.first(where: { $0.number == preset.number }) {
-            return match
-        }
-        return records.first(where: { $0.name == preset.name })
+        UserPresetStore.loadLibrary().record(number: preset.number, name: preset.name)
     }
 
     private func currentParameterSnapshot() -> [String: Float] {
@@ -277,36 +265,11 @@ public class JJMidnightAudioUnit: AUAudioUnit, @unchecked Sendable {
         kernel.setLicensed(UnlockStore.cachedEffectAllowed)
     }
 
-    public func refreshLicenseFromStore() async {
-        await EntitlementService.shared.refresh()
-        applyLicenseFromStore()
-    }
-
     func applyFactoryPreset(_ number: Int) {
         guard let preset = FactoryPresets.all.first(where: { $0.number == number }), let tree = parameterTree else { return }
-        func set(_ address: JJMidnightParameterAddress, _ value: AUValue) {
+        for (address, value) in preset.parameterValues {
             tree.parameter(withAddress: address.rawValue)?.value = value
         }
-        set(.compAmount, preset.compAmount)
-        set(.compAttack, preset.compAttack)
-        set(.compRelease, preset.compRelease)
-        set(.driveAmount, preset.driveAmount)
-        set(.driveTone, preset.driveTone)
-        set(.driveCab, preset.driveCab)
-        set(.wobbleRate, preset.wobbleRate)
-        set(.wobbleDepth, preset.wobbleDepth)
-        set(.wobbleShape, preset.wobbleShape)
-        set(.wobbleDivision, preset.wobbleDivision)
-        set(.slapTime, preset.slapTime)
-        set(.slapMix, preset.slapMix)
-        set(.springMix, preset.springMix)
-        set(.masterMix, preset.masterMix)
-        set(.masterOutput, preset.masterOutput)
-        set(.compOn, preset.compOn ? 1 : 0)
-        set(.driveOn, preset.driveOn ? 1 : 0)
-        set(.wobbleOn, preset.wobbleOn ? 1 : 0)
-        set(.wobbleSync, preset.wobbleSync ? 1 : 0)
-        set(.spaceOn, preset.spaceOn ? 1 : 0)
     }
 
     private func setupParameterCallbacks() {
@@ -400,18 +363,5 @@ public class JJMidnightAudioUnit: AUAudioUnit, @unchecked Sendable {
             }
         }
         return false
-    }
-
-    func stepPreset(by delta: Int) {
-        let factory = factoryPresets ?? []
-        let user = userPresets.sorted {
-            $0.name.localizedCaseInsensitiveCompare($1.name) == .orderedAscending
-        }
-        let all = factory + user
-        guard !all.isEmpty else { return }
-        let currentNumber = _currentPreset?.number
-        let index = all.firstIndex(where: { $0.number == currentNumber }) ?? 0
-        let next = (index + delta + all.count * 8) % all.count
-        currentPreset = all[next]
     }
 }

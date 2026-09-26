@@ -2,6 +2,7 @@
 
 #include <AudioToolbox/AudioToolbox.h>
 #include <algorithm>
+#include <atomic>
 #include <cmath>
 #include <span>
 #include <vector>
@@ -77,68 +78,24 @@ public:
         mInitialized = false;
     }
 
-    bool isBypassed() const { return mBypassed; }
-    void setBypass(bool shouldBypass) { mBypassed = shouldBypass; }
+    bool isBypassed() const { return loadRelaxed(mBypassed); }
+    void setBypass(bool shouldBypass) { storeRelaxed(mBypassed, shouldBypass); }
 
-    bool isLicensed() const { return mLicensed; }
-    void setLicensed(bool licensed) { mLicensed = licensed; }
+    bool isLicensed() const { return loadRelaxed(mLicensed); }
+    void setLicensed(bool licensed) { storeRelaxed(mLicensed, licensed); }
 
     void setParameter(AUParameterAddress address, AUValue value)
     {
-        switch (address)
-        {
-            case JJMidnightParameterAddress::compAmount:   mCompAmount = value; break;
-            case JJMidnightParameterAddress::compAttack:   mCompAttack = value; break;
-            case JJMidnightParameterAddress::compRelease:  mCompRelease = value; break;
-            case JJMidnightParameterAddress::compOn:       mCompOn = value; break;
-            case JJMidnightParameterAddress::driveAmount:  mDriveAmount = value; break;
-            case JJMidnightParameterAddress::driveTone:    mDriveTone = value; break;
-            case JJMidnightParameterAddress::driveCab:     mDriveCab = value; break;
-            case JJMidnightParameterAddress::driveOn:      mDriveOn = value; break;
-            case JJMidnightParameterAddress::wobbleRate:   mWobbleRate = value; break;
-            case JJMidnightParameterAddress::wobbleDepth:  mWobbleDepth = value; break;
-            case JJMidnightParameterAddress::wobbleShape:  mWobbleShape = value; break;
-            case JJMidnightParameterAddress::wobbleOn:     mWobbleOn = value; break;
-            case JJMidnightParameterAddress::wobbleSync:   mWobbleSync = value; break;
-            case JJMidnightParameterAddress::wobbleDivision: mWobbleDivision = value; break;
-            case JJMidnightParameterAddress::slapTime:     mSlapTime = std::clamp(value, 0.0f, 250.0f); break;
-            case JJMidnightParameterAddress::slapMix:      mSlapMix = value; break;
-            case JJMidnightParameterAddress::springMix:    mSpringMix = value; break;
-            case JJMidnightParameterAddress::spaceOn:      mSpaceOn = value; break;
-            case JJMidnightParameterAddress::masterMix:    mMasterMix = value; break;
-            case JJMidnightParameterAddress::masterOutput: mMasterOutput = value; break;
-            case JJMidnightParameterAddress::masterInput:  mMasterInput = value; break;
-            default: break;
-        }
+        if (address == JJMidnightParameterAddress::slapTime)
+            value = std::clamp(value, 0.0f, 250.0f);
+        if (float* slot = parameterSlot(address))
+            storeRelaxed(*slot, value);
     }
 
     AUValue getParameter(AUParameterAddress address)
     {
-        switch (address)
-        {
-            case JJMidnightParameterAddress::compAmount:   return mCompAmount;
-            case JJMidnightParameterAddress::compAttack:   return mCompAttack;
-            case JJMidnightParameterAddress::compRelease:  return mCompRelease;
-            case JJMidnightParameterAddress::compOn:       return mCompOn;
-            case JJMidnightParameterAddress::driveAmount:  return mDriveAmount;
-            case JJMidnightParameterAddress::driveTone:    return mDriveTone;
-            case JJMidnightParameterAddress::driveCab:     return mDriveCab;
-            case JJMidnightParameterAddress::driveOn:      return mDriveOn;
-            case JJMidnightParameterAddress::wobbleRate:   return mWobbleRate;
-            case JJMidnightParameterAddress::wobbleDepth:  return mWobbleDepth;
-            case JJMidnightParameterAddress::wobbleShape:  return mWobbleShape;
-            case JJMidnightParameterAddress::wobbleOn:     return mWobbleOn;
-            case JJMidnightParameterAddress::wobbleSync:   return mWobbleSync;
-            case JJMidnightParameterAddress::wobbleDivision: return mWobbleDivision;
-            case JJMidnightParameterAddress::slapTime:     return mSlapTime;
-            case JJMidnightParameterAddress::slapMix:      return mSlapMix;
-            case JJMidnightParameterAddress::springMix:    return mSpringMix;
-            case JJMidnightParameterAddress::spaceOn:      return mSpaceOn;
-            case JJMidnightParameterAddress::masterMix:    return mMasterMix;
-            case JJMidnightParameterAddress::masterOutput: return mMasterOutput;
-            case JJMidnightParameterAddress::masterInput:  return mMasterInput;
-            default: return 0.f;
-        }
+        float* slot = parameterSlot(address);
+        return slot ? loadRelaxed(*slot) : 0.f;
     }
 
     AUAudioFrameCount maximumFramesToRender() const { return mMaxFramesToRender; }
@@ -157,7 +114,7 @@ public:
         if (! mInitialized || inputBuffers.empty() || outputBuffers.empty())
             return;
 
-        if (mBypassed || ! mLicensed)
+        if (isBypassed() || ! isLicensed())
         {
             float peak = 0.f;
             float channelPeak[2] = { 0.f, 0.f };
@@ -175,16 +132,34 @@ public:
             if (outputBuffers.size() == 1)
                 channelPeak[1] = channelPeak[0];
             capturePeaks(peak, channelPeak[0], channelPeak[1]);
-            mGainReductionDb = 0.f;
+            storeRelaxed(mGainReductionDb, 0.f);
             return;
         }
 
         FlushDenormals denormals;
 
-        const bool compIsOn   = mCompOn > 0.5f;
-        const bool driveIsOn  = mDriveOn > 0.5f;
-        const bool wobbleIsOn = mWobbleOn > 0.5f;
-        const bool spaceIsOn  = mSpaceOn > 0.5f;
+        // One read of each parameter per block. The main thread and the event
+        // list both write these while this runs, so every use below works
+        // from the same snapshot rather than re-reading mid-block.
+        const float compAmount   = loadRelaxed(mCompAmount);
+        const float compAttack   = loadRelaxed(mCompAttack);
+        const float compRelease  = loadRelaxed(mCompRelease);
+        const float driveAmount  = loadRelaxed(mDriveAmount);
+        const float driveTone    = loadRelaxed(mDriveTone);
+        const float driveCab     = loadRelaxed(mDriveCab);
+        const float wobbleDepth  = loadRelaxed(mWobbleDepth);
+        const float wobbleShape  = loadRelaxed(mWobbleShape);
+        const float slapTime     = loadRelaxed(mSlapTime);
+        const float slapMix      = loadRelaxed(mSlapMix);
+        const float springMix    = loadRelaxed(mSpringMix);
+        const float masterMixPct = loadRelaxed(mMasterMix);
+        const float masterOutput = loadRelaxed(mMasterOutput);
+        const float masterInput  = loadRelaxed(mMasterInput);
+
+        const bool compIsOn   = loadRelaxed(mCompOn) > 0.5f;
+        const bool driveIsOn  = loadRelaxed(mDriveOn) > 0.5f;
+        const bool wobbleIsOn = loadRelaxed(mWobbleOn) > 0.5f;
+        const bool spaceIsOn  = loadRelaxed(mSpaceOn) > 0.5f;
 
         // COMP. One knob moves threshold, ratio and makeup together, because
         // an optical cell sets its own ratio and has a single control — the
@@ -198,7 +173,7 @@ public:
         //     thresh  -2.0 dB   -17.4 dB  -30.0 dB
         //     ratio    2.00:1     3.38:1    4.50:1
         //     makeup   0 dB      +4.4 dB   +13.2 dB
-        const float compAmt = std::clamp(mCompAmount * 0.01f, 0.0f, 1.0f);
+        const float compAmt = std::clamp(compAmount * 0.01f, 0.0f, 1.0f);
         const float thresholdDb = -2.0f - compAmt * 28.0f;
         const float ratio = 2.0f + compAmt * 2.5f;
         // Give back roughly what the threshold takes away at a nominal -10 dBFS
@@ -207,42 +182,42 @@ public:
         compressor.setThresholdDb(thresholdDb);
         compressor.setRatio(ratio);
         compressor.setMakeupDb(makeupDb);
-        compressor.setAttackMs(mCompAttack);
-        compressor.setReleaseMs(mCompRelease);
+        compressor.setAttackMs(compAttack);
+        compressor.setReleaseMs(compRelease);
 
         // DRIVE. Body tracks drive rather than being its own control: on a
         // real amp, pushing the front end always thickens the bottom, and an
         // independent body knob just invites settings that sound like a
         // console EQ rather than an amp.
-        const float driveAmt = std::clamp(mDriveAmount * 0.01f, 0.0f, 1.0f);
+        const float driveAmt = std::clamp(driveAmount * 0.01f, 0.0f, 1.0f);
         driveL.setDrive(driveAmt);
         driveR.setDrive(driveAmt);
         driveL.setBodyAmount(driveAmt * 0.3f);
         driveR.setBodyAmount(driveAmt * 0.3f);
-        driveL.setToneHz(mDriveTone);
-        driveR.setToneHz(mDriveTone);
+        driveL.setToneHz(driveTone);
+        driveR.setToneHz(driveTone);
 
-        const float cabPosition = std::clamp(mDriveCab * 0.01f, 0.0f, 1.0f);
+        const float cabPosition = std::clamp(driveCab * 0.01f, 0.0f, 1.0f);
         cabL.setOffAxis(cabPosition);
         cabR.setOffAxis(cabPosition);
 
         // WOBBLE.
         tremolo.setRateHz(wobbleRateHz());
-        tremolo.setDepth(wobbleIsOn ? std::clamp(mWobbleDepth * 0.01f, 0.0f, 1.0f) : 0.0f);
-        tremolo.setShape(std::clamp(mWobbleShape * 0.01f, 0.0f, 1.0f));
+        tremolo.setDepth(wobbleIsOn ? std::clamp(wobbleDepth * 0.01f, 0.0f, 1.0f) : 0.0f);
+        tremolo.setShape(std::clamp(wobbleShape * 0.01f, 0.0f, 1.0f));
 
         // SPACE. One repeat, no feedback — the delay line is a single tap.
-        slapL.setBaseDelayMs(mSlapTime);
-        slapR.setBaseDelayMs(mSlapTime * 1.04f); // barely wider than mono
-        const float slapAmt = spaceIsOn ? std::clamp(mSlapMix * 0.01f, 0.0f, 1.0f) : 0.0f;
-        const float springAmt = spaceIsOn ? std::clamp(mSpringMix * 0.01f, 0.0f, 1.0f) : 0.0f;
+        slapL.setBaseDelayMs(slapTime);
+        slapR.setBaseDelayMs(slapTime * 1.04f); // barely wider than mono
+        const float slapAmt = spaceIsOn ? std::clamp(slapMix * 0.01f, 0.0f, 1.0f) : 0.0f;
+        const float springAmt = spaceIsOn ? std::clamp(springMix * 0.01f, 0.0f, 1.0f) : 0.0f;
         // A real amp's reverb control is a mix knob and the tank decay is
         // fixed, so decay follows the mix instead of being exposed.
         springL.setDecay(0.30f + springAmt * 0.45f);
         springR.setDecay(0.30f + springAmt * 0.45f);
 
-        const float masterMix = std::clamp(mMasterMix * 0.01f, 0.0f, 1.0f);
-        const float outputGain = std::pow(10.0f, mMasterOutput / 20.0f);
+        const float masterMix = std::clamp(masterMixPct * 0.01f, 0.0f, 1.0f);
+        const float outputGain = std::pow(10.0f, masterOutput / 20.0f);
 
         // Input trim, applied before anything reads the signal. The compressor
         // threshold and the drive curve are both absolute, so they only meet
@@ -256,7 +231,7 @@ public:
         // this is the level the plug-in is being fed, so Mix keeps blending
         // two signals that agree about it. The IN ladder reads post-trim for
         // the same reason — it is the meter you set the trim by.
-        const float inputGain = std::pow(10.0f, mMasterInput / 20.0f);
+        const float inputGain = std::pow(10.0f, masterInput / 20.0f);
 
         const float* inL = inputBuffers[0];
         const float* inR = inputBuffers.size() > 1 ? inputBuffers[1] : inputBuffers[0];
@@ -320,7 +295,7 @@ public:
             peakOutR = std::max(peakOutR, std::abs(outR));
         }
 
-        mGainReductionDb = compIsOn ? compressor.currentGainReductionDb() : 0.f;
+        storeRelaxed(mGainReductionDb, compIsOn ? compressor.currentGainReductionDb() : 0.f);
         capturePeaks(peakIn, peakOutL, peakOutR);
     }
 
@@ -331,10 +306,7 @@ public:
     void readInputPeak(float* peak)
     {
         if (peak)
-        {
-            *peak = mPeakInTrim;
-            mPeakInTrim = 0.f;
-        }
+            *peak = takeRelaxed(mPeakInTrim);
     }
 
     /// Left and right output peaks since the last read, then reset. Separate
@@ -343,34 +315,22 @@ public:
     void readOutputPeaks(float* leftPeak, float* rightPeak)
     {
         if (leftPeak)
-        {
-            *leftPeak = mPeakOutL;
-            mPeakOutL = 0.f;
-        }
+            *leftPeak = takeRelaxed(mPeakOutL);
         if (rightPeak)
-        {
-            *rightPeak = mPeakOutR;
-            mPeakOutR = 0.f;
-        }
+            *rightPeak = takeRelaxed(mPeakOutR);
     }
 
     void readPeaks(float* inPeak, float* outPeak)
     {
         if (inPeak)
-        {
-            *inPeak = mPeakIn;
-            mPeakIn = 0.f;
-        }
+            *inPeak = takeRelaxed(mPeakIn);
         if (outPeak)
-        {
-            *outPeak = mPeakOut;
-            mPeakOut = 0.f;
-        }
+            *outPeak = takeRelaxed(mPeakOut);
     }
 
     /// Current gain reduction in dB for the UI's GR lamp. Not reset on read:
     /// it is a level, not a peak-hold.
-    float gainReductionDb() const { return mGainReductionDb; }
+    float gainReductionDb() const { return loadRelaxed(mGainReductionDb); }
 
     /// Cycles per beat for each note division, slowest first. Index order must
     /// match JJMidnightWobbleDivisions.names in Parameters.swift; the shared
@@ -397,18 +357,19 @@ public:
     /// being in sync.
     float wobbleRateHz()
     {
-        if (mWobbleSync <= 0.5f || mMusicalContextBlock == nullptr)
-            return mWobbleRate;
+        const float rate = loadRelaxed(mWobbleRate);
+        if (loadRelaxed(mWobbleSync) <= 0.5f || mMusicalContextBlock == nullptr)
+            return rate;
 
         double tempo = 0.0;
         // Safe to call from the render thread: that is what this block is for.
         // Queried once per process() call, never per sample.
         if (! mMusicalContextBlock(&tempo, nullptr, nullptr, nullptr, nullptr, nullptr))
-            return mWobbleRate;
+            return rate;
         if (! (tempo > 0.0))
-            return mWobbleRate;
+            return rate;
 
-        const int index = std::clamp((int) std::lround(mWobbleDivision),
+        const int index = std::clamp((int) std::lround(loadRelaxed(mWobbleDivision)),
                                      0, JJMidnightWobbleDivisionCount - 1);
         return (float) (tempo / 60.0) * kWobbleCyclesPerBeat[index];
     }
@@ -485,16 +446,83 @@ private:
 
     void capturePeaks(float inPeak, float outPeakL, float outPeakR)
     {
-        if (inPeak > mPeakIn)
-            mPeakIn = inPeak;
-        if (inPeak > mPeakInTrim)
-            mPeakInTrim = inPeak;
-        const float outPeak = std::max(outPeakL, outPeakR);
-        if (outPeak > mPeakOut)
-            mPeakOut = outPeak;
-        if (outPeakL > mPeakOutL)
-            mPeakOutL = outPeakL;
-        if (outPeakR > mPeakOutR)
-            mPeakOutR = outPeakR;
+        raiseRelaxed(mPeakIn, inPeak);
+        raiseRelaxed(mPeakInTrim, inPeak);
+        raiseRelaxed(mPeakOut, std::max(outPeakL, outPeakR));
+        raiseRelaxed(mPeakOutL, outPeakL);
+        raiseRelaxed(mPeakOutR, outPeakR);
+    }
+
+    /// The parameter storage for an address, or null for one this kernel
+    /// does not own. setParameter and getParameter both go through here so
+    /// the address list exists once.
+    float* parameterSlot(AUParameterAddress address)
+    {
+        switch (address)
+        {
+            case JJMidnightParameterAddress::compAmount:     return &mCompAmount;
+            case JJMidnightParameterAddress::compAttack:     return &mCompAttack;
+            case JJMidnightParameterAddress::compRelease:    return &mCompRelease;
+            case JJMidnightParameterAddress::compOn:         return &mCompOn;
+            case JJMidnightParameterAddress::driveAmount:    return &mDriveAmount;
+            case JJMidnightParameterAddress::driveTone:      return &mDriveTone;
+            case JJMidnightParameterAddress::driveCab:       return &mDriveCab;
+            case JJMidnightParameterAddress::driveOn:        return &mDriveOn;
+            case JJMidnightParameterAddress::wobbleRate:     return &mWobbleRate;
+            case JJMidnightParameterAddress::wobbleDepth:    return &mWobbleDepth;
+            case JJMidnightParameterAddress::wobbleShape:    return &mWobbleShape;
+            case JJMidnightParameterAddress::wobbleOn:       return &mWobbleOn;
+            case JJMidnightParameterAddress::wobbleSync:     return &mWobbleSync;
+            case JJMidnightParameterAddress::wobbleDivision: return &mWobbleDivision;
+            case JJMidnightParameterAddress::slapTime:       return &mSlapTime;
+            case JJMidnightParameterAddress::slapMix:        return &mSlapMix;
+            case JJMidnightParameterAddress::springMix:      return &mSpringMix;
+            case JJMidnightParameterAddress::spaceOn:        return &mSpaceOn;
+            case JJMidnightParameterAddress::masterMix:      return &mMasterMix;
+            case JJMidnightParameterAddress::masterOutput:   return &mMasterOutput;
+            case JJMidnightParameterAddress::masterInput:    return &mMasterInput;
+            default:                                         return nullptr;
+        }
+    }
+
+    // Parameters, the bypass/licence flags and the meter accumulators are
+    // written on one thread and read on another: the main thread and the
+    // render thread both set parameters, and the UI drains the peaks the
+    // render thread raises. Relaxed atomics are enough — each value stands on
+    // its own, nothing orders against anything else — and on arm64 they
+    // compile to the same plain loads and stores, minus the data race.
+    //
+    // std::atomic_ref over plain members rather than std::atomic members:
+    // std::atomic is not copyable, and the Swift side holds this kernel by
+    // value through C++ interop.
+    template <typename T>
+    static T loadRelaxed(const T& value)
+    {
+        return std::atomic_ref<T>(const_cast<T&>(value)).load(std::memory_order_relaxed);
+    }
+
+    template <typename T>
+    static void storeRelaxed(T& target, T value)
+    {
+        std::atomic_ref<T>(target).store(value, std::memory_order_relaxed);
+    }
+
+    /// Read and reset in one step, so a peak the render thread raises
+    /// between the read and the reset is not lost.
+    static float takeRelaxed(float& accumulator)
+    {
+        return std::atomic_ref<float>(accumulator).exchange(0.f, std::memory_order_relaxed);
+    }
+
+    /// Raise to `value` if higher. A CAS loop, because the UI can reset the
+    /// accumulator between this thread's read and its write.
+    static void raiseRelaxed(float& accumulator, float value)
+    {
+        std::atomic_ref<float> ref(accumulator);
+        float current = ref.load(std::memory_order_relaxed);
+        while (value > current
+               && ! ref.compare_exchange_weak(current, value, std::memory_order_relaxed))
+        {
+        }
     }
 };

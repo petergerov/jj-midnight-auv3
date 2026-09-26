@@ -55,6 +55,12 @@
 		BE55F8313A67056BBD3656E7 /* Skew.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A14042492B67A1583DE000E /* Skew.swift */; };
 		C376CD6B9B3087F8A31D2988 /* UserPresetStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7698EDB42E2D1E16254DFB8 /* UserPresetStore.swift */; };
 		CC431E504E20F0FD092363F0 /* PresetBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B6FB3DC8022C8A3B8397B48 /* PresetBar.swift */; };
+		A9C4951B2C15603D5B82B263 /* MeterViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72E3A740B842949DA1928E09 /* MeterViewModel.swift */; };
+		E23F55FB900BEE11454DB1AD /* PresetBarViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 293E330BBFC89547A686BA3C /* PresetBarViewModel.swift */; };
+		7CDD4B56E6E6AC954D94C0F9 /* MasterStrip.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68E419AC01E0E6EFA6A882E4 /* MasterStrip.swift */; };
+		5F5A1EBED7BD939607CCA8F8 /* PanelSections.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76BCCD214FA63EE4B90575CB /* PanelSections.swift */; };
+		C2A63FAEF0D5BA28F89ABB70 /* PanelHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = FBF3AB1F84A006F98B86B892 /* PanelHeader.swift */; };
+		C2FF49C1890706B0BD9D2BE5 /* MainPanelViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDBB95FA2F098D6E81E25A95 /* MainPanelViewModel.swift */; };
 		D3712FBF4DC951BED02D083B /* PaywallView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 904067411C31B06D2041CA42 /* PaywallView.swift */; };
 		D4250FB77CA4028CF4AF84F4 /* TypeAliases.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1DDBE24AA2523EA586EE81F4 /* TypeAliases.swift */; };
 		D514542733EF027C898D2D2D /* Presets.swift in Sources */ = {isa = PBXBuildFile; fileRef = B38B00B38BB7BBD20111D31E /* Presets.swift */; };
@@ -62,6 +68,12 @@
 		D87D7EB69F56F01BF7341272 /* ScreenshotTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFB0C409A34EFB8B4FAD09E6 /* ScreenshotTests.swift */; };
 		E4364362CEAE014204C1C39E /* String+Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4280A8DCF1EACA529C51511 /* String+Utils.swift */; };
 		E6ABC7097C31B671308E0C5C /* PresetBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B6FB3DC8022C8A3B8397B48 /* PresetBar.swift */; };
+		02CDA4EA275C1534AC2E6DCE /* MeterViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72E3A740B842949DA1928E09 /* MeterViewModel.swift */; };
+		943E0E427E963C96C20A9B82 /* PresetBarViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 293E330BBFC89547A686BA3C /* PresetBarViewModel.swift */; };
+		D328050278E82819CD18A6AE /* MasterStrip.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68E419AC01E0E6EFA6A882E4 /* MasterStrip.swift */; };
+		1E3179BA738B02437779657E /* PanelSections.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76BCCD214FA63EE4B90575CB /* PanelSections.swift */; };
+		DAFDADF78F2243BA9AA35017 /* PanelHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = FBF3AB1F84A006F98B86B892 /* PanelHeader.swift */; };
+		6EAC3B9722AA8C3521FBA015 /* MainPanelViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDBB95FA2F098D6E81E25A95 /* MainPanelViewModel.swift */; };
 		ED13C8752F1FD39841668EE2 /* JJMidnightAudioUnit.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96382907F2BC6933B6239EC7 /* JJMidnightAudioUnit.swift */; };
 		F3C31908FFF8378014D22844 /* GearTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = E0150094D6284609376E58F6 /* GearTheme.swift */; };
 /* End PBXBuildFile section */
@@ -124,6 +136,12 @@
 		87EF411AC036BC52EC0D73EC /* KnobView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KnobView.swift; sourceTree = "<group>"; };
 		8ACB4C3169AE03120AF160C1 /* PurchaseProducts.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PurchaseProducts.swift; sourceTree = "<group>"; };
 		8B6FB3DC8022C8A3B8397B48 /* PresetBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PresetBar.swift; sourceTree = "<group>"; };
+		72E3A740B842949DA1928E09 /* MeterViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MeterViewModel.swift; sourceTree = "<group>"; };
+		293E330BBFC89547A686BA3C /* PresetBarViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PresetBarViewModel.swift; sourceTree = "<group>"; };
+		68E419AC01E0E6EFA6A882E4 /* MasterStrip.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MasterStrip.swift; sourceTree = "<group>"; };
+		76BCCD214FA63EE4B90575CB /* PanelSections.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PanelSections.swift; sourceTree = "<group>"; };
+		FBF3AB1F84A006F98B86B892 /* PanelHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PanelHeader.swift; sourceTree = "<group>"; };
+		EDBB95FA2F098D6E81E25A95 /* MainPanelViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainPanelViewModel.swift; sourceTree = "<group>"; };
 		904067411C31B06D2041CA42 /* PaywallView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaywallView.swift; sourceTree = "<group>"; };
 		932464E609C56F12A914D4DF /* DriveStage.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DriveStage.h; sourceTree = "<group>"; };
 		96382907F2BC6933B6239EC7 /* JJMidnightAudioUnit.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JJMidnightAudioUnit.swift; sourceTree = "<group>"; };
@@ -205,6 +223,12 @@
 				4D037E7C3F0ABC5C5161C3C9 /* Meters.swift */,
 				904067411C31B06D2041CA42 /* PaywallView.swift */,
 				8B6FB3DC8022C8A3B8397B48 /* PresetBar.swift */,
+				72E3A740B842949DA1928E09 /* MeterViewModel.swift */,
+				293E330BBFC89547A686BA3C /* PresetBarViewModel.swift */,
+				68E419AC01E0E6EFA6A882E4 /* MasterStrip.swift */,
+				76BCCD214FA63EE4B90575CB /* PanelSections.swift */,
+				FBF3AB1F84A006F98B86B892 /* PanelHeader.swift */,
+				EDBB95FA2F098D6E81E25A95 /* MainPanelViewModel.swift */,
 				522A2AEE854E07F29FD43372 /* RackPanel.swift */,
 				9A14042492B67A1583DE000E /* Skew.swift */,
 			);
@@ -493,6 +517,12 @@
 				126CB80BA50825FC1E2CC882 /* Parameters.swift in Sources */,
 				D3712FBF4DC951BED02D083B /* PaywallView.swift in Sources */,
 				E6ABC7097C31B671308E0C5C /* PresetBar.swift in Sources */,
+				02CDA4EA275C1534AC2E6DCE /* MeterViewModel.swift in Sources */,
+				943E0E427E963C96C20A9B82 /* PresetBarViewModel.swift in Sources */,
+				D328050278E82819CD18A6AE /* MasterStrip.swift in Sources */,
+				1E3179BA738B02437779657E /* PanelSections.swift in Sources */,
+				DAFDADF78F2243BA9AA35017 /* PanelHeader.swift in Sources */,
+				6EAC3B9722AA8C3521FBA015 /* MainPanelViewModel.swift in Sources */,
 				D514542733EF027C898D2D2D /* Presets.swift in Sources */,
 				A5105F68EB5A256ED0B1DA8A /* PurchaseProducts.swift in Sources */,
 				47006060A0BF55BC704422AE /* RackPanel.swift in Sources */,
@@ -526,6 +556,12 @@
 				B06715D4B879982DF35E99AD /* Parameters.swift in Sources */,
 				15916D5BD38F17AF5EE045AA /* PaywallView.swift in Sources */,
 				CC431E504E20F0FD092363F0 /* PresetBar.swift in Sources */,
+				A9C4951B2C15603D5B82B263 /* MeterViewModel.swift in Sources */,
+				E23F55FB900BEE11454DB1AD /* PresetBarViewModel.swift in Sources */,
+				7CDD4B56E6E6AC954D94C0F9 /* MasterStrip.swift in Sources */,
+				5F5A1EBED7BD939607CCA8F8 /* PanelSections.swift in Sources */,
+				C2A63FAEF0D5BA28F89ABB70 /* PanelHeader.swift in Sources */,
+				C2FF49C1890706B0BD9D2BE5 /* MainPanelViewModel.swift in Sources */,
 				A4621675960ACD0430847D37 /* Presets.swift in Sources */,
 				A3729E651AF5FB31D8643C01 /* PurchaseProducts.swift in Sources */,
 				6C3373A1DCEF3B400068CF8F /* RackPanel.swift in Sources */,
@@ -591,7 +627,7 @@
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				CODE_SIGN_STYLE = Automatic;
 				COPY_PHASE_STRIP = NO;
-				CURRENT_PROJECT_VERSION = 3;
+				CURRENT_PROJECT_VERSION = 1;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_TEAM = C9LBGZNZ6P;
 				ENABLE_NS_ASSERTIONS = NO;
@@ -605,7 +641,7 @@
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
-				MARKETING_VERSION = 1.0.0;
+				MARKETING_VERSION = 1.0.1;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -631,7 +667,7 @@
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = JJMidnight/JJMidnight.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
-				CURRENT_PROJECT_VERSION = 3;
+				CURRENT_PROJECT_VERSION = 1;
 				GENERATE_INFOPLIST_FILE = NO;
 				HEADER_SEARCH_PATHS = (
 					"$(SRCROOT)/JJMidnightExtension/DSP",
@@ -822,7 +858,7 @@
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				CODE_SIGN_STYLE = Automatic;
 				COPY_PHASE_STRIP = NO;
-				CURRENT_PROJECT_VERSION = 3;
+				CURRENT_PROJECT_VERSION = 1;
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				DEVELOPMENT_TEAM = C9LBGZNZ6P;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
@@ -842,7 +878,7 @@
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
-				MARKETING_VERSION = 1.0.0;
+				MARKETING_VERSION = 1.0.1;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
@@ -869,7 +905,7 @@
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = JJMidnight/JJMidnight.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
-				CURRENT_PROJECT_VERSION = 3;
+				CURRENT_PROJECT_VERSION = 1;
 				GENERATE_INFOPLIST_FILE = NO;
 				HEADER_SEARCH_PATHS = (
 					"$(SRCROOT)/JJMidnightExtension/DSP",

@@ -16,10 +16,6 @@ class AudioUnitHostModel {
         set { setSource(newValue) }
     }
 
-    let type = "aufx"
-    let subType = "Jjm1"
-    let manufacturer = "Grov"
-
     private var didStart = false
 
     init() {}
@@ -32,9 +28,9 @@ class AudioUnitHostModel {
         await waitUntilActive()
 
         let viewController = await playEngine.initComponent(
-            type: type,
-            subType: subType,
-            manufacturer: manufacturer
+            type: AudioUnitIdentity.type,
+            subType: AudioUnitIdentity.subtype,
+            manufacturer: AudioUnitIdentity.manufacturer
         )
 
         isLoading = false

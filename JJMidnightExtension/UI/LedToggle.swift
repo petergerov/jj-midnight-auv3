@@ -1,5 +1,4 @@
 import SwiftUI
-import UIKit
 
 /// A chrome bat switch: a mounting nut sunk into the panel and a tapered
 /// nickel lever thrown up (on) or down (off), like the toggles on the
@@ -77,11 +76,14 @@ struct RockerSwitch: View {
 
 struct LedToggle: View {
     @Bindable var param: ObservableAUParameter
+    // Counts taps, so the haptic answers the player's hand only — never a
+    // host automating the same parameter.
+    @State private var taps = 0
 
     var body: some View {
         Button {
             param.boolValue.toggle()
-            UIImpactFeedbackGenerator(style: .light).impactOccurred()
+            taps += 1
         } label: {
             RockerSwitch(isOn: param.boolValue, theme: GearTheme.current)
                 .contentShape(Rectangle())
@@ -89,16 +91,18 @@ struct LedToggle: View {
         .buttonStyle(.plain)
         .accessibilityLabel(param.displayName)
         .accessibilityValue(param.boolValue ? "On" : "Off")
+        .sensoryFeedback(.impact(weight: .light), trigger: taps)
     }
 }
 
 struct BypassToggle: View {
     @Binding var isBypassed: Bool
+    @State private var taps = 0
 
     var body: some View {
         Button {
             isBypassed.toggle()
-            UIImpactFeedbackGenerator(style: .light).impactOccurred()
+            taps += 1
         } label: {
             // Drawn state is the inverse of the flag — a power switch reads
             // on when the effect is actually processing, i.e. not bypassed.
@@ -112,6 +116,7 @@ struct BypassToggle: View {
         .buttonStyle(.plain)
         .accessibilityLabel("Power")
         .accessibilityValue(isBypassed ? "Off" : "On")
+        .sensoryFeedback(.impact(weight: .light), trigger: taps)
     }
 }
 
@@ -122,11 +127,12 @@ struct BypassToggle: View {
 struct LinkIconBadge: View {
     @Binding var isOn: Bool
     var title: String
+    @State private var taps = 0
 
     var body: some View {
         Button {
             isOn.toggle()
-            UIImpactFeedbackGenerator(style: .light).impactOccurred()
+            taps += 1
         } label: {
             Image(systemName: isOn ? "link" : "link.badge.plus")
                 .font(.system(size: 12, weight: .bold))
@@ -146,6 +152,7 @@ struct LinkIconBadge: View {
         .buttonStyle(.plain)
         .accessibilityLabel("\(title) link")
         .accessibilityValue(isOn ? "Linked" : "Unlinked")
+        .sensoryFeedback(.impact(weight: .light), trigger: taps)
     }
 }
 
@@ -157,6 +164,7 @@ struct LinkIconBadge: View {
 /// it has no business being.
 struct FinishSelector: View {
     var theme: GearPalette
+    @State private var taps = 0
 
     private var finishes: [GearPalette] { GearPalette.all }
     private var index: Int { finishes.firstIndex { $0.id == theme.id } ?? 0 }
@@ -178,7 +186,7 @@ struct FinishSelector: View {
         Button {
             let next = finishes[(index + 1) % finishes.count]
             ThemeStore.shared.select(next)
-            UIImpactFeedbackGenerator(style: .rigid).impactOccurred()
+            taps += 1
         } label: {
             Canvas { context, size in
                 let rect = CGRect(origin: .zero, size: size)
@@ -247,5 +255,6 @@ struct FinishSelector: View {
         .accessibilityLabel("Panel finish")
         .accessibilityValue(theme.name)
         .accessibilityHint("Switches the panel colourway")
+        .sensoryFeedback(.impact(flexibility: .rigid), trigger: taps)
     }
 }

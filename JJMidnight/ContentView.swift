@@ -2,7 +2,7 @@ import SwiftUI
 
 struct ContentView: View {
     let hostModel: AudioUnitHostModel
-    @Bindable private var entitlement = EntitlementService.shared
+    let entitlement: EntitlementService
     @State private var showPaywall = false
 
     var body: some View {
@@ -15,15 +15,16 @@ struct ContentView: View {
         .background(Color.black)
         .preferredColorScheme(.dark)
         .task {
-            await entitlement.loadProducts()
+            // Products load on their own from the service's init and again
+            // when the paywall opens; only the access state matters here.
             await entitlement.refresh()
             // Only prompt when the install trial has ended — never on first launch.
             if case .trialExpired = entitlement.accessState {
                 showPaywall = true
             }
         }
-        .onReceive(NotificationCenter.default.publisher(for: .jjMidnightAccessChanged)) { _ in
-            if case .unlocked = entitlement.accessState {
+        .onChange(of: entitlement.accessState) { _, state in
+            if case .unlocked = state {
                 showPaywall = false
             }
         }

@@ -1,102 +1,31 @@
 import SwiftUI
 import AudioToolbox
 
-/// Base-class for SwiftUI-capable AUParameterNodes
+/// Observable versions of every parameter in an AUParameterTree, looked up by
+/// address.
 ///
-/// This implementation provides a central point AUParameterGroup nodes to build a set of
-/// observable children, and also enables us to traverse the parameter tree using dynamicMemberLookup
-/// and subscript notation (i.e. parameterTree.paramGroup.parameter)
-///
-/// This does *not* provide any of Swift's usual type-safety benefits, and may result in fatal errors if the
-/// implementation attempts to access the subscript of an ObservableAUParameter (which has no children, as it's not a group).
+/// Flat rather than mirroring the tree's groups: the panel addresses each
+/// parameter directly (`parameterTree[.compOn]`), so a misspelt name is a
+/// compile error instead of the runtime trap a string lookup through the
+/// groups would be. The groups still exist in the AUParameterTree for hosts.
 @MainActor
-@dynamicMemberLookup
-class ObservableAUParameterNode {
+final class ObservableAUParameterGroup {
 
-    /// Create an ObservableAUParameterNode
-    ///
-    /// This creates the appropriate subclass, depending on the type of the passed in AUParameterNode
-    class func create(_ parameterNode: AUParameterNode) -> ObservableAUParameterNode {
-        switch parameterNode {
-        case let parameter as AUParameter:
-            return ObservableAUParameter(parameter)
-        case let group as AUParameterGroup:
-            return ObservableAUParameterGroup(group)
-        default:
-            fatalError("Unexpected AUParameterNode subclass")
-        }
+    private let parameters: [AUParameterAddress: ObservableAUParameter]
+
+    init(_ parameterTree: AUParameterGroup) {
+        parameters = Dictionary(
+            uniqueKeysWithValues: parameterTree.allParameters.map { ($0.address, ObservableAUParameter($0)) }
+        )
     }
 
-    subscript<T>(dynamicMember identifier: String) -> T {
-        guard let groupSelf = self as? ObservableAUParameterGroup else {
-            fatalError("Calling subscript is only supported on ObservableAUParameterGroups, you called it on \(self)")
-        }
-
-        guard let node = groupSelf.children[identifier] else {
-            if groupSelf.children.isEmpty {
-                fatalError("This group has no children")
-            }
-
-            let availableChildren = groupSelf.children.keys.joined(separator: "\n")
-
-            print("Parameter Group \(groupSelf) doesn't have a child node named \(identifier), did you mean one of: \n \(availableChildren)")
-            fatalError()
-        }
-
-        guard let subNode = node as? T else {
-            fatalError("Parameter node named \(identifier) cannot be converted to the requested type")
-        }
-
-        return subNode
-    }
-
-    subscript(dynamicMember identifier: String) -> ObservableAUParameterNode {
-        guard let groupSelf = self as? ObservableAUParameterGroup else {
-            fatalError("Calling subscript is only supported on ObservableAUParameterGroups, you called it on \(self)")
-        }
-
-        guard let parameter = groupSelf.children[identifier] else {
-            if groupSelf.children.isEmpty {
-                fatalError("This group has no children")
-            }
-
-            let availableChildren = groupSelf.children.keys.joined(separator: "\n")
-
-            print("Parameter Group \(groupSelf) doesn't have a child node named \(identifier), did you mean one of: \n \(availableChildren)")
-            fatalError()
-        }
-
-        return parameter
-    }
-
-    private func asParameter() -> ObservableAUParameter {
-        guard let parameter = self as? ObservableAUParameter else {
-            fatalError("Node is not a parameter")
+    subscript(_ address: JJMidnightParameterAddress) -> ObservableAUParameter {
+        guard let parameter = parameters[address.rawValue] else {
+            // Only reachable if Parameters.swift stops declaring an address
+            // the panel draws — a build that got this far is already broken.
+            preconditionFailure("No parameter for address \(address.rawValue); is it missing from JJMidnightParameterSpecs?")
         }
         return parameter
-    }
-
-    subscript(dynamicMember keyPath: ReferenceWritableKeyPath<ObservableAUParameter, Float>) -> Float {
-        get { self.asParameter()[keyPath: keyPath] }
-        set { self.asParameter()[keyPath: keyPath] = newValue }
-    }
-}
-
-/// An Observable version of AUParameterGroup
-///
-/// The primary purpose here is to expose observable versions of the group's child parameters.
-///
-final class ObservableAUParameterGroup: ObservableAUParameterNode {
-
-    private(set) var children: [String: ObservableAUParameterNode]
-
-    init(_ parameterGroup: AUParameterGroup) {
-        children = parameterGroup.children.reduce(
-            into: [String: ObservableAUParameterNode]()
-        ) { dict, node in
-            let observableNode = ObservableAUParameterNode.create(node)
-            dict[node.identifier] = observableNode
-        }
     }
 }
 
@@ -108,11 +37,12 @@ final class ObservableAUParameterGroup: ObservableAUParameterNode {
 ///
 /// The ObservableAUParameter can also manage automation event types by calling
 /// `onEditingChanged()` whenever a UI element will change its editing state.
+@MainActor
 @Observable
-final class ObservableAUParameter: ObservableAUParameterNode {
+final class ObservableAUParameter {
 
     private weak var parameter: AUParameter?
-    private var observerToken: AUParameterObserverToken!
+    private var observer: ParameterObserverRegistration?
     private var editingState: EditingState = .inactive
 
     let min: AUValue
@@ -132,15 +62,18 @@ final class ObservableAUParameter: ObservableAUParameterNode {
         self.defaultValue = ParameterDefaults.values[parameter.address] ?? parameter.value
         self.unit = parameter.unit
         self.address = parameter.address
-        super.init()
 
         /// Use the parameter.token(byAddingParameterObserver:) function to monitor for parameter
         /// changes from the host. The only role of this callback is to update the UI if the value is changed by the host.
-        self.observerToken = parameter.token { @Sendable (_ address: AUParameterAddress, _ auValue: AUValue) in
+        ///
+        /// `self` is captured weakly: the parameter tree retains this block for as long as the
+        /// observer is registered, so a strong capture would keep every rebuilt panel's
+        /// parameters alive — and observing — for the life of the audio unit.
+        let token = parameter.token { @Sendable [weak self] (_ address: AUParameterAddress, _ auValue: AUValue) in
 
             DispatchQueue.main.async {
-                guard address == self.parameter?.address else { return }
-                
+                guard let self, address == self.parameter?.address else { return }
+
                 // Don't update the UI if the user is currently interacting
                 guard self.editingState == .inactive else { return }
 
@@ -149,17 +82,18 @@ final class ObservableAUParameter: ObservableAUParameterNode {
                 self.editingState = .inactive
             }
         }
+        self.observer = ParameterObserverRegistration(parameter: parameter, token: token)
     }
 
     var value: AUValue {
         didSet {
             /// If the editing state is .hostUpdate, don't propagate this back to the host
-            guard editingState != .hostUpdate else { return }
+            guard editingState != .hostUpdate, let observer else { return }
 
             let automationEventType = resolveEventType()
             parameter?.setValue(
                 value,
-                originator: observerToken,
+                originator: observer.token,
                 atHostTime: 0,
                 eventType: automationEventType
             )
@@ -218,6 +152,25 @@ final class ObservableAUParameter: ObservableAUParameterNode {
         case active
         case ended
         case hostUpdate
+    }
+}
+
+/// Owns one parameter observer and removes it when released.
+///
+/// A separate object rather than a `deinit` on ObservableAUParameter because that class is
+/// main-actor isolated and its deinit is not: this one holds only the two values the removal
+/// needs, so it can run from wherever the last reference goes away.
+private final class ParameterObserverRegistration: @unchecked Sendable {
+    let token: AUParameterObserverToken
+    private weak var parameter: AUParameter?
+
+    init(parameter: AUParameter, token: AUParameterObserverToken) {
+        self.parameter = parameter
+        self.token = token
+    }
+
+    deinit {
+        parameter?.removeParameterObserver(token)
     }
 }
 

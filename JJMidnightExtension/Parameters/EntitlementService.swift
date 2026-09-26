@@ -13,6 +13,11 @@ final class EntitlementService {
     private(set) var lastError: String?
 
     private var updatesTask: Task<Void, Never>?
+    // In-flight work, so callers that overlap — init, the app's first
+    // appearance, the panel and the paywall all ask at launch — wait on one
+    // StoreKit round-trip instead of each starting their own.
+    private var refreshTask: Task<Void, Never>?
+    private var productsTask: Task<Void, Never>?
 
     var isEffectAllowed: Bool { accessState.isEffectAllowed }
 
@@ -35,21 +40,33 @@ final class EntitlementService {
     }
 
     func refresh() async {
-        let hasUnlock = await hasUnlockEntitlement()
-        apply(UnlockStore.computeAccessState(hasUnlock: hasUnlock))
+        if let refreshTask { return await refreshTask.value }
+        let task = Task {
+            let hasUnlock = await hasUnlockEntitlement()
+            apply(UnlockStore.computeAccessState(hasUnlock: hasUnlock))
+        }
+        refreshTask = task
+        await task.value
+        refreshTask = nil
     }
 
     func loadProducts() async {
         guard unlockProduct == nil else { return }
-        isLoadingProducts = true
-        defer { isLoadingProducts = false }
-        do {
-            let products = try await Product.products(for: [PurchaseProducts.unlock])
-            unlockProduct = products.first { $0.id == PurchaseProducts.unlock }
-            lastError = unlockProduct == nil ? "Unlock product not available yet." : nil
-        } catch {
-            lastError = error.localizedDescription
+        if let productsTask { return await productsTask.value }
+        let task = Task {
+            isLoadingProducts = true
+            defer { isLoadingProducts = false }
+            do {
+                let products = try await Product.products(for: [PurchaseProducts.unlock])
+                unlockProduct = products.first { $0.id == PurchaseProducts.unlock }
+                lastError = unlockProduct == nil ? "Unlock product not available yet." : nil
+            } catch {
+                lastError = error.localizedDescription
+            }
         }
+        productsTask = task
+        await task.value
+        productsTask = nil
     }
 
     func purchaseUnlock() async {
@@ -111,9 +128,10 @@ final class EntitlementService {
 
     private func apply(_ state: AccessState) {
         guard state != accessState else { return }
+        // Observers watch `accessState` itself; the App Group copy is for the
+        // audio unit's render path and for the other process.
         accessState = state
         UnlockStore.write(accessState: state)
-        NotificationCenter.default.post(name: .jjMidnightAccessChanged, object: nil)
     }
 
     private static func matchingUnlock(
