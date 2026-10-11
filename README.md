@@ -35,12 +35,13 @@ hosts as **jj-midnight** (Gerov).
 
 ## Naming
 
-The name is **jj-midnight**, and it is now baked into the bundle IDs, the AU
-subtype, the repo and the site — cheap to change before the first App Store
-submission, effectively impossible afterwards, because hosts store the AU
-identity in every saved project. [marketing.md](marketing.md) keeps the
-candidates and the reasoning. What is *not* settled is trademark clearance;
-that is still on the list below.
+The name is **jj-midnight**, baked into the bundle IDs, the AU subtype, the
+repo and the site. It shipped in 1.0.0, so it is now fixed: hosts store the
+AU identity in every saved project, and changing it would break every session
+a customer has saved. The App Store listing is titled *J.J.Midnight AUv3
+Plugin*; hosts still list the plug-in as **jj-midnight**.
+[marketing.md](marketing.md) keeps the candidates and the reasoning. What is
+*not* settled is trademark clearance; that is still on the list below.
 
 The engine is generic and the presets are the flavour. Preset names describe a
 *feel* or a place, never a person or a record; the plug-in is not affiliated
@@ -63,18 +64,39 @@ one-time unlock (`com.gerov.jjmidnight.unlock`).
 ## Open and build
 
 ```sh
-xcodegen generate
 open JJMidnight.xcodeproj
 ```
 
-**`project.yml` is the source of truth.** `xcodegen generate` rewrites
-`project.pbxproj` from it, so anything set only in Xcode's GUI is gone at the
-next run. Supported Destinations is the one that bites: Xcode's editor writes
+**`project.yml` and the committed `project.pbxproj` are kept in step by
+hand.** The project was edited in Xcode after it was last generated, so the
+two are not byte-for-byte what `xcodegen generate` would produce. As of 1.0.1
+the difference is cosmetic — XcodeGen names the app's product reference
+`JJMidnight.app` where the committed project says `jj-midnight.app` (the built
+app is `jj-midnight.app` either way, from `PRODUCT_NAME`), and the app target
+carries its own copy of `CURRENT_PROJECT_VERSION` — but that only holds while
+every setting change is made in both. So:
+
+- Change settings in `project.yml` **and** the matching place in
+  `project.pbxproj`, rather than in one of them.
+- New source files have to be added to `project.pbxproj` too; it lists files
+  explicitly, not by folder. Files under `JJMidnightExtension/UI`,
+  `Parameters`, `DSP` and `Common` belong to **both** targets — the app hosts
+  the same code in-process — except `Common/UI/AudioUnitViewController.swift`,
+  which is the extension's alone.
+- Before running `xcodegen generate`, regenerate into a scratch copy and diff
+  `project.pbxproj` and the three schemes against the committed ones. Commit a
+  regenerated project only once that diff is empty or understood.
+
+Version numbers have their own procedure — four places, and a trap in
+Xcode's General tab. See *Bumping the version* in
+[APP_STORE_SUBMISSION.md](APP_STORE_SUBMISSION.md).
+
+Supported Destinations is the setting that bites: Xcode's editor writes
 `TARGETED_DEVICE_FAMILY`, `SUPPORTS_MACCATALYST`,
 `SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD` and
 `SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD`, and all four live in `project.yml`'s
-`settings.base` so both targets get them identically. Change them there, not
-in the target editor.
+`settings.base` so both targets get them identically. Change them there and
+at project level in `project.pbxproj`, not in the target editor.
 
 1. Select the **jj-midnight** scheme.
 2. Set your Development Team on both **JJMidnight** and **JJMidnightExtension**.
@@ -101,6 +123,13 @@ instinct is why *Cocaine* became *Magnolia*, though that one was Review
 Guideline 1.1.6 rather than trademark. See [marketing.md](marketing.md).
 
 User presets: tap the preset window → **Save As…**; swipe left to rename or delete.
+They are stored in the App Group, so the companion app and the plug-in in
+any host see the same list. A preset chosen from a host's own preset menu
+shows in the panel's window too.
+
+Factory presets never set Input trim: it belongs to the rig, not the sound,
+so changing preset leaves it where the player put it. User presets do store
+it, since those are saved on the rig they were made for.
 
 ## Project layout
 
@@ -109,11 +138,34 @@ JJMidnight/                    Container app (test host)
 JJMidnightExtension/
   Parameters/               AUParameterTree, presets, StoreKit unlock
   DSP/                      C++ kernel (real-time; no Swift)
-  UI/                       SwiftUI editor + GearTheme finishes
+  UI/                       SwiftUI editor, its view models, GearTheme finishes
   Common/                   AUAudioUnit / process glue
 docs/                       Marketing site + privacy (GitHub Pages)
 icon/ loop/ screenshots/    Asset generators (see below)
 ```
+
+The editor is MVVM. Views draw and forward taps; state lives in three
+`@Observable`, `@MainActor` view models, created by whoever hosts the panel
+(`AudioUnitViewController` in the extension, `SimplePlayEngine` in the app)
+with `EntitlementService` passed in:
+
+- `MainPanelViewModel` — bypass, the licence gate, the paywall, and the one
+  display loop that drives everything that moves on its own.
+- `PresetBarViewModel` — the preset list and actions. It follows the audio
+  unit's `currentPreset` and `userPresets` through KVO, which is how a
+  host-side preset change reaches the panel.
+- `MeterViewModel` — every meter's ballistics, advanced once per frame from
+  the kernel's accumulators.
+
+The panel itself is split by region: `PanelHeader`, `MasterStrip`, and
+`PanelSections` (the four blocks, their shared chrome and `PanelMetrics`).
+Parameters are looked up by address — `parameterTree[.compOn]` — so a wrong
+name fails to compile.
+
+Everything the render thread shares with the UI — parameters, the bypass and
+licence flags, meter peaks — goes through relaxed atomics in the kernel
+(`std::atomic_ref`, because Swift holds the kernel by value and
+`std::atomic` is not copyable). Keep new shared state on the same footing.
 
 `docs/` also carries one Markdown page per block — `comp.md`, `drive.md`,
 `wobble.md`, `space.md`, plus `master.md` for Mix, Output and the output
@@ -204,35 +256,33 @@ recordings replaced, and is kept because a synthetic part is useful for
 testing against known material: exact pitch, known timing, and a seamless
 loop, none of which a recording gives you. Its output is gitignored.
 
-## To do before shipping
+## Releases
 
-Every field App Store Connect asks for is drafted in
-[APP_STORE_SUBMISSION.md](APP_STORE_SUBMISSION.md), inside Apple's character
-limits, and the Pages site is live at
+| Version | Status |
+|---|---|
+| 1.0.0 (3) | Live on the [App Store](https://apps.apple.com/app/id6812455527) since 22 September 2026. |
+| 1.0.1 (1) | On `main`, not uploaded. Under-the-hood fixes; no change to the sound. |
+
+[APP_STORE_SUBMISSION.md](APP_STORE_SUBMISSION.md) carries every store field,
+the 1.0.1 *What's New* text and its device checks, and the checklist for
+each release. The Pages site is live at
 [petergerov.github.io/jj-midnight-auv3](https://petergerov.github.io/jj-midnight-auv3)
 — suffix included, the same shape as `jj-breeze-auv3`, and the part that gets
-dropped by accident. What is left is the work that cannot be written down in
-advance:
+dropped by accident. Its download buttons point at the listing.
 
-- [ ] **App Store Connect** — new app record, new IAP for
-      `com.gerov.jjmidnight.unlock`. The IAP has to be attached to the 1.0.0
-      build; left unattached it sits in "Ready to Submit" forever while the
-      app ships with no way to buy it.
-- [ ] **Trademark clearance on the name** — `jj-midnight` is decided, not
-      cleared. Focusrite's withdrawn Midnight plug-in suite and the current
-      Midnight Plaza AUv3 were both checked and neither disqualifies it, but
-      that was a web search; see [marketing.md](marketing.md).
-- [ ] **Distribution profiles** — an App Store export needs provisioning
-      profiles for both `com.gerov.jjmidnight` and `.AUv3`. Neither exists
-      yet, so `xcodebuild -exportArchive` fails; Xcode creates them on the
-      first Organizer upload. See
-      [APP_STORE_SUBMISSION.md](APP_STORE_SUBMISSION.md).
-- [ ] **Store link** — `APP_STORE_URL` in `docs/index.html` is empty, so the
-      buttons fall back to the repository. Fill it in once there is a listing.
-- [ ] **Privacy policy** — `docs/privacy.html` is live and linked from the
-      listing, so it has to keep describing the app that actually ships.
-- [ ] **Google Search Console** — `docs/` has no verification file; jj-breeze's
-      token belongs to that property and cannot be reused.
+Still open:
+
+- [ ] **Trademark clearance on the name** — `jj-midnight` is decided and
+      shipped, not cleared. Focusrite's withdrawn Midnight plug-in suite and
+      the current Midnight Plaza AUv3 were both checked and neither
+      disqualifies it, but that was a web search; see
+      [marketing.md](marketing.md).
+- [ ] **Google Search Console** — the verification file is deployed
+      (`docs/google3377e2442f8b8fe3.html`); confirm the property shows as
+      verified.
+- [ ] **Privacy policy** — `docs/privacy.html` is linked from the listing, so
+      it has to keep describing the app that actually ships. Re-read it each
+      release.
 - [ ] **Cab convolution** — deliberately not in v1. `CabVoicing.h` is four
       biquads behind an interface convolution could take over later without
       anything upstream changing.

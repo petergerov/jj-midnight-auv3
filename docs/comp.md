@@ -43,7 +43,7 @@ nothing being taken off to give back.
 
 Labelling the knob with any one of those numbers would be a half-truth: you would see the threshold move and not the ratio or the make-up. And splitting them into separate controls would only let you build settings that no optical box can produce, which defeats the point of modelling one.
 
-**The dB figure you actually want is right beside the knobs.** The needle in this section shows, in dB and in real time, how much the compressor is taking right now. That is the same division of labour the LA-2A has: an unmarked dial for *how much*, and a meter for *what is happening*. Set the knob by the meter and by ear, not by arithmetic.
+**The dB figure you actually want is right beside the knobs.** The gain-reduction bar under them shows, in dB and in real time, how much the compressor is taking right now. That is the same division of labour the LA-2A has: an unmarked dial for *how much*, and a meter for *what is happening*. Set the knob by the meter and by ear, not by arithmetic.
 
 ## Controls
 

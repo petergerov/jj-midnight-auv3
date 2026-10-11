@@ -447,7 +447,7 @@
     <a href="#the-sound" class="btn-secondary">Hear the idea</a>
   </div>
   <div class="hero-img" onclick="openLightbox('images/panel-ipad.jpg', 'jj-midnight on iPad — Tweed finish')">
-    <img src="images/panel-ipad.jpg" alt="jj-midnight panel on iPad: a tweed plate carrying Comp, Drive, Wobble and Space side by side, each on its own oxblood sub-plate, with the master strip and output meter across the foot" />
+    <img src="images/panel-ipad.jpg" alt="jj-midnight panel on iPad: a tweed plate carrying Comp, Drive, Wobble and Space side by side, each on its own oxblood sub-plate, below a master strip carrying the input and output meters and the Input, Mix and Output knobs" />
   </div>
   <p class="hero-trust">Free · 7-day trial · then $2.99 once &nbsp;·&nbsp; Open the app, tap Play, then load jj-midnight in your host</p>
 </section>
@@ -811,11 +811,11 @@
 </div>
 
 <script>
-  // Set this to the live listing once the app has an App Store record. While
-  // it is empty the store buttons fall back to the repository rather than
-  // linking somewhere that 404s — an App Store link that does not resolve is
-  // worse than no link at all.
-  const APP_STORE_URL = "";
+  // The live listing, in the storefront-neutral form so it redirects to the
+  // visitor's own country. If it is ever emptied, the store buttons fall back
+  // to the repository rather than linking somewhere that 404s — an App Store
+  // link that does not resolve is worse than no link at all.
+  const APP_STORE_URL = "https://apps.apple.com/app/id6812455527";
   const FALLBACK_URL = "https://github.com/petergerov/jj-midnight-auv3";
 
   function openLightbox(src, label) {
