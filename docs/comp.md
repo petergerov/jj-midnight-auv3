@@ -80,5 +80,7 @@ fix; `docs/master.md` has the measurements.
 - **Front-end glue on a DI** — Comp around 60 %, everything else off. That is the **Flat & Even** preset.
 - **The Tulsa squash** — Comp 70–80 %, Attack up around 35–40 ms, Release 180–220 ms. **Laid Back** and **Sensitive Kind**.
 - **Tight and grabby** — Comp 85 %+, Attack down near 18 ms, Release short. **Faded**.
+- **Pumping** — Comp 90 %+, Attack and Release at the bottom of their ranges, so it breathes between notes. **Dusty**.
+- **Parallel** — Comp 95 %, fast attack, and Mix pulled back to 55 %: the dry pick attack on top, the squashed sustain underneath. **Parallel Squash**.
 
 If the part sounds lifeless, Attack is too fast: let more of the pick through before the cell closes.

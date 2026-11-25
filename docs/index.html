@@ -31,7 +31,7 @@
       "Stereo output metering with peak hold and a clip lamp",
       "Slapback with a single repeat, 40-250 ms, plus a spring tank",
       "Master Mix and Output with the whole chain in parallel",
-      "Factory and user presets from the panel: Save As…, swipe to rename or delete",
+      "26 factory presets in six groups, plus your own: Save, Save As…, swipe to rename or delete, tap the edited dot to revert",
       "Three panel finishes — Tweed, Field Green and Slate — with a rotary selector on the panel",
       "IN/OUT LED level ladders in the header",
       "Works in GarageBand, Logic for iPad, AUM, and other AUv3 hosts"
@@ -664,7 +664,7 @@
       <div class="feature">
         <span class="feature-icon">≡</span>
         <h3>Presets from the panel</h3>
-        <p>The preset window is the whole workflow: tap it for factory and user presets, <strong>Save As…</strong> to keep the current knobs, and swipe a user preset left to rename or delete it. A dot next to the name lights when you have edited a preset.</p>
+        <p>The preset window is the whole workflow. Tap for factory presets in groups, each with a line on what it does, and your own. <strong>Save As…</strong> keeps the current knobs, <strong>Save</strong> writes them back into your preset, swipe left to rename or delete. A red dot lights when you have edited a preset — tap it to go back.</p>
       </div>
     </div>
   </div>
@@ -678,12 +678,24 @@
     <h2 class="section-title">Start from a sound, not a blank panel</h2>
     <p class="section-sub">Same recall in the panel's preset window and in the host. <strong>Save As…</strong> keeps your own next to the factory ones; swipe one left to rename or delete it.</p>
 
-    <div class="preset-group-label">The laid-back end</div>
+    <div class="preset-group-label">Start</div>
     <div class="preset-list">
       <div class="preset">
         <h3>Default</h3>
         <p>The middle of the road: everything on, nothing extreme. A good place to start turning knobs.</p>
       </div>
+      <div class="preset">
+        <h3>Init</h3>
+        <p>Every block switched off, each one waiting at a sensible setting. Build the chain up a block at a time.</p>
+      </div>
+      <div class="preset">
+        <h3>Flat &amp; Even</h3>
+        <p>Comp alone. A clean, level DI with the front-end glue and nothing after it.</p>
+      </div>
+    </div>
+
+    <div class="preset-group-label">Laid Back</div>
+    <div class="preset-list">
       <div class="preset">
         <h3>Laid Back</h3>
         <p>Heavy comp with a slow recovery, drive barely past clean, tone rolled off. Nothing jumps out.</p>
@@ -697,28 +709,8 @@
         <p>Clean and open. No breakup to speak of, spring carrying it instead.</p>
       </div>
       <div class="preset">
-        <h3>Whisper Trem</h3>
-        <p>Tremolo forward and everything else out of the way.</p>
-      </div>
-      <div class="preset">
-        <h3>Flat &amp; Even</h3>
-        <p>Comp alone. A clean, level DI with the front-end glue and nothing after it.</p>
-      </div>
-    </div>
-
-    <div class="preset-group-label">Songs of the era</div>
-    <div class="preset-list">
-      <div class="preset">
         <h3>Magnolia</h3>
         <p>Slow and close. Barely any breakup, tone well down, the slowest sway in the set. Intimate rather than spacious.</p>
-      </div>
-      <div class="preset">
-        <h3>Breeze</h3>
-        <p>The rolling shuffle: brighter, bouncier, barely any breakup, tremolo quick enough to sit with it.</p>
-      </div>
-      <div class="preset">
-        <h3>Midnight</h3>
-        <p>Clean and funky with the tremolo well forward — the one where Wobble is the loudest thing.</p>
       </div>
       <div class="preset">
         <h3>Sensitive</h3>
@@ -726,7 +718,55 @@
       </div>
     </div>
 
-    <div class="preset-group-label">The same chain, further out</div>
+    <div class="preset-group-label">Tremolo</div>
+    <div class="preset-list">
+      <div class="preset">
+        <h3>Whisper Trem</h3>
+        <p>Tremolo forward and everything else out of the way.</p>
+      </div>
+      <div class="preset">
+        <h3>Breeze</h3>
+        <p>The rolling shuffle: brighter, bouncier, barely any breakup, tremolo quick enough to sit with it.</p>
+      </div>
+      <div class="preset">
+        <h3>Midnight</h3>
+        <p>Clean and funky with the tremolo well forward.</p>
+      </div>
+      <div class="preset">
+        <h3>Quarter Pulse</h3>
+        <p>Tremolo locked to the host tempo on quarter notes. The pulse lands on the beat.</p>
+      </div>
+      <div class="preset">
+        <h3>Triplet Sway</h3>
+        <p>Synced to quarter-note triplets on a soft sine, so it rolls across the bar line instead of marking it.</p>
+      </div>
+      <div class="preset">
+        <h3>Swamp Chop</h3>
+        <p>Deep, square, synced eighths over enough breakup for the chop to bite into.</p>
+      </div>
+    </div>
+
+    <div class="preset-group-label">Echo &amp; Spring</div>
+    <div class="preset-list">
+      <div class="preset">
+        <h3>Roadhouse Slap</h3>
+        <p>One loud slap on a part pushed to the edge of breakup and miked close.</p>
+      </div>
+      <div class="preset">
+        <h3>Doubler</h3>
+        <p>Slap so short it stops sounding like an echo and reads as a second take.</p>
+      </div>
+      <div class="preset">
+        <h3>Tape Echo</h3>
+        <p>The top of the slap range: one long, darker repeat with a little tank behind it.</p>
+      </div>
+      <div class="preset">
+        <h3>Surf Tank</h3>
+        <p>No slap, the spring near the top, and a bright clean part to drip off it.</p>
+      </div>
+    </div>
+
+    <div class="preset-group-label">Lo-Fi</div>
     <div class="preset-list">
       <div class="preset">
         <h3>Faded</h3>
@@ -741,8 +781,36 @@
         <p>Ambient. No tremolo, tank wide open, drive just enough to bloom.</p>
       </div>
       <div class="preset">
+        <h3>Dusty</h3>
+        <p>The compressor at its fastest, pumping between notes, into a dark, far-off mic.</p>
+      </div>
+    </div>
+
+    <div class="preset-group-label">Mix</div>
+    <div class="preset-list">
+      <div class="preset">
+        <h3>Behind the Vocal</h3>
+        <p>Tone down out of the singer's range, mic off axis, very little space. Sits behind the voice.</p>
+      </div>
+      <div class="preset">
+        <h3>Band Rhythm</h3>
+        <p>Fast comp for an even strum, bright and close, almost no tank. Tight in a busy mix.</p>
+      </div>
+      <div class="preset">
+        <h3>Lead Lift</h3>
+        <p>More breakup and 2 dB more level for a solo. Drive alone keeps the level put; this one does not.</p>
+      </div>
+      <div class="preset">
+        <h3>Parallel Squash</h3>
+        <p>The chain squashed hard and blended under the dry signal: the pick attack on top, the sustain underneath.</p>
+      </div>
+    </div>
+
+    <div class="preset-group-label">Yours</div>
+    <div class="preset-list">
+      <div class="preset">
         <h3>Your own</h3>
-        <p>Save As… from the preset window. User presets sit next to the factory ones and recall in the host too.</p>
+        <p>Save As… from the preset window, Save to write back into it. User presets sit next to the factory ones and recall in the host too.</p>
       </div>
     </div>
 

@@ -39,3 +39,7 @@ The slapback feeds the spring, not the other way round — so the repeat is reve
 - **Dry and close** — Spring under 10 %, let the echo do the room work. **Escondido**.
 - **Amp reverb, no echo** — Echo at 0, Spring 30 %+. **Porch Light**.
 - **Wide open** — Spring 60 %+ for an ambient tail. **Night Drive**.
+- **Loud slapback** — Slap around 105 ms, Echo 40 %+, Drive near the edge of breakup. **Roadhouse Slap**.
+- **Doubling** — Slap down near 45 ms, too close to hear as an echo, Spring off: it reads as a second take. **Doubler**.
+- **Tape echo** — Slap at the top of the range, 220–250 ms, Tone down. **Tape Echo**.
+- **Drenched** — Echo off, Spring 80 %+, a bright clean part to drip off it. **Surf Tank**.

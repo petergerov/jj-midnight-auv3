@@ -80,7 +80,11 @@ saved presets do store it, since those are tied to your rig.
 Every block has its own switch, so Mix is not the way to take one out — it is
 the way to put the whole chain in parallel with the dry signal. That is worth
 having on something other than a guitar: at 30–40 % the compressor and the
-cabinet colour a keyboard or a drum loop without swallowing it.
+cabinet colour a keyboard or a drum loop without swallowing it. On a guitar,
+**Parallel Squash** uses it for parallel compression at 55 %.
+
+Factory presets are level-matched with Output at 0 dB. **Lead Lift** is the
+one exception, at +2 dB, as a solo boost.
 
 ## The output meter
 
@@ -121,3 +125,12 @@ bar; the tick stays put for a second and a half so you see what happened.
 - **If the clip lamp latches** — pull Output down first. If it still latches,
   the Comp knob is high enough that its make-up is doing it, and that is the
   control to back off.
+
+## Timing
+
+jj-midnight adds no latency and reports none: Comp has no lookahead, and the
+slapback and the spring only add copies beside the direct signal, so a host's
+delay compensation leaves the track where it is. The tail it reports
+is 2 s — the longest ring the panel can make, Slap at 250 ms with Echo and
+Spring at full, measures 1.74 s to −60 dB — so hosts that stop processing
+after the input goes quiet do not cut the spring off.

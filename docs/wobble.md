@@ -31,7 +31,7 @@ Rate and Division stay **separate parameters** rather than one knob that changes
 
 If the host reports no tempo, the rate falls back to the Rate knob. The companion app has no transport at all, so SYNC does nothing there — freezing or going silent would be far worse than simply not being in sync.
 
-Factory presets all ship with SYNC **off**. A synced tremolo changes speed with the project, which is a per-track decision rather than something a preset should make on your behalf — and free-running is what an amp does.
+Most factory presets run free, the way an amp does. Three in the **Tremolo** group are synced — **Quarter Pulse** (`1/4`), **Triplet Sway** (`1/4T`) and **Swamp Chop** (`1/8`) — because a pulse that lands on the beat is a different effect from one that drifts against it, and it is the one the Rate knob cannot give you. Each also carries a Rate equal to its division at 120 BPM, so where there is no tempo it still pulses at a sensible speed.
 
 ## Controls
 
@@ -49,6 +49,8 @@ Factory presets all ship with SYNC **off**. A synced tremolo changes speed with 
 - **A shimmer under everything** — Rate 4–5 Hz, Depth 25–30 %, Shape low. **Laid Back**.
 - **The effect out front** — Depth 50–70 %, Shape 45 %+. **Midnight**, **Whisper Trem**.
 - **Tape warble** — Rate down near 1.8 Hz, Depth 40 %, Shape 0. **Cassette**.
+- **On the beat** — SYNC on, `1/4` or `1/8`, Depth 55 % and up. **Quarter Pulse**; with Shape up near 85 % for a hard chop, **Swamp Chop**.
+- **Across the beat** — SYNC on, `1/4T`, Shape low: a sway that rolls over the bar line. **Triplet Sway**.
 - **Off** — some of the best settings here have no tremolo at all. **Night Drive**.
 
 Watch Rate against the tempo of the part. A tremolo that lands on a division of the beat reads as rhythm; one that does not reads as an effect. Both are useful — just pick on purpose.

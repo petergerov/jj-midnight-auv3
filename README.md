@@ -106,14 +106,25 @@ Open the app once so the Audio Unit registers.
 
 ## Factory presets
 
-Thirteen, in panel order: Default, Laid Back, Escondido, Porch Light,
-Whisper Trem, Magnolia, Breeze, Midnight, Sensitive Kind, Faded, Cassette,
-Night Drive, Flat & Even.
+Twenty-six, in six groups, each with a one-line summary in the preset window:
 
-The first run aims at the laid-back end the chain was designed around; Faded,
+| Group | Presets |
+|---|---|
+| **Start** | Default, Init, Flat & Even |
+| **Laid Back** | Laid Back, Escondido, Porch Light, Magnolia, Sensitive Kind |
+| **Tremolo** | Whisper Trem, Breeze, Midnight, Quarter Pulse, Triplet Sway, Swamp Chop |
+| **Echo & Spring** | Roadhouse Slap, Doubler, Tape Echo, Surf Tank |
+| **Lo-Fi** | Faded, Cassette, Night Drive, Dusty |
+| **Mix** | Behind the Vocal, Band Rhythm, Lead Lift, Parallel Squash |
+
+The first run aimed at the laid-back end the chain was designed around; Faded,
 Cassette and Night Drive point the same engine at the compressed, washed-out
-guitar sound a younger audience is buying. Further preset packs are the
-intended way to grow this, not further DSP.
+guitar sound a younger audience is buying. 1.1 adds the parts of the engine
+no 1.0 preset reached: the three synced tremolos, slap from doubling (44 ms)
+to tape echo (235 ms), the tank near the top, Drive past 50 %, and Mix below
+100 % for parallel compression. Presets are level-matched at 0 dB Output,
+except **Lead Lift**, whose +2 dB is the point of it. Further preset packs
+are the intended way to grow this, not further DSP.
 
 Names get shortened rather than lengthened when they drift near a song title
 — *Call Me The Breeze* became **Breeze** and *After Midnight* became
@@ -122,8 +133,10 @@ is, the less it can be read as a claim about a particular record. The same
 instinct is why *Cocaine* became *Magnolia*, though that one was Review
 Guideline 1.1.6 rather than trademark. See [marketing.md](marketing.md).
 
-User presets: tap the preset window → **Save As…**; swipe left to rename or delete.
-They are stored in the App Group, so the companion app and the plug-in in
+User presets: tap the preset window → **Save As…**; with one of your own
+loaded, **Save “Name”** writes the knobs back into it. Swipe left to rename
+or delete. The red dot by the name means the knobs have moved since the
+preset loaded; tap it to revert. They are stored in the App Group, so the companion app and the plug-in in
 any host see the same list. A preset chosen from a host's own preset menu
 shows in the panel's window too.
 

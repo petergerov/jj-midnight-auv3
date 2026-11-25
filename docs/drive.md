@@ -70,4 +70,7 @@ It did not always. Presence was originally fixed, on the reasoning that the rise
 - **Just past clean** — Drive 20–30 %, Tone around 2600 Hz, Mic at 60 %.
 - **Gritty riff** — Drive 40–45 %, Tone down near 2000 Hz. **Cassette**.
 - **Clean and open** — Drive under 15 %, Tone up near 4000 Hz, Mic low. **Porch Light**.
+- **Edge of breakup** — Drive 45–50 %, Tone up near 3800 Hz, Mic close. **Roadhouse Slap**.
+- **A solo** — Drive 60 %. Level stays put as Drive goes up, so lift the solo on Output: **Lead Lift** adds 2 dB.
+- **Behind a singer** — Drive low, Tone down near 2400 Hz, Mic off axis at 70 %. **Behind the Vocal**.
 - **Clean DI, no speaker** — block off entirely.
